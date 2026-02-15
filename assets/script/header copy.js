@@ -1284,12 +1284,6 @@ class globalHeader extends HTMLElement {
           Kawsar Ahmed
         </div>
         <div class="social-links">
-         <a
-            href="https://kawsar.dev"
-            target="_blank"
-            style="color: var(--muted-foreground); margin-right: 5px"
-            ><i class="fas fa-globe"></i
-          ></a>
           <a
             href="https://youtube.com/@kawsarcodes"
             target="_blank"
@@ -1327,12 +1321,12 @@ class globalHeader extends HTMLElement {
     >
       <a href="https://www.youtube.com/@kawsarcodes" target="_blank"
         ><img
-          src="https://custom-icon-badges.demolab.com/youtube/channel/subscribers/UCaWmfSoM3C7Bsthzc0tCt0Q?color=%23E05D44&label=Subscribe&logo=video&logoColor=white&style=flat-square&labelColor=CE4630"
+          src="https://custom-icon-badges.demolab.com/youtube/channel/subscribers/UCaWmfSoM3C7Bsthzc0tCt0Q?color=%23E05D44&label=YouTube%20Subscribers&logo=video&logoColor=white&style=flat-square&labelColor=CE4630"
           alt="Subs"
       /></a>
       <a href="https://github.com/kawsarcodes" target="_blank"
         ><img
-          src="https://custom-icon-badges.demolab.com/github/stars/kawsarcodes?color=55960c&style=flat-square&labelColor=488207&logo=star&label=Stars"
+          src="https://custom-icon-badges.demolab.com/github/stars/kawsarcodes?color=55960c&style=flat-square&labelColor=488207&logo=star&label=GitHub%20Stars"
           alt="Stars"
       /></a>
     </p>
