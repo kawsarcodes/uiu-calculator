@@ -192,7 +192,7 @@
                             <td class="text-right"><strong>${currentCGPA.toFixed(2)}</strong></td>
                         </tr>
                         <tr>
-                            <td class="text-xs">Smart CGPA Planner</td>
+                            <td class="text-xs">Target CGPA</td>
                             <td class="text-right"><strong>${targetCGPA.toFixed(2)}</strong></td>
                         </tr>
                         <tr>
@@ -271,7 +271,7 @@
                         <td class="text-right"><strong class="textG">${currentCGPA.toFixed(2)}</strong></td>
                     </tr>
                     <tr>
-                        <td class="text-xs">Smart CGPA Planner</td>
+                        <td class="text-xs">Target CGPA</td>
                         <td class="text-right"><strong>${targetCGPA.toFixed(2)}</strong></td>
                     </tr>
                     <tr>
@@ -421,13 +421,6 @@
     <p style="margin: 4px 0 10px 22px;">
         Consider retaking courses where you got D, F, or low grades
     </p>
-    <p style="margin: 6px 0; font-weight: bold;">
-        <i class="fas fa-adjust" style="color: #ef5350; margin-right: 6px;"></i>
-        Option 4: Adjust Target
-    </p>
-    <p style="margin: 4px 0 0 22px;">
-        Set a more realistic smart CGPA planner based on current performance
-    </p>
 </div>
                 </div>
             `;
@@ -472,7 +465,7 @@
                             <td class="text-right"><strong>${currentCGPA.toFixed(2)}</strong></td>
                         </tr>
                         <tr>
-                            <td class="text-xs">Smart CGPA Planner</td>
+                            <td class="text-xs">Target CGPA</td>
                             <td class="text-right"><strong>${targetCGPA.toFixed(2)}</strong></td>
                         </tr>
                         <tr>
@@ -725,7 +718,7 @@
                             <td class="text-right"><strong>${currentCGPA.toFixed(2)}</strong></td>
                         </tr>
                         <tr>
-                            <td class="text-xs">Smart CGPA Planner</td>
+                            <td class="text-xs">Target CGPA</td>
                             <td class="text-right"><strong>${targetCGPA.toFixed(2)}</strong></td>
                         </tr>
                         <tr>
@@ -766,7 +759,7 @@
       html += `
                 <div class="alert note-r margin1">
                     <i class="fas fa-exclamation-triangle"></i>
-                    <strong>Smart CGPA Planner Not Achievable!</strong><br>
+                    <strong>Target Not Achievable!</strong><br>
                     Would need ${requiredAvgGPA.toFixed(2)} average GPA for remaining credits.
                 </div>
                 <table>
@@ -1026,7 +1019,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="text-xs">Smart CGPA Planner</td>
+                            <td class="text-xs">Target CGPA</td>
                             <td class="text-right"><strong>${targetCGPA.toFixed(2)}</strong></td>
                         </tr>
                         <tr>
@@ -1282,7 +1275,7 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="text-xs">Smart CGPA Planner</td>
+                            <td class="text-xs">Target CGPA</td>
                             <td class="text-right"><strong>${targetCGPA.toFixed(2)}</strong></td>
                         </tr>
                         <tr>
