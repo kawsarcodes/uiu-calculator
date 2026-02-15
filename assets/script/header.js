@@ -1258,11 +1258,46 @@ class globalHeader extends HTMLElement {
     </button>
   </div>
   <div class="menu-content">
-    <div class="menu-content">
+    <div class="menu-content-1">
           <a href="/calculator/cgpa/index.html" class="item" style="text-decoration: none; display: block; margin-bottom: 5px;">CGPA Calculator</a>
           <a href="/calculator/tuitionfee/index.html" class="item" style="text-decoration: none; display: block; margin-bottom: 5px;">Tuition Fee Calculator</a>
           <a href="/calculator/target-cgpa/index.html" class="item" style="text-decoration: none; display: block; margin-bottom: 5px;">Smart CGPA Planner</a>
+    </div>
+    <div class="uiu-ext-card">
+  <div class="uiu-ext-content">
+    <div class="uiu-ext-header">
+      <img src="/assets/image/uiu-course-evaluation-helper-extension.png" alt="UIU Helper Logo" class="uiu-ext-logo">
+      <div class="uiu-ext-head-text">
+        <h3 class="uiu-ext-title">UIU Course Evaluation Helper</h3>
+        <div class="uiu-ext-badges">
+          <span class="uiu-ext-badge"><i class="fab fa-firefox"></i> Extension</span>
+          <span class="uiu-ext-badge uiu-badge-secure">Private & Secure 🛡️</span>
         </div>
+      </div>
+    </div>
+    
+    <p class="uiu-ext-desc">
+      Streamline course evaluations with one-click auto-fill, smart randomization, and full automation. No data collection.
+    </p>
+
+    <div class="uiu-ext-features">
+      <div class="uiu-ext-feat-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+        <span>Full Auto Mode</span>
+      </div>
+      <div class="uiu-ext-feat-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+        <span>No Network Requests</span>
+      </div>
+    </div>
+
+    <a href="https://addons.mozilla.org/en-US/firefox/addon/uiu-course-evaluation-helper/" target="_blank" class="uiu-ext-btn">
+      <span><i class="fab fa-firefox" style="margin-right: 5px";></i> Add to Firefox</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+    </a>
+  </div>
+</div>
+
   </div>
   <div class="menu-footer">
     <div
