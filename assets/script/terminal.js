@@ -230,6 +230,7 @@
           "📊 CALCULATORS",
           "--------------------------------------------------------------",
           "  cgpa                    --> CGPA calculator",
+          "  planner                 --> CGPA planner",
           "  tuition                 --> Tuition fee calculator",
           "--------------------------------------------------------------",
           "🎮 GAMES",
@@ -353,6 +354,23 @@
           window.open(url, "_blank");
           appendOutput(
             "Opening CGPA calculator in new tab...",
+            "uiu-term-success",
+          );
+        } else {
+          window.location.href = url;
+        }
+      },
+    },
+
+    planner: {
+      description: "Open CGPA planner",
+      usage: "planner [--new]",
+      handler: (args) => {
+        const url = "/calculator/target-cgpa/index.html";
+        if (args.includes("--new")) {
+          window.open(url, "_blank");
+          appendOutput(
+            "Opening CGPA planner in new tab...",
             "uiu-term-success",
           );
         } else {
