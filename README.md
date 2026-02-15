@@ -34,5 +34,15 @@ It replaces manual calculation errors with a fast, responsive, and mobile-friend
 *   **🎯 Target CGPA Planner:** The "Magic" tool. Tell it your current CGPA and your goal (e.g., "I want a 3.5"), and it tells you exactly what GPA you need in the next trimester.
 *   **💰 Tuition Fee Calculator:** Enter redits and waiver/scholarship percentage to get an accurate breakdown of your installment fees.
 
+## 👨‍💻 Developed By
+
+**Kawsar Ahmed**
+
+*   Website: [kawsar.dev](https://kawsar.dev/)
+*   GitHub: [@kawsarcodes](https://github.com/kawsarcodes)
+
 ---
 
+<div align="center">
+  <sub>Made with ❤️ for UIU Students</sub>
+</div
