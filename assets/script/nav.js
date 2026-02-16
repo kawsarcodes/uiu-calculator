@@ -15,7 +15,7 @@ class globalNav extends HTMLElement {
           </button>
         </a>
         
-        <a href="/calculator/target-cgpa/index.html" style="text-decoration:none;">
+        <a href="/calculator/cgpa-planner/index.html" style="text-decoration:none;">
           <button>
             <i class="fa-solid fa-bullseye"></i>
             <span>Planner</span>

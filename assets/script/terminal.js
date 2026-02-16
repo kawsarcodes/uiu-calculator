@@ -366,7 +366,7 @@
       description: "Open CGPA planner",
       usage: "planner [--new]",
       handler: (args) => {
-        const url = "/calculator/target-cgpa/index.html";
+        const url = "/calculator/cgpa-planner/index.html";
         if (args.includes("--new")) {
           window.open(url, "_blank");
           appendOutput(
