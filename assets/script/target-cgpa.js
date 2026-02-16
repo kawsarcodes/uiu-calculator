@@ -613,7 +613,7 @@
                     </h3>
                 </div>
                 <div class="card-content">
-                    <table>
+                    <table class="small-table">
                         <thead>
                             <tr>
                                 <th class="text-xs">Average GPA</th>
