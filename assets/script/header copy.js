@@ -1262,7 +1262,6 @@ class globalHeader extends HTMLElement {
           <a href="/calculator/cgpa/index.html" class="item" style="text-decoration: none; display: block; margin-bottom: 5px;">CGPA Calculator</a>
           <a href="/calculator/tuitionfee/index.html" class="item" style="text-decoration: none; display: block; margin-bottom: 5px;">Tuition Fee Calculator</a>
           <a href="/calculator/cgpa-planner/index.html" class="item" style="text-decoration: none; display: block; margin-bottom: 5px;">CGPA Planner</a>
-          <a href="https://youtu.be/oefGz1XNcOM" target="_blank" rel="noopener noreferrer"  class="item" style="text-decoration: none; display: block; margin-bottom: 5px;"><i class="fa-brands fa-youtube" style="color: #ff0000; margin-right: 8px;"></i ><span>How To Use</span></a>
     </div>
     <div class="uiu-ext-card">
   <div class="uiu-ext-content">
