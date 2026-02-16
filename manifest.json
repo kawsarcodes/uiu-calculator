@@ -1,7 +1,7 @@
 {
-  "name": "UIU Nerds",
-  "short_name": "UIU Nerds",
-  "description": "Get past CSE questions, CGPA calculator, and installment calculator for all students.",
+  "name": "UIU Calc",
+  "short_name": "UIU Calc",
+  "description": "The all-in-one academic toolkit for UIU students. Calculate CGPA, plan Target Grades, and estimate Tuition Fees instantly.",
   "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#000",

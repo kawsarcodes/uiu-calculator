@@ -1277,8 +1277,9 @@ class globalHeader extends HTMLElement {
     </div>
     
     <p class="uiu-ext-desc">
-      Streamline course evaluations with one-click auto-fill, smart randomization, and full automation. No data collection.
+      Simplify your course evaluations with one-click auto-fill and seamless automation. Fast, easy, and hassle-free. No data collection.
     </p>
+
 
     <div class="uiu-ext-features">
       <div class="uiu-ext-feat-item">
