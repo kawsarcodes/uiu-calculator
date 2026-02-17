@@ -1259,7 +1259,11 @@ class globalHeader extends HTMLElement {
   </div>
   <div class="menu-content">
     <div class="menu-content-1">
-          <a href="/calculator/cgpa/index.html" class="item" style="text-decoration: none; display: block; margin-bottom: 5px;">CGPA Calculator</a>
+<a href="#" id="menuInstallBtn" class="item" style="background-color: var(--theme-color); text-decoration: none; display: none; margin-bottom: 5px;">
+        <i class="fas fa-download" style="color: var(--foreground); margin-right: 8px;"></i>
+        <span>Install App</span>
+      </a>
+        <a href="/calculator/cgpa/index.html" class="item" style="text-decoration: none; display: block; margin-bottom: 5px;">CGPA Calculator</a>
           <a href="/calculator/tuitionfee/index.html" class="item" style="text-decoration: none; display: block; margin-bottom: 5px;">Tuition Fee Calculator</a>
           <a href="/calculator/cgpa-planner/index.html" class="item" style="text-decoration: none; display: block; margin-bottom: 5px;">CGPA Planner</a>
           <a href="https://youtu.be/oefGz1XNcOM" target="_blank" rel="noopener noreferrer"  class="item" style="text-decoration: none; display: block; margin-bottom: 5px;"><i class="fa-brands fa-youtube" style="color: #ff0000; margin-right: 8px;"></i ><span>How To Use</span></a>
@@ -1414,21 +1418,107 @@ class globalHeader extends HTMLElement {
           id="usernameInput"
           placeholder="Enter your name"
           style="text-align: center"
-        />
-      
-        
+        />        
       </div>
+<div class="pwa-sheet-overlay" id="pwaOverlay"></div>
+<div class="pwa-install-sheet" id="pwaSheet">
+  <div class="pwa-handle"></div>
+  <div class="pwa-content-wrapper">
+    <img src="/assets/image/favicon/web-app-manifest-192x192.png" alt="App Icon" style="width: 64px; height: 64px; border-radius: 14px; margin-bottom:10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+    <h3 class="pwa-title">Install App</h3>
+    <p class="pwa-desc">Install the app for faster loading and a smoother experience.</p>
+    <div class="pwa-btn-group">
+      <button class="pwa-close-action" id="sheetCloseBtn">Later</button>
+      <button class="pwa-install-action" id="sheetInstallBtn">
+        <i class="fas fa-download"></i> Install
+      </button>
     </div>
   </div>
 </div>
-
     `;
 
-    this.initThemeSystem();
+ this.initThemeSystem();
+    this.initPWAInstall(); 
     setTimeout(() => {
       this.initLegacyFeatures();
     }, 100);
   }
+
+  initPWAInstall() {
+    const menuInstallBtn = this.querySelector("#menuInstallBtn");
+    const sheetInstallBtn = this.querySelector("#sheetInstallBtn");
+    const sheetCloseBtn = this.querySelector("#sheetCloseBtn");
+    const pwaSheet = this.querySelector("#pwaSheet");
+    const pwaOverlay = this.querySelector("#pwaOverlay");
+
+    let deferredPrompt;
+
+    const isMobileOrTablet = () => {
+      const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+      return /android|ipad|iphone|ipod|blackberry|iemobile|opera mini/i.test(userAgent);
+    };
+
+    const isStandalone = () => {
+      return (
+        window.matchMedia("(display-mode: standalone)").matches ||
+        window.navigator.standalone === true ||
+        document.referrer.includes("android-app://")
+      );
+    };
+
+    if (isStandalone()) {
+      if (menuInstallBtn) menuInstallBtn.style.display = "none";
+      return;
+    }
+
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+
+      if (menuInstallBtn) menuInstallBtn.style.display = "block";
+
+      const hasShownInSession = sessionStorage.getItem("pwa_popup_shown");
+
+      if (isMobileOrTablet() && !hasShownInSession) {
+        setTimeout(() => {
+          if (deferredPrompt) {
+            pwaSheet.classList.add("active");
+            pwaOverlay.classList.add("active");
+            sessionStorage.setItem("pwa_popup_shown", "true");
+          }
+        }, 3000);
+      }
+    });
+
+    const closeSheet = () => {
+      pwaSheet.classList.remove("active");
+      pwaOverlay.classList.remove("active");
+    };
+
+    const handleInstallClick = async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        deferredPrompt = null;
+        if (outcome === "accepted") {
+          if (menuInstallBtn) menuInstallBtn.style.display = "none";
+          closeSheet();
+        }
+      }
+    };
+
+    if (menuInstallBtn) menuInstallBtn.addEventListener("click", handleInstallClick);
+    if (sheetInstallBtn) sheetInstallBtn.addEventListener("click", handleInstallClick);
+    if (sheetCloseBtn) sheetCloseBtn.addEventListener("click", closeSheet);
+
+    window.addEventListener("appinstalled", () => {
+      if (menuInstallBtn) menuInstallBtn.style.display = "none";
+      closeSheet();
+      deferredPrompt = null;
+    });
+  }
+
+
 
   initThemeSystem() {
     const toggleBtn = this.querySelector("#theme-toggle");
