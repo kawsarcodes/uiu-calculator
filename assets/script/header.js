@@ -1436,13 +1436,11 @@ class globalHeader extends HTMLElement {
     const modeBtns = this.querySelectorAll(".mode-btn");
     const colorBtns = this.querySelectorAll(".color-btn");
 
-    // Load Saved Preferences (default theme is "default")
     const savedMode = localStorage.getItem("themeMode") || "dark";
     const savedTheme = localStorage.getItem("themeName") || "default";
 
     this.applyFullTheme(savedTheme, savedMode, false);
 
-    // Toggle Menu Logic
     toggleBtn.addEventListener("click", (e) => {
       e.stopPropagation();
       if (menu.classList.contains("active")) {
@@ -1462,7 +1460,6 @@ class globalHeader extends HTMLElement {
       }
     });
 
-    // HANDLE MODE CHANGE
     modeBtns.forEach((btn) => {
       btn.addEventListener("click", async () => {
         const selectedMode = btn.dataset.mode;

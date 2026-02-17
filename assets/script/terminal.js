@@ -15,7 +15,7 @@
       github: "https://github.com/kawsarcodes",
       youtube: "https://youtube.com/@kawsarcodes",
       facebook: "https://facebook.com/kawsarshaikat",
-      instragram: "https://instragram.com/kawsarshaikat",
+      instagram: "https://instagram.com/kawsarshaikat",
     },
   };
 
@@ -28,9 +28,38 @@
     "What do you call a programmer from Finland? Nerdic!",
     "Why do programmers hate nature? It has too many bugs.",
     "What's the object-oriented way to become wealthy? Inheritance!",
+    "A SQL query enters a bar, approaches two tables and asks: 'Can I join you?'",
+    "There are 10 types of people in the world: those who understand binary, and those who don't.",
+    "Why did the computer show up at work late? It had a hard drive.",
+    "To understand recursion, you must first understand recursion.",
+    "Why do Python programmers have low self-esteem? Because they're constantly comparing their self to others.",
+    "A programmer puts two glasses on his bedside table before going to sleep. A full one, in case he gets thirsty, and an empty one, in case he doesn't.",
+    "Unreal Engine is just a game engine... but Unity is a state of mind.",
+    "Why did the edge server go bankrupt? Because it lost its cache.",
+    "3 SQL admins walked into a NoSQL bar. A little while later they walked out because they couldn't find a table.",
+    "Knock, knock. Who's there? Async function. ... ... Async function who?",
+    "I'd tell you a joke about UDP, but you might not get it.",
+    "A QA tester walks into a bar. Orders a beer. Orders 0 beers. Orders 9999999999 beers. Orders a lizard. Orders -1 beers. Orders a ueicbksjdhd. The first real customer enters the bar and asks where the bathroom is. The bar bursts into flames.",
+    "Why did the developer go broke? Because he used up all his cache.",
+    "A programmer's wife tells him, 'While you're at the grocery store, buy some milk.' He never comes back.",
+    "How do you tell HTML from HTML5? Try it out in Internet Explorer. Did it work? No? It's HTML5.",
+    "Why do programmers prefer iOS? Because on Android, they have no class.",
+    "I have a joke about a time traveler... but you guys didn't like it.",
+    "Why was the JavaScript developer sad? Because he didn't know how to 'null' his feelings.",
+    "Two threads walk into a bar. The barkeeper looks up and yells, 'Hey, I want no race conditions in here!' Two threads walk into a bar.",
+    "Why do programmers confuse Halloween and Christmas? Because Oct 31 equals Dec 25.",
+    "A junior developer works; a senior developer waits.",
+    "If you put a million monkeys at a million keyboards, one of them will eventually write a Java program. The rest will write Perl programs.",
+    "What is a programmer's favorite snack? Microchips!",
+    "Why did the web developer walk out of the restaurant? He didn't like the table layout.",
+    "Real programmers count from 0.",
+    "Hardware: The part of a computer that you can kick.",
+    "Some people, when confronted with a problem, think 'I know, I'll use regular expressions.' Now they have two problems.",
+    "Optimist: The glass is half full. Pessimist: The glass is half empty. Programmer: The glass is twice as large as necessary.",
+    "Wait, I can't quit yet... I have a race condition to fix!",
   ];
 
-  const FORTUNES = [
+  const QUOTES = [
     "The best time to plant a tree was 20 years ago. The second best time is now.",
     "Code is like humor. When you have to explain it, it's bad.",
     "First, solve the problem. Then, write the code.",
@@ -39,19 +68,74 @@
     "Any fool can write code that a computer can understand. Good programmers write code that humans can understand.",
     "Experience is the name everyone gives to their mistakes.",
     "The best error message is the one that never shows up.",
+    "Talk is cheap. Show me the code.",
+    "Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.",
+    "Measuring programming progress by lines of code is like measuring aircraft building progress by weight.",
+    "It's not a bug, it's an undocumented feature.",
+    "Walking on water and developing software from a specification are easy if both are frozen.",
+    "One of my most productive days was throwing away 1,000 lines of code.",
+    "Simplicity is the soul of efficiency.",
+    "Before software can be reusable it first has to be usable.",
+    "Make it work, make it right, make it fast.",
+    "There are only two hard things in Computer Science: cache invalidation and naming things.",
+    "Premature optimization is the root of all evil.",
+    "Programming is the art of telling another human what one wants the computer to do.",
+    "If debugging is the process of removing software bugs, then programming must be the process of putting them in.",
+    "The most dangerous phrase in the language is, 'We've always done it this way.'",
+    "Hofstadter's Law: It always takes longer than you expect, even when you take into account Hofstadter's Law.",
+    "Nine women cannot make a baby in one month.",
+    "Java is to JavaScript what car is to carpet.",
+    "Computer science is no more about computers than astronomy is about telescopes.",
+    "Software is a great combination between artistry and engineering.",
+    "If you automate a mess, you get an automated mess.",
+    "Programming today is a race between software engineers striving to build bigger and better idiot-proof programs, and the Universe trying to produce bigger and better idiots. So far, the Universe is winning.",
+    "Truth can only be found in one place: the code.",
+    "A good programmer is someone who always looks both ways before crossing a one-way street.",
+    "It works on my machine.",
+    "Don't comment bad code—rewrite it.",
+    "Controlling complexity is the essence of computer programming.",
+    "The function of good software is to make the complex appear to be simple.",
+    "Computers are good at following instructions, but not at reading your mind.",
+    "Software undergoes beta testing shortly before it's released. Beta is Latin for 'still doesn't work'.",
   ];
 
-  const ASCII_ART = `    ██╗   ██╗██╗██╗   ██╗    ███╗   ██╗███████╗██████╗ ██████╗ ███████╗
-    ██║   ██║██║██║   ██║    ████╗  ██║██╔════╝██╔══██╗██╔══██╗██╔════╝
-    ██║   ██║██║██║   ██║    ██╔██╗ ██║█████╗  ██████╔╝██║  ██║███████╗
-    ██║   ██║██║██║   ██║    ██║╚██╗██║██╔══╝  ██╔══██╗██║  ██║╚════██║
-    ╚██████╔╝██║╚██████╔╝    ██║ ╚████║███████╗██║  ██║██████╔╝███████║
-     ╚═════╝ ╚═╝ ╚═════╝     ╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═════╝ ╚══════╝
+  const ASCII_ART_DESKTOP = `
+    ██╗   ██╗██╗██╗   ██╗     ██████╗ █████╗ ██╗      ██████╗██╗   ██╗██╗      █████╗ ████████╗ ██████╗ ██████╗ 
+    ██║   ██║██║██║   ██║    ██╔════╝██╔══██╗██║     ██╔════╝██║   ██║██║     ██╔══██╗╚══██╔══╝██╔═══██╗██╔══██╗
+    ██║   ██║██║██║   ██║    ██║     ███████║██║     ██║     ██║   ██║██║     ███████║   ██║   ██║   ██║██████╔╝
+    ██║   ██║██║██║   ██║    ██║     ██╔══██║██║     ██║     ██║   ██║██║     ██╔══██║   ██║   ██║   ██║██╔══██╗
+    ╚██████╔╝██║╚██████╔╝    ╚██████╗██║  ██║███████╗╚██████╗╚██████╔╝███████╗██║  ██║   ██║   ╚██████╔╝██║  ██║
+     ╚═════╝ ╚═╝ ╚═════╝      ╚═════╝╚═╝  ╚═╝╚══════╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝
                                                                         
-                                                                        
-                                    UIU Nerds v1.0.0  `;
+                                  UIU Calculator v2.3.2`;
 
- 
+  const ASCII_ART_MOBILE = `
+    ██╗   ██╗██╗██╗   ██╗
+    ██║   ██║██║██║   ██║
+    ██║   ██║██║██║   ██║
+    ██║   ██║██║██║   ██║
+    ╚██████╔╝██║╚██████╔╝
+     ╚═════╝ ╚═╝ ╚═════╝ 
+
+     ██████╗ █████╗ ██╗      ██████╗
+    ██╔════╝██╔══██╗██║     ██╔════╝
+    ██║     ███████║██║     ██║     
+    ██║     ██╔══██║██║     ██║     
+    ╚██████╗██║  ██║███████╗╚██████╗
+     ╚═════╝╚═╝  ╚═╝╚══════╝ ╚═════╝
+    
+    ██╗   ██╗██╗      █████╗ ████████╗ ██████╗ ██████╗ 
+    ██║   ██║██║     ██╔══██╗╚══██╔══╝██╔═══██╗██╔══██╗
+    ██║   ██║██║     ███████║   ██║   ██║   ██║██████╔╝
+    ██║   ██║██║     ██╔══██║   ██║   ██║   ██║██╔══██╗
+    ╚██████╔╝███████╗██║  ██║   ██║   ╚██████╔╝██║  ██║
+     ╚═════╝ ╚══════╝╚═╝  ╚═╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝
+             UIU Calculator v2.3.2`;
+
+  function getAsciiArt() {
+    return window.innerWidth < 700 ? ASCII_ART_MOBILE : ASCII_ART_DESKTOP;
+  }
+
   const terminalState = {
     isOpen: false,
     isFullscreen: true,
@@ -64,7 +148,6 @@
   };
 
   let elements = {};
-
 
   function saveState() {
     const stateToSave = {
@@ -99,7 +182,6 @@
       span.textContent = newName;
     });
   }
-
 
   function saveHistory() {
     try {
@@ -144,7 +226,6 @@
     const offsetMinutes = Math.abs(offset) % 60;
     const offsetSign = offset <= 0 ? "+" : "-";
     const timezone = `GMT${offsetSign}${offsetHours.toString().padStart(2, "0")}:${offsetMinutes.toString().padStart(2, "0")}`;
-
     const days = [
       "Sunday",
       "Monday",
@@ -168,16 +249,62 @@
       "Nov",
       "Dec",
     ];
-
     return `Date: ${now.getDate().toString().padStart(2, "0")} ${months[now.getMonth()]} ${now.getFullYear()} (${days[now.getDay()]})\nTime: ${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}:${now.getSeconds().toString().padStart(2, "0")} (${timezone})`;
+  }
+
+  function injectStyles() {
+    const style = document.createElement("style");
+    style.textContent = `
+      .uiu-term-link {
+        color: var(--theme-color);
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+      }
+      
+      .uiu-term-link:hover {
+         text-shadow: 0 0 1px currentColor;
+        text-decoration: underline;
+      }
+    `;
+    document.head.appendChild(style);
   }
 
   function appendOutput(content, className = "") {
     const line = document.createElement("div");
     line.className = `uiu-term-line ${className}`;
 
+    if (className.includes("uiu-term-ascii")) {
+      line.style.whiteSpace = "pre";
+      line.style.overflowX = "auto";
+      line.style.width = "100%";
+      line.style.display = "block";
+      if (window.innerWidth < 600) {
+        line.style.fontSize = "10px";
+        line.style.lineHeight = "12px";
+      }
+    }
+
     if (typeof content === "string") {
-      line.textContent = content;
+      const urlRegex = /(https?:\/\/[^\s]+)/g;
+      if (content.match(urlRegex)) {
+        const parts = content.split(urlRegex);
+        parts.forEach((part) => {
+          if (part.match(/^https?:\/\//)) {
+            const a = document.createElement("a");
+            a.href = part;
+            a.target = "_blank";
+            a.rel = "noopener noreferrer";
+            a.textContent = part;
+            a.className = "uiu-term-link"; 
+            line.appendChild(a);
+          } else {
+            line.appendChild(document.createTextNode(part));
+          }
+        });
+      } else {
+        line.textContent = content;
+      }
     } else {
       line.appendChild(content);
     }
@@ -189,17 +316,13 @@
   function appendPromptLine(command) {
     const line = document.createElement("div");
     line.className = "uiu-term-line";
-
     const username = getFormattedTermName();
-
     const prompt = document.createElement("span");
     prompt.className = "uiu-term-prompt";
-    prompt.innerHTML = `🐧<span class="uiu-term-username">${username}</span>@uiunerds:~$ `;
-
+    prompt.innerHTML = `🐧<span class="uiu-term-username">${username}</span>@uiucalculator:~$ `;
     const cmd = document.createElement("span");
     cmd.className = "uiu-term-command";
     cmd.textContent = command;
-
     line.appendChild(prompt);
     line.appendChild(cmd);
     elements.output.appendChild(line);
@@ -247,10 +370,9 @@
           "  ascii",
           "  date",
           "  joke",
-          "  fortune",
+          "  quote",
           "--------------------------------------------------------------",
         ];
-
         const headings = new Set([
           "--------------------------------------------------------------",
           "⌨️ KEYBOARD SHORTCUTS",
@@ -259,7 +381,6 @@
           "🎮 GAMES",
           "🔮 OTHER COMMANDS",
         ]);
-
         lines.forEach((line) => {
           const trimmed = line.trim();
           const cls = headings.has(trimmed)
@@ -267,7 +388,6 @@
             : trimmed.startsWith("---")
               ? "uiu-term-sep"
               : "uiu-term-info";
-
           appendOutput(line, cls);
         });
       },
@@ -286,7 +406,7 @@
   - GitHub: ${ABOUT_INFO.contact.github}
   - YouTube: ${ABOUT_INFO.contact.youtube}
   - Facebook: ${ABOUT_INFO.contact.facebook}
-  - Instagram: ${ABOUT_INFO.contact.instragram}
+  - Instagram: ${ABOUT_INFO.contact.instagram}
         `;
         appendOutput(aboutText.trim(), "uiu-term-info");
       },
@@ -328,12 +448,12 @@
       },
     },
 
-    fortune: {
+    quote: {
       description: "Get a random fortune or quote",
-      usage: "fortune",
+      usage: "quote",
       handler: () => {
-        const fortune = FORTUNES[Math.floor(Math.random() * FORTUNES.length)];
-        appendOutput(`"${fortune}"`, "uiu-term-success");
+        const quote = QUOTES[Math.floor(Math.random() * QUOTES.length)];
+        appendOutput(`${quote}`, "uiu-term-success");
       },
     },
 
@@ -341,7 +461,7 @@
       description: "Display ASCII art banner",
       usage: "ascii",
       handler: () => {
-        appendOutput(ASCII_ART, "uiu-term-ascii");
+        appendOutput(getAsciiArt(), "uiu-term-ascii");
       },
     },
 
@@ -430,7 +550,6 @@
       },
     },
 
-
     snake: {
       description: "Play Snake inside your terminal!",
       usage:
@@ -438,13 +557,11 @@
       handler: (args = []) => {
         const raw = args.map(String);
         const a = raw.map((s) => s.toLowerCase());
-
         if (a.includes("--stop")) {
           snakeStop();
           appendOutput("Snake stopped.", "uiu-term-info");
           return;
         }
-
         const ensureStarted = () => {
           if (!snakeContainer) {
             appendOutput(
@@ -454,7 +571,6 @@
             snakeStart();
           }
         };
-
         if (a.includes("--pause")) {
           ensureStarted();
           snakePause();
@@ -482,7 +598,6 @@
           snakeSetWrap(false);
           appendOutput("Wrap mode OFF (walls kill).", "uiu-term-info");
         }
-
         const sizeIdx = a.indexOf("--size");
         if (sizeIdx !== -1) {
           const n = parseInt(raw[sizeIdx + 1], 10);
@@ -508,7 +623,6 @@
             );
           }
         }
-
         const dirMap = {
           up: { x: 0, y: -1 },
           down: { x: 0, y: 1 },
@@ -520,7 +634,6 @@
           ensureStarted();
           snakeQueueDir(dirMap[dirArg]);
         }
-
         if (!snakeContainer) {
           ensureStarted();
         }
@@ -533,20 +646,17 @@
       handler: (args = []) => {
         const a = args.map((x) => String(x).toLowerCase());
         const validMoves = ["rock", "paper", "scissors"];
-
         if (a.includes("--stop")) {
           stopRPS();
           appendOutput("RPS stopped.", "uiu-term-info");
           return;
         }
-
         if (a.includes("--reset")) {
           if (!rpsContainer) startRPS();
           rpsReset();
           appendOutput("RPS score reset.", "uiu-term-info");
           return;
         }
-
         const move = validMoves.find((m) => a.includes(m));
         if (move) {
           if (!rpsContainer) {
@@ -1560,7 +1670,7 @@
     const username = getFormattedTermName();
     const prompt = document.createElement("span");
     prompt.className = "uiu-term-prompt";
-    prompt.innerHTML = `🐧<span class="uiu-term-username">${username}</span>@uiunerds:~$ `;
+    prompt.innerHTML = `🐧<span class="uiu-term-username">${username}</span>@uiucalculator:~$ `;
 
     const input = document.createElement("span");
     input.className = "uiu-term-inline-input";
@@ -1826,6 +1936,7 @@
     const container = options.mount || document.body;
     loadState();
     loadHistory();
+    injectStyles();
     initializeElements(container);
     if (terminalState.isFullscreen) {
       elements.panel.classList.add("uiu-term-fullscreen");
@@ -1839,12 +1950,6 @@
       `Hi ${username} 👋, Type "help" for available commands.`,
       "uiu-term-info",
     );
-    return {
-      toggle: toggleTerminal,
-      close: closeTerminal,
-      execute: executeCommand,
-      isOpen: () => terminalState.isOpen,
-    };
   }
 
   window.addEventListener("usernameUpdated", updateAllTerminalUsernames);
