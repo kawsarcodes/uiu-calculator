@@ -915,7 +915,7 @@ function calculateTuitionFee() {
 
           ${discountRowsHtml ? discountRowsHtml : ''}
           
-          <tr class="border-t-2"><td class="font-bold" style="color: var(--theme-color);">Total Payable (Net)</td><td></td><td class="text-right font-bold text-lg" style="color: var(--theme-color);">${formatCurrency(finalAmount)}</td></tr>
+          <tr class="border-t-2" style="font-weight: bold;"><td class="font-bold" style="color: var(--theme-color);">Total Payable (Net)</td><td></td><td class="text-right font-bold text-lg" style="color: var(--theme-color);">${formatCurrency(finalAmount)}</td></tr>
         </tbody>
       </table>
     </div>
