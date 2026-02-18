@@ -748,414 +748,279 @@ function resetCGPA() {
 }
 function calculateTuitionFee() {
   const newCreditInput = document.getElementById("newCredit");
-  const retakeCreditInput = document.getElementById("retakeCredit");
-  const perCreditFee = parseFloat(
-    document.getElementById("perCreditFee").value,
-  );
-  const trimesterFee = parseFloat(
-    document.getElementById("trimesterFee").value,
-  );
-  const waiver = parseFloat(document.getElementById("waiver").value);
-  const scholarship = parseFloat(document.getElementById("scholarship").value);
+  const retakeCreditFirstInput = document.getElementById("retakeCreditFirst");
+  const retakeCreditRegularInput = document.getElementById("retakeCreditRegular");
+
+  const perCreditFee = parseFloat(document.getElementById("perCreditFee").value);
+  const trimesterFee = parseFloat(document.getElementById("trimesterFee").value);
+  const waiverPercent = parseFloat(document.getElementById("waiver").value) || 0;
+  const scholarshipPercent = parseFloat(document.getElementById("scholarship").value) || 0;
   const lateRegistration = document.getElementById("lateRegistration").checked;
-  const waiverInFirstInstallment = document.getElementById(
-    "waiverInFirstInstallment",
-  ).checked;
-  const siblingSpouseWaiver = parseFloat(
-    document.getElementById("siblingSpouseWaiver").value,
-  );
-  const ethnicTribalWaiver = parseFloat(
-    document.getElementById("ethnicTribalWaiver").value,
-  );
-  const disabilityWaiver = parseFloat(
-    document.getElementById("disabilityWaiver").value,
-  );
-  const perCreditFeeErrorEl =
-    document.getElementById("perCreditFeeError") ||
-    getOrCreateErrorEl("perCreditFeeError", "perCreditFee");
-  const trimesterFeeErrorEl =
-    document.getElementById("trimesterFeeError") ||
-    getOrCreateErrorEl("trimesterFeeError", "trimesterFee");
-  const newCreditErrorEl = getOrCreateErrorEl("newCreditError", "newCredit");
-  const retakeCreditErrorEl = getOrCreateErrorEl(
-    "retakeCreditError",
-    "retakeCredit",
-  );
-  const creditTotalErrorEl = getOrCreateErrorEl(
-    "creditTotalError",
-    "retakeCredit",
-  );
-  const newCreditStr = newCreditInput.value.trim();
-  const retakeCreditStr = retakeCreditInput.value.trim();
-  const newCredit = newCreditStr === "" ? 0 : parseFloat(newCreditStr);
-  const retakeCredit = retakeCreditStr === "" ? 0 : parseFloat(retakeCreditStr);
-  let isValid = true;
-  perCreditFeeErrorEl.style.display = "none";
-  trimesterFeeErrorEl.style.display = "none";
-  newCreditErrorEl.style.display = "none";
-  retakeCreditErrorEl.style.display = "none";
-  creditTotalErrorEl.style.display = "none";
-  if (isNaN(perCreditFee)) {
-    perCreditFeeErrorEl.textContent = "Please enter per credit fee";
-    perCreditFeeErrorEl.style.display = "block";
-    isValid = false;
-  }
-  if (isNaN(trimesterFee)) {
-    trimesterFeeErrorEl.textContent = "Please enter trimester fee";
-    trimesterFeeErrorEl.style.display = "block";
-    isValid = false;
-  }
-  if (isNaN(newCredit)) {
-    newCreditErrorEl.textContent = "Enter a valid number";
-    newCreditErrorEl.style.display = "block";
-    isValid = false;
-  } else if (newCredit < 0) {
-    newCreditInput.value = 0;
-    newCreditErrorEl.textContent = "New credit cannot be negative";
-    newCreditErrorEl.style.display = "block";
-    isValid = false;
-  }
-  if (isNaN(retakeCredit)) {
-    retakeCreditErrorEl.textContent = "Enter a valid number";
-    retakeCreditErrorEl.style.display = "block";
-    isValid = false;
-  } else if (retakeCredit < 0) {
-    retakeCreditInput.value = 0;
-    retakeCreditErrorEl.textContent = "Retake credit cannot be negative";
-    retakeCreditErrorEl.style.display = "block";
-    isValid = false;
-  }
-  if (isValid && newCredit === 0 && retakeCredit === 0) {
-    creditTotalErrorEl.textContent = "Both credits cannot be 0";
-    creditTotalErrorEl.style.display = "block";
+  const waiverInFirstInstallment = document.getElementById("waiverInFirstInstallment").checked;
+  
+  const siblingSpouseWaiver = parseFloat(document.getElementById("siblingSpouseWaiver").value) || 0;
+  const ethnicTribalWaiver = parseFloat(document.getElementById("ethnicTribalWaiver").value) || 0;
+  const disabilityWaiver = parseFloat(document.getElementById("disabilityWaiver").value) || 0;
+
+  const newCredit = parseFloat(newCreditInput.value) || 0;
+  const retakeCreditFirst = parseFloat(retakeCreditFirstInput.value) || 0;
+  const retakeCreditRegular = parseFloat(retakeCreditRegularInput.value) || 0;
+
+  if (newCredit === 0 && retakeCreditFirst === 0 && retakeCreditRegular === 0) {
+    const err = getOrCreateErrorEl("newCreditError", "newCredit");
+    err.textContent = "Please enter credits";
+    err.style.display = "block";
     return;
   }
-  if (!isValid) return;
-  const totalCredit = newCredit + retakeCredit;
-  const totalCreditFee = totalCredit * perCreditFee;
-  const regularDiscount = Math.max(waiver || 0, scholarship || 0);
-  const regularDiscountAmount = (totalCreditFee * regularDiscount) / 100;
-  const totalSpecialWaivers =
-    (siblingSpouseWaiver || 0) +
-    (ethnicTribalWaiver || 0) +
-    (disabilityWaiver || 0);
-  const specialWaiverAmount = (totalCreditFee * totalSpecialWaivers) / 100;
-  const totalDiscountAmount = regularDiscountAmount + specialWaiverAmount;
+
+  const feeNewTotal = newCredit * perCreditFee;
+  const feeRetake1stTotal = retakeCreditFirst * perCreditFee;
+  const feeRetakeRegularTotal = retakeCreditRegular * perCreditFee;
   const lateRegistrationFee = lateRegistration ? 500 : 0;
-  const minimumPayable = trimesterFee + lateRegistrationFee;
-  const creditFeeAfterDiscount = Math.max(
-    0,
-    totalCreditFee - totalDiscountAmount,
-  );
-  const finalAmount = Math.max(
-    minimumPayable,
-    creditFeeAfterDiscount + trimesterFee + lateRegistrationFee,
-  );
+  const adminFees = trimesterFee + lateRegistrationFee;
+
+  const totalGrossFee = feeNewTotal + feeRetake1stTotal + feeRetakeRegularTotal + adminFees;
+
+  let regularDiscountName = "Scholarship";
+  let regularDiscountPercent = scholarshipPercent;
+  if (waiverPercent > scholarshipPercent) {
+    regularDiscountName = "Waiver";
+    regularDiscountPercent = waiverPercent;
+  }
+
+  const discountNewRegular = (feeNewTotal * regularDiscountPercent) / 100;
+  const discountSibling = (feeNewTotal * siblingSpouseWaiver) / 100;
+  const discountEthnic = (feeNewTotal * ethnicTribalWaiver) / 100;
+  const discountDisability = (feeNewTotal * disabilityWaiver) / 100;
+  const discountRetake1st = (feeRetake1stTotal * 50) / 100;
+  
+  const totalNewDiscount = Math.min(feeNewTotal, (discountNewRegular + discountSibling + discountEthnic + discountDisability));
+  const finalAmount = (feeNewTotal - totalNewDiscount) + (feeRetake1stTotal - discountRetake1st) + feeRetakeRegularTotal + adminFees;
+
   let firstInstallment, secondInstallment, thirdInstallment;
-  let firstInstallmentDesc, secondInstallmentDesc, thirdInstallmentDesc;
+  let firstCalc, secondCalc, thirdCalc; 
   let installmentMethod = "";
-  const isOnlyTrimesterFee = finalAmount === minimumPayable;
-  if (isOnlyTrimesterFee) {
+  let alertBoxHtml = "";
+  
+  const installmentBase = feeNewTotal + (feeRetake1stTotal - discountRetake1st) + feeRetakeRegularTotal + adminFees;
+  const isOnlyAdminFee = finalAmount <= adminFees;
+  const hasDiscount = finalAmount < totalGrossFee;
+
+  if (isOnlyAdminFee) {
+    const feeText = lateRegistration ? "trimester fee & late fee" : "trimester fee";
+    installmentMethod = `100% discount: Only ${feeText} payable`;
     firstInstallment = finalAmount;
     secondInstallment = 0;
     thirdInstallment = 0;
-    installmentMethod = "100% discount: Only trimester fee payable";
-    firstInstallmentDesc = "Full trimester fee";
-    secondInstallmentDesc = "No payment required";
-    thirdInstallmentDesc = "No payment required";
+    firstCalc = `Full ${feeText}`;
+    secondCalc = "No payment required";
+    thirdCalc = "No payment required";
+
+    alertBoxHtml = `
+      <div class="note-g">
+        <i class="fas fa-info-circle textB"></i> <strong>Note:</strong> Since you only need to pay the ${feeText}, you can pay the full amount in the 1st installment.
+      </div>`;
   } else {
-    if (totalDiscountAmount === 0) {
-      firstInstallment = Math.max(0, finalAmount * 0.4);
-      secondInstallment = Math.max(0, finalAmount * 0.3);
-      thirdInstallment = Math.max(0, finalAmount * 0.3);
-      installmentMethod = "Standard 40-30-30 split (no discount applied)";
-      firstInstallmentDesc = "40% of total";
-      secondInstallmentDesc = "30% of total";
-      thirdInstallmentDesc = "30% of total";
-    } else if (waiverInFirstInstallment) {
-      firstInstallment = Math.max(0, finalAmount * 0.4);
-      secondInstallment = Math.max(0, finalAmount * 0.3);
-      thirdInstallment = Math.max(0, finalAmount * 0.3);
-      installmentMethod =
-        "40-30-30 split of discounted total (discount applied to all installments)";
-      firstInstallmentDesc = "40% of discounted total";
-      secondInstallmentDesc = "30% of discounted total";
-      thirdInstallmentDesc = "30% of discounted total";
+    let targetFirst;
+    if (waiverInFirstInstallment) {
+      installmentMethod = "40-30-30 split of Net Payable (Waiver adjusted in 1st)";
+      targetFirst = Math.round(finalAmount * 0.40);
+      firstCalc = "40% of total";
+      secondCalc = "30% of total";
+      thirdCalc = "30% of total";
+    } else if (hasDiscount) {
+      installmentMethod = "40% of full fee for 1st installment, remaining discounted amount split equally";
+      targetFirst = Math.max(adminFees, Math.round(installmentBase * 0.40));
+      firstCalc = "40% of full fee (before discount)";
+      secondCalc = "50% of remaining after discount";
+      thirdCalc = "50% of remaining after discount";
     } else {
-      const fullFeeBeforeDiscount =
-        totalCreditFee + trimesterFee + lateRegistrationFee;
-      const firstGross = fullFeeBeforeDiscount * 0.4;
-      if (finalAmount >= firstGross) {
-        firstInstallment = Math.max(0, firstGross);
-        const remainingAfterDiscount = Math.max(
-          0,
-          finalAmount - firstInstallment,
-        );
-        secondInstallment = Math.max(0, remainingAfterDiscount / 2);
-        thirdInstallment = Math.max(0, remainingAfterDiscount / 2);
-        installmentMethod =
-          "40% of full fee for 1st installment, remaining discounted amount split equally";
-        firstInstallmentDesc = "40% of full fee (before discount)";
-        secondInstallmentDesc = "50% of remaining after discount";
-        thirdInstallmentDesc = "50% of remaining after discount";
-      } else {
-        const minFirst = trimesterFee;
-        const desiredFirst = finalAmount * 0.4;
-        firstInstallment = Math.min(
-          finalAmount,
-          Math.max(minFirst, desiredFirst),
-        );
-        const remaining = Math.max(0, finalAmount - firstInstallment);
-        secondInstallment = remaining / 2;
-        thirdInstallment = remaining - secondInstallment;
-        installmentMethod =
-          "First installment covers the Trimester Fee. The rest is split equally";
-        firstInstallmentDesc = "max (40% of net, Trimester fee)";
-        secondInstallmentDesc =
-          remaining === 0 ? "No payment required" : "50% of remaining";
-        thirdInstallmentDesc =
-          remaining === 0 ? "No payment required" : "50% of remaining";
-      }
+      installmentMethod = "Standard 40-30-30 split";
+      targetFirst = Math.round(finalAmount * 0.40);
+      firstCalc = "40% of total";
+      secondCalc = "30% of total";
+      thirdCalc = "30% of total";
     }
+    
+    firstInstallment = Math.min(finalAmount, targetFirst);
+    const remaining = finalAmount - firstInstallment;
+    secondInstallment = Math.round(remaining / 2);
+    thirdInstallment = remaining - secondInstallment;
+
+    alertBoxHtml = `
+      <div class="note-g">
+        <i class="fas fa-info-circle textB"></i> <strong>Note:</strong> 1st installment is 40% of Base Fee (Tuition + Trimester). New-course waivers apply to the 2nd & 3rd installments.
+      </div>`;
   }
+
   function formatCurrency(amount) {
-    const formattedNumber = new Intl.NumberFormat("en-BD", {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(amount);
-    return `${formattedNumber}৳`;
+    return new Intl.NumberFormat("en-BD", { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(amount) + "৳";
   }
+
+  let discountRowsHtml = "";
+  if (regularDiscountPercent > 0) {
+    discountRowsHtml += `<tr><td class="textG">${regularDiscountName}</td><td class="text-right textG">${regularDiscountPercent}% on New Courses</td><td class="text-right textG">-${formatCurrency(discountNewRegular)}</td></tr>`;
+  }
+  if (retakeCreditFirst > 0) {
+    discountRowsHtml += `<tr><td class="textG">Retake Waiver</td><td class="text-right textG">50% on 1st Retake Courses</td><td class="text-right textG">-${formatCurrency(discountRetake1st)}</td></tr>`;
+  }
+  if (siblingSpouseWaiver > 0) {
+    discountRowsHtml += `<tr><td class="textG">Sibling/Spouse Waiver</td><td class="text-right textG">${siblingSpouseWaiver}% on New Courses</td><td class="text-right textG">-${formatCurrency(discountSibling)}</td></tr>`;
+  }
+  if (ethnicTribalWaiver > 0) {
+    discountRowsHtml += `<tr><td class="textG">Ethnic/Tribal Waiver</td><td class="text-right textG">${ethnicTribalWaiver}% on New Courses</td><td class="text-right textG">-${formatCurrency(discountEthnic)}</td></tr>`;
+  }
+  if (disabilityWaiver > 0) {
+    discountRowsHtml += `<tr><td class="textG">Disability Waiver</td><td class="text-right textG">${disabilityWaiver}% on New Courses</td><td class="text-right textG">-${formatCurrency(discountDisability)}</td></tr>`;
+  }
+
   const resultDiv = document.getElementById("tuitionResult");
   if (!resultDiv) return;
+
   resultDiv.innerHTML = `
 <div class="card">
-  <div class="card-header">
-    <h3 class="card-title flex itemsC gap1">
-      <i class="fas fa-book-open textP"></i>
-      Taken Credits
-    </h3>
-  </div>
+  <div class="card-header"><h3 class="card-title flex itemsC gap1"><i class="fas fa-book-open textP"></i> Credits Breakdown</h3></div>
   <div class="card-content">
-    <div class="margin5">
-      <div>
-        <div class="flex justifyC itemsC">
-          <span>New Credits:</span>
-          <span>${newCredit}</span>
-        </div>
-        <div class="flex justifyC itemsC">
-          <span>Retake Credits:</span>
-          <span>${retakeCredit}</span>
-        </div>
-        <div class="separator"></div>
-        <div class="flex justifyC itemsC">
-          <span>Total Credits:</span>
-          <span class="badge badge-outline">${newCredit + retakeCredit}</span>
-        </div>
-      </div>
+    <div class="space-y-2">
+      <div class="flex justifyC itemsC"><span>New Course Credits:</span><span>${newCredit}</span></div>
+      ${retakeCreditFirst > 0 ? `<div class="flex justifyC itemsC"><span>Retake Credits (1st Time):</span><span>${retakeCreditFirst}</span></div>` : ''}
+      ${retakeCreditRegular > 0 ? `<div class="flex justifyC itemsC"><span>Retake Credits (2nd+ Time):</span><span>${retakeCreditRegular}</span></div>` : ''}
+      <div class="separator"></div>
+      <div class="flex justifyC itemsC font-bold"><span>Total Credits Taken:</span><span class="badge badge-outline">${newCredit + retakeCreditFirst + retakeCreditRegular}</span></div>
     </div>
   </div>
 </div>
+
 <div class="card">
-  <div class="card-header">
-    <h3 class="card-title flex itemsC gap1">
-      <i class="fas fa-calculator textB"></i>
-      Fee Calculation
-    </h3>
-  </div>
+  <div class="card-header"><h3 class="card-title flex itemsC gap1"><i class="fas fa-list-check textB"></i> Detailed Fee Calculation</h3></div>
   <div class="card-content">
-    <div class="margin5">
-      <div>
-        <table class="custom-table">
-          <tbody>
-            <tr>
-              <td>Tuition Fee</td>
-              <td>${newCredit + retakeCredit} credits × ${formatCurrency(perCreditFee)}</td>
-              <td class="text-right">${formatCurrency(totalCreditFee)}</td>
-            </tr>
-            <tr>
-              <td>Trimester Fee</td>
-              <td>Fixed fee (not affected by discounts)</td>
-              <td class="text-right">${formatCurrency(trimesterFee)}</td>
-            </tr>
-            ${
-              Math.max(waiver || 0, scholarship || 0) > 0
-                ? `
-            <tr>
-              <td>${(waiver || 0) >= (scholarship || 0) ? "Waiver" : "Scholarship"}</td>
-              <td>
-                ${Math.max(waiver || 0, scholarship || 0)}% of Tuition fee
-                ${
-                  (waiver || 0) > 0 && (scholarship || 0) > 0
-                    ? '<span class="text-xs text-muted-foreground ml-2">(Higher discount applied)</span>'
-                    : ""
-                }
-              </td>
-              <td class="text-right textA">-${formatCurrency(regularDiscountAmount)}</td>
-            </tr>`
-                : ""
-            }
-            ${
-              (siblingSpouseWaiver || 0) > 0
-                ? `
-            <tr>
-              <td>Sibling/Spouse Waiver</td>
-              <td>${siblingSpouseWaiver}% of Tuition fee (Special waiver)</td>
-              <td class="text-right textA">-${formatCurrency((totalCreditFee * siblingSpouseWaiver) / 100)}</td>
-            </tr>`
-                : ""
-            }
-            ${
-              (ethnicTribalWaiver || 0) > 0
-                ? `
-            <tr>
-              <td>Ethnic Groups/Tribal Waiver</td>
-              <td>${ethnicTribalWaiver}% of Tuition fee (Special waiver)</td>
-              <td class="text-right textA">-${formatCurrency((totalCreditFee * ethnicTribalWaiver) / 100)}</td>
-            </tr>`
-                : ""
-            }
-            ${
-              (disabilityWaiver || 0) > 0
-                ? `
-            <tr>
-              <td>Disability Waiver</td>
-              <td>${disabilityWaiver}% of Tuition fee (Special waiver)</td>
-              <td class="text-right textA">-${formatCurrency((totalCreditFee * disabilityWaiver) / 100)}</td>
-            </tr>`
-                : ""
-            }
-            ${
-              lateRegistration
-                ? `
-            <tr>
-              <td>Late Registration Fee</td>
-              <td>Additional charge</td>
-              <td class="text-right">${formatCurrency(lateRegistrationFee)}</td>
-            </tr>`
-                : ""
-            }
-            <tr class="border-t-2">
-              <td class="font-bold text-lg">Total</td>
-              <td>${isOnlyTrimesterFee ? '<span class="text-xs text-blue-600">(Minimum: Trimester fee only)</span>' : ""}</td>
-              <td class="text-right font-bold text-lg">${formatCurrency(finalAmount)}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <div class="space-y-2">
+      <table class="small-table">
+        <thead>
+          <tr class="text-muted-foreground text-xs"><th class="text-left">Description</th><th class="text-right">Calculation</th><th class="text-right">Amount</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>New Course Tuition Fee</td><td class="text-right">${newCredit} credits × ${perCreditFee}</td><td class="text-right">${formatCurrency(feeNewTotal)}</td></tr>
+          ${retakeCreditFirst > 0 ? `<tr><td>Retake Courses Tuition Fee (1st Time)</td><td class="text-right">${retakeCreditFirst} credits × ${perCreditFee}</td><td class="text-right">${formatCurrency(feeRetake1stTotal)}</td></tr>` : ''}
+          ${retakeCreditRegular > 0 ? `<tr><td>Retake Courses Tuition Fee (2nd+ Time)</td><td class="text-right">${retakeCreditRegular} credits × ${perCreditFee}</td><td class="text-right">${formatCurrency(feeRetakeRegularTotal)}</td></tr>` : ''}
+          <tr><td>Trimester Fee</td><td class="text-right">Fixed</td><td class="text-right">${formatCurrency(trimesterFee)}</td></tr>
+          ${lateRegistration ? `<tr><td>Late Registration Fee</td><td class="text-right">Fixed Fine</td><td class="text-right">${formatCurrency(lateRegistrationFee)}</td></tr>` : ''}
+          
+          ${hasDiscount ? `
+          <tr style="color: var(--theme-color)!important; font-weight: bold;">
+            <td>Total Gross Fee</td>
+            <td class="text-right text-xs font-normal">All tuition & fees</td>
+            <td class="text-right">${formatCurrency(totalGrossFee)}</td>
+          </tr>` : ''}
+
+          ${discountRowsHtml ? discountRowsHtml : ''}
+          
+          <tr class="border-t-2"><td class="font-bold" style="color: var(--theme-color);">Total Payable (Net)</td><td></td><td class="text-right font-bold text-lg" style="color: var(--theme-color);">${formatCurrency(finalAmount)}</td></tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>
-<div class="grid gridc1 md:gridc2">
+
+<div class="grid gridc1 md:gridc2 gap-4">
   <div class="card">
-    <div class="card-header bg-muted/30 padding2">
-      <h3 class="card-title flex itemsC gap1 text-base">
-        <i class="fas fa-coins textA"></i>
-        Total Payable Fee
-      </h3>
-    </div>
+    <div class="card-header bg-muted/30 padding2"><h3 class="card-title flex itemsC gap1 text-base"><i class="fas fa-coins textA"></i> Final Payable Amount</h3></div>
     <div class="card-content padding3">
-      <div>
-        <div class="grad-txt">${formatCurrency(finalAmount)}</div>
-      </div>
+      <div class="grad-txt">${formatCurrency(finalAmount)}</div>
     </div>
   </div>
+  
   <div class="card">
     <div class="card-header">
-      <h3 class="card-title flex itemsC gap1">
-        <i class="fas fa-money-bill-wave textG"></i>
-        Installment Calculation
-      </h3>
+      <h3 class="card-title flex itemsC gap1"><i class="fas fa-money-bill-wave textG"></i> Installment Breakdown</h3>
       <div class="card-description">${installmentMethod}</div>
     </div>
     <div class="card-content">
-      <div class="margin5">
-        <div>
-          <div class="overflow-hidden border rounded-lg">
-            ${
-              isOnlyTrimesterFee
-                ? `
-            <p class="text-xs note-g">
-              Since you only need to pay the trimester fee, you can pay the full amount in the 1st installment. No additional installments required.
-            </p>`
-                : ""
-            }
-            <table class="custom-table">
-              <thead class="bg-muted">
-                <tr>
-                  <th>Installment</th>
-                  <th>Calculation</th>
-                  <th class="text-right">Amount</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr ${isOnlyTrimesterFee ? 'class="bg-blue-50"' : ""}>
-                  <td>1st Installment</td>
-                  <td>${firstInstallmentDesc}</td>
-                  <td class="text-right font-semibold">${formatCurrency(firstInstallment)}</td>
-                </tr>
-                <tr ${secondInstallment === 0 ? 'class="text-muted-foreground"' : ""}>
-                  <td>2nd Installment</td>
-                  <td>${secondInstallmentDesc}</td>
-                  <td class="text-right ${secondInstallment === 0 ? "text-muted-foreground" : ""}">${formatCurrency(secondInstallment)}</td>
-                </tr>
-                <tr ${thirdInstallment === 0 ? 'class="text-muted-foreground"' : ""}>
-                  <td>3rd Installment</td>
-                  <td>${thirdInstallmentDesc}</td>
-                  <td class="text-right ${thirdInstallment === 0 ? "text-muted-foreground" : ""}">${formatCurrency(thirdInstallment)}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+      <div class="space-y-2">
+        <div class="overflow-hidden border rounded-lg">
+          ${alertBoxHtml}
+          <table class="small-table">
+            <thead><tr class="bg-muted"><th>Installment</th><th class="text-left">Calculation</th><th class="text-right">Amount</th></tr></thead>
+            <tbody>
+              <tr><td>1st Installment</td><td>${firstCalc}</td><td class="text-right font-semibold">${formatCurrency(firstInstallment)}</td></tr>
+              <tr class="${secondInstallment === 0 ? 'text-muted-foreground' : ''}"><td>2nd Installment</td><td>${secondCalc}</td><td class="text-right">${formatCurrency(secondInstallment)}</td></tr>
+              <tr class="${thirdInstallment === 0 ? 'text-muted-foreground' : ''}"><td>3rd Installment</td><td>${thirdCalc}</td><td class="text-right">${formatCurrency(thirdInstallment)}</td></tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
   </div>
-</div>
-  `;
+</div>`;
   resultDiv.style.display = "block";
-  try {
-    document
-      .getElementById("backToFeeCalculatorBtn")
-      ?.addEventListener("click", hideFeeResults);
-    document
-      .getElementById("backToFeeCalculatorBtn2")
-      ?.addEventListener("click", hideFeeResults);
-    document
-      .getElementById("resetFeeBtn2")
-      ?.addEventListener("click", resetTuitionFee);
-  } catch (e) {}
+  document.getElementById("rightPlaceholder").style.display = "none";
 }
 function hideFeeResults() {
   const el = document.getElementById("tuitionResult");
   if (el) el.style.display = "none";
 }
 function resetTuitionFee() {
-  const ids = [
+  const inputIds = [
     ["newCredit", ""],
-    ["retakeCredit", ""],
-    ["perCreditFee", "6500"],
-    ["trimesterFee", "6500"],
-    ["waiver", "0"],
-    ["scholarship", "0"],
-    ["siblingSpouseWaiver", "0"],
-    ["ethnicTribalWaiver", "0"],
-    ["disabilityWaiver", "0"],
+    ["retakeCreditFirst", ""],
+    ["retakeCreditRegular", ""],
+    ["perCreditFee", "6500"], 
+    ["trimesterFee", "6500"] 
   ];
-  ids.forEach(([id, val]) => {
+
+  inputIds.forEach(([id, val]) => {
     const el = document.getElementById(id);
     if (el) el.value = val;
   });
+
   const late = document.getElementById("lateRegistration");
   if (late) late.checked = false;
+  
   const waiveFirst = document.getElementById("waiverInFirstInstallment");
   if (waiveFirst) waiveFirst.checked = false;
+
+  const dropdownIds = [
+    "waiver",
+    "scholarship",
+    "siblingSpouseWaiver",
+    "ethnicTribalWaiver",
+    "disabilityWaiver"
+  ];
+
+  dropdownIds.forEach(id => {
+    const select = document.getElementById(id);
+    if (select) {
+      select.value = "0"; 
+      const triggerLabel = document.querySelector(`#${id}-trigger .cs-label`);
+      const selectedOption = select.options[select.selectedIndex];
+      
+      if (triggerLabel && selectedOption) {
+        triggerLabel.textContent = selectedOption.textContent;
+      }
+    }
+  });
+
   const res = document.getElementById("tuitionResult");
   if (res) res.style.display = "none";
-  hideError("perCreditFeeError");
-  hideError("trimesterFeeError");
-  hideError("newCreditError");
-  hideError("retakeCreditError");
-  hideError("creditTotalError");
+
+  const ph = document.getElementById("rightPlaceholder");
+  if (ph) {
+      ph.removeAttribute("hidden");
+      ph.style.display = "block";
+  }
+
+  const errorIds = [
+    "perCreditFeeError", 
+    "trimesterFeeError", 
+    "newCreditError", 
+    "retakeCreditFirstError", 
+    "retakeCreditRegularError"
+  ];
+  
+  errorIds.forEach(id => {
+      const el = document.getElementById(id);
+      if(el) el.style.display = "none";
+  });
 }
 function openTab(evt, tabName) {
   const tabcontent = document.getElementsByClassName("tabs-content");
@@ -1279,4 +1144,16 @@ document.addEventListener("DOMContentLoaded", function () {
   document
     .getElementById("retakeCredit")
     ?.addEventListener("input", validateInstallmentCredits);
+
+    
+document.getElementById("retakeCreditFirst")?.addEventListener("input", function() {
+    const el = this;
+    if(el.value < 0) el.value = 0;
+});
+document.getElementById("retakeCreditRegular")?.addEventListener("input", function() {
+    const el = this;
+    if(el.value < 0) el.value = 0;
+});
+
+
 });
