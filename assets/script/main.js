@@ -792,6 +792,7 @@ function calculateTuitionFee() {
   const discountSibling = (feeNewTotal * siblingSpouseWaiver) / 100;
   const discountEthnic = (feeNewTotal * ethnicTribalWaiver) / 100;
   const discountDisability = (feeNewTotal * disabilityWaiver) / 100;
+  
   const discountRetake1st = (feeRetake1stTotal * 50) / 100;
   
   const totalNewDiscount = Math.min(feeNewTotal, (discountNewRegular + discountSibling + discountEthnic + discountDisability));
@@ -802,55 +803,57 @@ function calculateTuitionFee() {
   let installmentMethod = "";
   let alertBoxHtml = "";
   
-  const installmentBase = feeNewTotal + (feeRetake1stTotal - discountRetake1st) + feeRetakeRegularTotal + adminFees;
   const isOnlyAdminFee = finalAmount <= adminFees;
-  const hasDiscount = finalAmount < totalGrossFee;
 
   if (isOnlyAdminFee) {
-    const feeText = lateRegistration ? "trimester fee & late fee" : "trimester fee";
-    installmentMethod = `100% discount: Only ${feeText} payable`;
-    firstInstallment = finalAmount;
-    secondInstallment = 0;
-    thirdInstallment = 0;
-    firstCalc = `Full ${feeText}`;
-    secondCalc = "No payment required";
-    thirdCalc = "No payment required";
+      const feeText = lateRegistration ? "Trimester fee & Late fee" : "Trimester fee";
+      
+      installmentMethod = `100% discount: Only ${feeText} payable`;
+      firstInstallment = finalAmount;
+      secondInstallment = 0;
+      thirdInstallment = 0;
+      
+      firstCalc = `Full ${feeText}`;
+      secondCalc = "No payment required";
+      thirdCalc = "No payment required";
 
-    alertBoxHtml = `
-      <div class="note-g">
-        <i class="fas fa-info-circle textB"></i> <strong>Note:</strong> Since you only need to pay the ${feeText}, you can pay the full amount in the 1st installment.
-      </div>`;
+      alertBoxHtml = `<div class="note-g"><i class="fas fa-check-circle"></i> <strong>Note:</strong> Since your tuition is fully waived, you only need to pay the ${feeText} in the 1st installment.</div>`;
   } else {
-    let targetFirst;
-    if (waiverInFirstInstallment) {
-      installmentMethod = "40-30-30 split of Net Payable (Waiver adjusted in 1st)";
-      targetFirst = Math.round(finalAmount * 0.40);
-      firstCalc = "40% of total";
-      secondCalc = "30% of total";
-      thirdCalc = "30% of total";
-    } else if (hasDiscount) {
-      installmentMethod = "40% of full fee for 1st installment, remaining discounted amount split equally";
-      targetFirst = Math.max(adminFees, Math.round(installmentBase * 0.40));
-      firstCalc = "40% of full fee (before discount)";
-      secondCalc = "50% of remaining after discount";
-      thirdCalc = "50% of remaining after discount";
-    } else {
-      installmentMethod = "Standard 40-30-30 split";
-      targetFirst = Math.round(finalAmount * 0.40);
-      firstCalc = "40% of total";
-      secondCalc = "30% of total";
-      thirdCalc = "30% of total";
-    }
-    
-    firstInstallment = Math.min(finalAmount, targetFirst);
-    const remaining = finalAmount - firstInstallment;
-    secondInstallment = Math.round(remaining / 2);
-    thirdInstallment = remaining - secondInstallment;
+      let targetFirstInstallment;
 
-    alertBoxHtml = `
-      <div class="note-g">
-        <i class="fas fa-info-circle textB"></i> <strong>Note:</strong> 1st installment is 40% of Base Fee (Tuition + Trimester). New-course waivers apply to the 2nd & 3rd installments.
-      </div>`;
+      if (waiverInFirstInstallment) {
+          targetFirstInstallment = Math.round(finalAmount * 0.40);
+          installmentMethod = "Custom: 40% of Net Payable";
+          firstCalc = "40% of Net Payable";
+          alertBoxHtml = `<div class="note-g"><i class="fas fa-check-circle"></i> <strong>Note:</strong> You have chosen to apply the waiver in the 1st installment.</div>`;
+      } else {
+          targetFirstInstallment = Math.round(totalGrossFee * 0.40);
+          installmentMethod = "Standard Rule: 40% of Gross Fee";
+          firstCalc = "40% of Gross Fee";
+          alertBoxHtml = `<div class="note-g"><i class="fas fa-info-circle"></i> <strong>Note:</strong> 40% of the Gross Fee (Total Fee before scholarship) in the 1st installment.</div>`;
+      }
+
+      if (targetFirstInstallment >= finalAmount) {
+          firstInstallment = finalAmount;
+          secondInstallment = 0;
+          thirdInstallment = 0;
+          
+          if (!waiverInFirstInstallment) {
+              firstCalc = "Full Net Payable";
+              installmentMethod = "100% Payment in 1st Installment";
+          }
+          secondCalc = "-";
+          thirdCalc = "-";
+      } else {
+          firstInstallment = targetFirstInstallment;
+          
+          const remaining = finalAmount - firstInstallment;
+          secondInstallment = Math.round(remaining / 2);
+          thirdInstallment = remaining - secondInstallment;
+          
+          secondCalc = "50% of remaining balance";
+          thirdCalc = "50% of remaining balance";
+      }
   }
 
   function formatCurrency(amount) {
@@ -876,6 +879,8 @@ function calculateTuitionFee() {
 
   const resultDiv = document.getElementById("tuitionResult");
   if (!resultDiv) return;
+
+  const hasDiscount = finalAmount < totalGrossFee;
 
   resultDiv.innerHTML = `
 <div class="card">
@@ -1102,32 +1107,36 @@ document.addEventListener("DOMContentLoaded", function () {
     ?.addEventListener("click", function (evt) {
       openTab(evt, "retake-courses");
     });
-  const cgpaInput = document.getElementById("currentCGPA");
-  if (cgpaInput) {
-    cgpaInput.addEventListener("input", () => {
-      const value = cgpaInput.value;
-      const cgpaError =
-        document.getElementById("currentCGPAError") ||
-        getOrCreateErrorEl("currentCGPAError", "currentCGPA");
-      if (value === "") {
-        cgpaError.style.display = "block";
-        cgpaError.textContent = "Please enter your current CGPA";
-        return;
-      }
-      const num = parseFloat(value);
-      if (num > 4) {
-        cgpaInput.value = 4;
-        cgpaError.style.display = "block";
-        cgpaError.textContent = "CGPA cannot be more than 4.00";
-      } else if (num < 0) {
-        cgpaInput.value = 0;
-        cgpaError.style.display = "block";
-        cgpaError.textContent = "CGPA cannot be less than 0.00";
-      } else {
-        cgpaError.style.display = "none";
-      }
+
+    const allCgpaInputs = document.querySelectorAll(".cgpa-input");
+    allCgpaInputs.forEach((input) => {
+      input.addEventListener("input", function () {
+        const value = input.value;
+        const errorId = input.id + "Error";
+        const cgpaError =
+          document.getElementById(errorId) ||
+          getOrCreateErrorEl(errorId, input.id);
+
+        if (value === "") {
+          cgpaError.style.display = "block";
+          cgpaError.textContent = "Please enter your CGPA";
+          return;
+        }
+
+        const num = parseFloat(value);
+        if (num > 4) {
+          input.value = 4;
+          cgpaError.style.display = "block";
+          cgpaError.textContent = "CGPA cannot be more than 4.00";
+        } else if (num < 0) {
+          input.value = 0;
+          cgpaError.style.display = "block";
+          cgpaError.textContent = "CGPA cannot be less than 0.00";
+        } else {
+          cgpaError.style.display = "none";
+        }
+      });
     });
-  }
   const completedCreditInput = document.getElementById("completedCredit");
   if (completedCreditInput) {
     completedCreditInput.addEventListener("input", () => {
