@@ -897,7 +897,7 @@ function calculateTuitionFee() {
 </div>
 
 <div class="card">
-  <div class="card-header"><h3 class="card-title flex itemsC gap1"><i class="fas fa-list-check textB"></i> Detailed Fee Calculation</h3></div>
+  <div class="card-header"><h3 class="card-title flex itemsC gap1"><i class="fas fa-list-check textB"></i> Fee Calculation</h3></div>
   <div class="card-content">
     <div class="space-y-2">
       <table class="small-table">
