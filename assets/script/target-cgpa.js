@@ -18,24 +18,58 @@
     { grade: "D", points: 1.0, min: 55, max: 57, description: "Pass" },
     { grade: "F", points: 0.0, min: 0, max: 54, description: "Fail" },
   ];
+
   let currentMode = "next-trimester";
+  let multiSemChart = null;
+  let graduationChart = null;
+  let whatIfChart = null;
+
+  function getCssVar(name) {
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  }
+
+  function hexToRgba(hex, alpha) {
+    if (!hex) return hex;
+    let h = hex.replace("#", "").trim();
+    if (h.length === 3) {
+      h = h.split("").map(function (ch) { return ch + ch; }).join("");
+    }
+    if (h.length !== 6) return hex;
+    var r = parseInt(h.slice(0, 2), 16);
+    var g = parseInt(h.slice(2, 4), 16);
+    var b = parseInt(h.slice(4, 6), 16);
+    return "rgba(" + r + ", " + g + ", " + b + ", " + alpha + ")";
+  }
+  
   document.querySelectorAll(".tabs-trigger").forEach((button) => {
     button.addEventListener("click", function () {
       const tabId = this.id.replace("-tab", "");
       switchTab(tabId);
     });
   });
-  function switchTab(tabId) {
-    document
-      .querySelectorAll(".tabs-trigger")
-      .forEach((btn) => btn.classList.remove("active"));
-    document.getElementById(tabId + "-tab").classList.add("active");
-    document
-      .querySelectorAll(".tabs-content")
-      .forEach((content) => content.classList.remove("active"));
-    document.getElementById(tabId).classList.add("active");
-    currentMode = tabId;
+function switchTab(tabId) {
+  document
+    .querySelectorAll(".tabs-trigger")
+    .forEach((btn) => btn.classList.remove("active"));
+  document.getElementById(tabId + "-tab").classList.add("active");
+
+  document
+    .querySelectorAll(".tabs-content")
+    .forEach((content) => content.classList.remove("active"));
+  document.getElementById(tabId).classList.add("active");
+
+  currentMode = tabId;
+
+  if (tabId === "multiple-trimesters" && multiSemChart) {
+    setTimeout(() => multiSemChart.resize(), 50);
   }
+  if (tabId === "graduation" && graduationChart) {
+    setTimeout(() => graduationChart.resize(), 50);
+  }
+  if (tabId === "whatif" && whatIfChart) {
+    setTimeout(() => whatIfChart.resize(), 50);
+  }
+}
   document
     .getElementById("calculateTargetBtn")
     .addEventListener("click", calculate);
@@ -104,6 +138,468 @@
     }
     container.innerHTML = html;
   }
+
+function renderMultiSemChart(currentCGPA, completedCredits, targetCGPA) {
+  const canvas = document.getElementById("multiSemChartCanvas");
+  if (!canvas) return;
+
+  const ctx = canvas.getContext("2d");
+
+  const numSemesters =
+    parseInt(document.getElementById("numSemesters").value) || 0;
+  const creditsPerSem =
+    parseFloat(document.getElementById("creditsPerSem").value) || 0;
+
+  if (numSemesters <= 0 || creditsPerSem <= 0) return;
+
+  const totalFutureCredits = numSemesters * creditsPerSem;
+  const currentPoints = currentCGPA * completedCredits;
+  const targetPoints =
+    targetCGPA * (completedCredits + totalFutureCredits);
+  const requiredPoints = targetPoints - currentPoints;
+  const requiredAvgGPA = requiredPoints / totalFutureCredits;
+
+  const labels = [];
+  const projectedRequired = [];
+  const projectedHigh = [];
+  const projectedMid = [];
+  const targetLine = [];
+
+  let accCredits = completedCredits;
+  let pointsReq = currentPoints;
+  let pointsHigh = currentPoints;
+  let pointsMid = currentPoints;
+
+  for (let i = 1; i <= numSemesters; i++) {
+    labels.push("T" + i);
+    accCredits += creditsPerSem;
+
+    if (requiredAvgGPA > 0 && requiredAvgGPA <= 4) {
+      pointsReq += requiredAvgGPA * creditsPerSem;
+      projectedRequired.push(
+        Number((pointsReq / accCredits).toFixed(3))
+      );
+    } else {
+      projectedRequired.push(null);
+    }
+
+    pointsHigh += 4.0 * creditsPerSem;
+    projectedHigh.push(
+      Number((pointsHigh / accCredits).toFixed(3))
+    );
+
+    pointsMid += 3.0 * creditsPerSem;
+    projectedMid.push(
+      Number((pointsMid / accCredits).toFixed(3))
+    );
+
+    targetLine.push(targetCGPA);
+  }
+
+  const allValues = [];
+  projectedRequired.forEach(function (v) { if (v !== null) allValues.push(v); });
+  allValues.push.apply(allValues, projectedHigh);
+  allValues.push.apply(allValues, projectedMid);
+  allValues.push.apply(allValues, targetLine);
+
+  if (!allValues.length) return;
+
+  const minVal = Math.min.apply(null, allValues);
+  const maxVal = Math.max.apply(null, allValues);
+  const padding = 0.05;
+
+  const yMin = Math.max(0, minVal - padding);
+  const yMax = Math.min(4, maxVal + padding);
+
+  if (multiSemChart) {
+    multiSemChart.destroy();
+  }
+
+  const successColor = getCssVar("--success") || "#10b981";
+  const infoColor = getCssVar("--info") || "#03fff5";
+  const mutedColor = getCssVar("--muted-foreground") || "#9ca3af";
+  const targetColor = getCssVar("--theme-color") || "#f97316";
+
+  const datasets = [];
+
+  if (requiredAvgGPA > 0 && requiredAvgGPA <= 4) {
+    datasets.push({
+      label: "Required Path",
+      data: projectedRequired,
+      borderColor: successColor,
+      backgroundColor: hexToRgba(successColor, 0.2),
+      tension: 0.4,
+      borderWidth: 2,
+      pointRadius: 3,
+      pointBackgroundColor: successColor,
+      spanGaps: true,
+    });
+  }
+
+  datasets.push(
+    {
+      label: "If you get 4.00 every term",
+      data: projectedHigh,
+      borderColor: infoColor,
+      backgroundColor: hexToRgba(infoColor, 0.15),
+      tension: 0.4,
+      borderWidth: 2,
+      pointRadius: 2,
+      pointBackgroundColor: infoColor,
+      spanGaps: false,
+    },
+    {
+      label: "If you get 3.00 every term",
+      data: projectedMid,
+      borderColor: mutedColor,
+      backgroundColor: hexToRgba(mutedColor, 0.15),
+      tension: 0.4,
+      borderWidth: 2,
+      pointRadius: 2,
+      pointBackgroundColor: mutedColor,
+      spanGaps: false,
+    },
+    {
+      label: "Target CGPA",
+      data: targetLine,
+      borderColor: targetColor,
+      borderDash: [5, 5],
+      tension: 0,
+      borderWidth: 1.5,
+      pointRadius: 0,
+    }
+  );
+
+  multiSemChart = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: labels,
+      datasets: datasets,
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          labels: {
+            font: { size: 10 },
+          },
+        },
+        tooltip: {
+          callbacks: {
+            label: function (ctx) {
+              return ctx.dataset.label + ": " + ctx.parsed.y.toFixed(3);
+            },
+          },
+        },
+      },
+      scales: {
+        y: {
+          min: yMin,
+          max: yMax,
+          ticks: {
+            stepSize: (yMax - yMin) <= 0.5 ? 0.05 : 0.1,
+          },
+          title: { display: true, text: "CGPA" },
+        },
+        x: {
+          title: { display: true, text: "Trimester" },
+        },
+      },
+    },
+  });
+}
+function renderGraduationChart(currentCGPA, completedCredits, targetCGPA) {
+  const canvas = document.getElementById("graduationChartCanvas");
+  if (!canvas) return;
+
+  const ctx = canvas.getContext("2d");
+
+  const totalDegreeCredits =
+    parseFloat(document.getElementById("totalDegreeCredits").value) || 0;
+  const avgCreditsPerSem =
+    parseFloat(document.getElementById("avgCreditsPerSem").value) || 0;
+
+  if (totalDegreeCredits <= 0 || avgCreditsPerSem <= 0) return;
+
+  const remainingCredits = totalDegreeCredits - completedCredits;
+  if (remainingCredits <= 0) return;
+
+  const remainingSemesters = Math.ceil(remainingCredits / avgCreditsPerSem);
+
+  const currentPoints = currentCGPA * completedCredits;
+  const targetPoints = targetCGPA * totalDegreeCredits;
+  const requiredPoints = targetPoints - currentPoints;
+  const requiredAvgGPA = requiredPoints / remainingCredits;
+
+  const labels = [];
+  const projRequired = [];
+  const projHigh = [];
+  const projMid = [];
+  const targetLine = [];
+
+  let accCreditsReq = completedCredits;
+  let accCreditsHigh = completedCredits;
+  let accCreditsMid = completedCredits;
+
+  let pointsReq = currentPoints;
+  let pointsHigh = currentPoints;
+  let pointsMid = currentPoints;
+
+  for (let i = 1; i <= remainingSemesters; i++) {
+    labels.push("T" + i);
+
+    const semCredits =
+      i === remainingSemesters
+        ? remainingCredits - avgCreditsPerSem * (remainingSemesters - 1)
+        : avgCreditsPerSem;
+
+    if (requiredAvgGPA > 0 && requiredAvgGPA <= 4) {
+      accCreditsReq += semCredits;
+      pointsReq += requiredAvgGPA * semCredits;
+      projRequired.push(
+        Number((pointsReq / accCreditsReq).toFixed(3))
+      );
+    } else {
+      projRequired.push(null);
+    }
+    accCreditsHigh += semCredits;
+    pointsHigh += 4.0 * semCredits;
+    projHigh.push(
+      Number((pointsHigh / accCreditsHigh).toFixed(3))
+    );
+
+    accCreditsMid += semCredits;
+    pointsMid += 3.0 * semCredits;
+    projMid.push(
+      Number((pointsMid / accCreditsMid).toFixed(3))
+    );
+
+    targetLine.push(targetCGPA);
+  }
+
+  const allValues = [];
+  projRequired.forEach(function (v) {
+    if (v !== null) allValues.push(v);
+  });
+  allValues.push.apply(allValues, projHigh);
+  allValues.push.apply(allValues, projMid);
+  allValues.push.apply(allValues, targetLine);
+  allValues.push(currentCGPA);
+
+  if (!allValues.length) return;
+
+  const minVal = Math.min.apply(null, allValues);
+  const maxVal = Math.max.apply(null, allValues);
+  const padding = 0.05;
+  const yMin = Math.max(0, minVal - padding);
+  const yMax = Math.min(4, maxVal + padding);
+
+  if (graduationChart) {
+    graduationChart.destroy();
+  }
+
+  const successColor = getCssVar("--success") || "#10b981";
+  const infoColor = getCssVar("--info") || "#03fff5";
+  const mutedColor = getCssVar("--muted-foreground") || "#9ca3af";
+  const targetColor = getCssVar("--theme-color") || "#f97316";
+
+  const datasets = [];
+
+  if (requiredAvgGPA > 0 && requiredAvgGPA <= 4) {
+    datasets.push({
+      label: "Required path to target",
+      data: projRequired,
+      borderColor: successColor,
+      backgroundColor: hexToRgba(successColor, 0.2),
+      tension: 0.4,
+      borderWidth: 2,
+      pointRadius: 3,
+      pointBackgroundColor: successColor,
+      spanGaps: true,
+    });
+  }
+
+  datasets.push(
+    {
+      label: "If you get 4.00 every term",
+      data: projHigh,
+      borderColor: infoColor,
+      backgroundColor: hexToRgba(infoColor, 0.15),
+      tension: 0.4,
+      borderWidth: 2,
+      pointRadius: 2,
+      pointBackgroundColor: infoColor,
+      spanGaps: false,
+    },
+    {
+      label: "If you get 3.00 every term",
+      data: projMid,
+      borderColor: mutedColor,
+      backgroundColor: hexToRgba(mutedColor, 0.15),
+      tension: 0.4,
+      borderWidth: 2,
+      pointRadius: 2,
+      pointBackgroundColor: mutedColor,
+      spanGaps: false,
+    },
+    {
+      label: "Target CGPA",
+      data: targetLine,
+      borderColor: targetColor,
+      borderDash: [5, 5],
+      borderWidth: 1.5,
+      pointRadius: 0,
+      tension: 0,
+    }
+  );
+
+  graduationChart = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: labels,
+      datasets: datasets,
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      resizeDelay: 100,
+      plugins: {
+        legend: {
+          labels: {
+            font: { size: 10 },
+          },
+        },
+        tooltip: {
+          callbacks: {
+            label: function (ctx) {
+              return ctx.dataset.label + ": " + ctx.parsed.y.toFixed(3);
+            },
+          },
+        },
+      },
+      scales: {
+        y: {
+          min: yMin,
+          max: yMax,
+          ticks: {
+            stepSize: (yMax - yMin) <= 0.5 ? 0.05 : 0.1,
+          },
+          title: { display: true, text: "CGPA" },
+        },
+        x: {
+          title: { display: true, text: "Trimester until graduation" },
+        },
+      },
+    },
+  });
+}
+function renderWhatIfChart(currentCGPA, completedCredits, targetCGPA) {
+  const canvas = document.getElementById("whatIfChartCanvas");
+  if (!canvas) return;
+
+  const ctx = canvas.getContext("2d");
+
+  const whatifCredits =
+    parseFloat(document.getElementById("whatifCredits").value) || 0;
+
+  if (whatifCredits <= 0) return;
+
+  const currentPoints = currentCGPA * completedCredits;
+  const newTotalCredits = completedCredits + whatifCredits;
+
+  const gpas = [0.0, 1.0, 1.5, 2.0, 2.5, 3.0, 3.33, 3.67, 4.0];
+
+  const labels = ["Now"].concat(gpas.map(function (g) { return g.toFixed(2); }));
+  const dataPoints = [];
+  const targetLine = [];
+
+  dataPoints.push(Number(currentCGPA.toFixed(3)));
+  targetLine.push(targetCGPA);
+
+  gpas.forEach(function (gpa) {
+    const newCGPA =
+      (currentPoints + gpa * whatifCredits) / newTotalCredits;
+    dataPoints.push(Number(newCGPA.toFixed(3)));
+    targetLine.push(targetCGPA);
+  });
+
+  const allValues = dataPoints.concat([targetCGPA]);
+  const minVal = Math.min.apply(null, allValues);
+  const maxVal = Math.max.apply(null, allValues);
+  const padding = 0.05;
+  const yMin = Math.max(0, minVal - padding);
+  const yMax = Math.min(4, maxVal + padding);
+
+  if (whatIfChart) whatIfChart.destroy();
+
+  const successColor = getCssVar("--success") || "#10b981";
+  const targetColor = getCssVar("--theme-color") || "#f97316";
+
+  whatIfChart = new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: "New CGPA vs GPA (" + whatifCredits + " credits)",
+          data: dataPoints,
+          borderColor: successColor,
+          backgroundColor: hexToRgba(successColor, 0.2),
+          tension: 0.4,
+          borderWidth: 2,
+          pointRadius: 3,
+          pointBackgroundColor: successColor,
+        },
+        {
+          label: "Target CGPA",
+          data: targetLine,
+          borderColor: targetColor,
+          borderDash: [5, 5],
+          borderWidth: 1.5,
+          pointRadius: 0,
+          tension: 0,
+        },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      resizeDelay: 100,
+      plugins: {
+        legend: {
+          labels: {
+            font: { size: 10 },
+          },
+        },
+        tooltip: {
+          callbacks: {
+            label: function (ctx) {
+              return ctx.dataset.label + ": " + ctx.parsed.y.toFixed(3);
+            },
+          },
+        },
+      },
+      scales: {
+        y: {
+          min: yMin,
+          max: yMax,
+          ticks: {
+            stepSize: (yMax - yMin) <= 0.5 ? 0.05 : 0.1,
+          },
+          title: { display: true, text: "CGPA" },
+        },
+        x: {
+          title: { display: true, text: "Scenario" },
+        },
+      },
+    },
+  });
+}
+
+
+
+
   function calculate() {
     document
       .querySelectorAll('[id$="Error"]')
@@ -147,7 +643,15 @@
         );
         break;
     }
-    displayResult(result);
+        displayResult(result);
+
+    if (currentMode === "multiple-trimesters") {
+      renderMultiSemChart(currentCGPA, completedCredits, targetCGPA);
+    } else if (currentMode === "graduation") {
+      renderGraduationChart(currentCGPA, completedCredits, targetCGPA);
+    } else if (currentMode === "whatif") {
+      renderWhatIfChart(currentCGPA, completedCredits, targetCGPA);
+    }
   }
   function validateBaseInputs(currentCGPA, completedCredits, targetCGPA) {
     let isValid = true;
@@ -337,7 +841,7 @@
                 </div>
             `;
     }
-    html += `
+html += `
             <div class="card margin1">
                 <div class="card-header padding2">
                     <h3 class="card-title flex itemsC gap1 text-base">
@@ -558,7 +1062,7 @@
                 </div>
             </div>
         `;
-    html += `
+ html += `
             <div class="card margin1">
                 <div class="card-header padding2">
                     <h3 class="card-title flex itemsC gap1 text-base">
@@ -567,6 +1071,9 @@
                     </h3>
                 </div>
                 <div class="card-content">
+                    <div class="chart-container margin1">
+  <canvas id="multiSemChartCanvas"></canvas>
+</div>
                     <table class="small-table">
                         <thead>
                             <tr>
@@ -823,6 +1330,26 @@
                 </div>
             </div>
         `;
+
+    html +=`
+    <div class="card">
+              <div class="card-header bg-green-500/10 padding2">
+                <h3 class="card-title flex itemsC gap1 text-base">
+                  <i class="fas fa-graduation-cap textG"></i> Max Achievable CGPA (Without Retake)
+                </h3>
+              </div>
+              <div class="card-content padding3">
+                <div>
+                  <div class="grad-txt text-green-600">${maxAchievableCGPA.toFixed(3)}</div>
+                  <div style="text-align: center">
+                    <span class="text-muted-foreground">Assuming you get <strong>4.00 GPA</strong> in all remaining courses.</span>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+    `
+        
     html += `
             <div class="card margin1">
                 <div class="card-header padding2">
@@ -866,17 +1393,20 @@
                 </div>
             </div>
         `;
-    if (requiredAvgGPA <= 4.0 && remainingSemesters > 0) {
-      html += `
-                <div class="card margin1">
-                    <div class="card-header padding2">
-                        <h3 class="card-title flex itemsC gap1 text-base">
-                            <i class="fas fa-calendar-week textG"></i>
-                            Trimester-wise Graduation Plan
-                        </h3>
+if (requiredAvgGPA <= 4.0 && remainingSemesters > 0) {
+  html += `
+            <div class="card margin1">
+                <div class="card-header padding2">
+                    <h3 class="card-title flex itemsC gap1 text-base">
+                        <i class="fas fa-calendar-week textG"></i>
+                        Trimester-wise Graduation Plan
+                    </h3>
+                </div>
+                <div class="card-content">
+                    <div class="chart-container margin1">
+                        <canvas id="graduationChartCanvas"></canvas>
                     </div>
-                    <div class="card-content">
-                        <table class="small-table">
+                    <table class="small-table">
                             <thead>
                                 <tr>
                                     <th class="text-xs">Trimester</th>
@@ -1036,7 +1566,7 @@
                 </div>
             </div>
         `;
-    html += `
+html += `
             <div class="card margin1">
                 <div class="card-header padding2">
                     <h3 class="card-title flex itemsC gap1 text-base">
@@ -1045,6 +1575,9 @@
                     </h3>
                 </div>
                 <div class="card-content">
+                    <div class="chart-container margin1">
+                        <canvas id="whatIfChartCanvas"></canvas>
+                    </div>
                     <table class="small-table">
                         <thead>
                             <tr>
@@ -1479,6 +2012,8 @@
     html += "</div>";
     return html;
   }
+
+
   function displayResult(html) {
     const resultDiv = document.getElementById("targetResult");
     const placeholder = document.getElementById("rightPlaceholder");
