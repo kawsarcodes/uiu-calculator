@@ -1,1 +1,18 @@
-:root { --theme-color: #f37021; } .navbar button { color: var(--theme-color); } @media (max-width: 1200px) { .navbar button { color: #fff; } } .navbar { z-index: 99; }
+:root {
+  --theme-color: #f37021;
+}
+.navbar button {
+  color: var(--theme-color);
+}
+@media (max-width: 1200px) {
+  .navbar button {
+    color: #fff;
+  }
+}
+.navbar {
+  z-index: 99;
+}
+#greeting {
+  display: block!important;
+}
+

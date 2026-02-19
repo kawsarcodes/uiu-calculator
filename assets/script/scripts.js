@@ -11,7 +11,7 @@ function downloadTableAsCSV() {
   const csvFile = new Blob([csv.join("\n")], { type: "text/csv" });
   const link = document.createElement("a");
   link.href = URL.createObjectURL(csvFile);
-  link.download = "UIU-Grading-System-ProgNerds.csv";
+  link.download = "UIU-Grading-System-(uiucalculator.kawsar.dev).csv";
   link.click();
 }
 document.addEventListener("DOMContentLoaded", function () {
