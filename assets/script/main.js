@@ -11,6 +11,36 @@ const gradePoints = {
   D: 1.0,
   F: 0.0,
 };
+function getCGPAClassification(cgpa) {
+  if (cgpa >= 3.67) {
+    return { label: "A / A- range (Outstanding / Excellent)", className: "textG" };
+  }
+  if (cgpa >= 3.33) {
+    return { label: "B+ range (Very Good)", className: "textG" };
+  }
+  if (cgpa >= 3.0) {
+    return { label: "B range (Good)", className: "textB" };
+  }
+  if (cgpa >= 2.67) {
+    return { label: "B- range (Above Average)", className: "textB" };
+  }
+  if (cgpa >= 2.33) {
+    return { label: "C+ range (Average)", className: "textO" };
+  }
+  if (cgpa >= 2.0) {
+    return { label: "C range (Below Average)", className: "textO" };
+  }
+  if (cgpa >= 1.67) {
+    return { label: "C- range (Poor)", className: "textA" };
+  }
+  if (cgpa >= 1.33) {
+    return { label: "D+ range (Very Poor)", className: "textA" };
+  }
+  if (cgpa >= 1.0) {
+    return { label: "D range (Pass)", className: "textA" };
+  }
+  return { label: "F range (Fail)", className: "textA" };
+}
 function getOrCreateErrorEl(id, afterElementId) {
   let el = document.getElementById(id);
   if (!el) {
@@ -607,7 +637,13 @@ function calculateCGPA() {
             </div>
           </div>
         `;
-  } else {
+    } else {
+    const totalQualityPointsWithoutRetakes =
+      currentQualityPoints + newCoursePoints;
+    const cgpaWithoutRetakes =
+      totalCredits > 0 ? totalQualityPointsWithoutRetakes / totalCredits : 0;
+    const retakeCGPAGain = newCGPA - cgpaWithoutRetakes;
+
     resultHTML = `
           <div class="grid gridc1 md:gridc1 gap-6">
             <div class="card">
@@ -697,6 +733,30 @@ function calculateCGPA() {
                 </div>
               </div>
             </div>
+            ${
+              retakeCourses.length > 0
+                ? `
+            <div class="card">
+              <div class="card-header bg-blue-500/10 padding2">
+                <h3 class="card-title flex itemsC gap1 text-base">
+                  <i class="fas fa-redo textB"></i> Retake Impact on CGPA
+                </h3>
+              </div>
+              <div class="card-content padding3">
+                <div class="space-y-2">
+                  <div class="flex justifyC itemsC"><span>Without retakes</span><span>${cgpaWithoutRetakes.toFixed(2)}</span></div>
+                  <div class="flex justifyC itemsC"><span>With retakes</span><span>${newCGPA.toFixed(2)}</span></div>
+                  <div class="flex justifyC itemsC">
+                    <span>Change from retakes</span>
+                    <span class="${retakeCGPAGain > 0 ? "textG" : retakeCGPAGain < 0 ? "textA" : "text-muted-foreground"}">
+                      ${retakeCGPAGain >= 0 ? "+" : ""}${retakeCGPAGain.toFixed(2)}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>`
+                : ""
+            }
           </div>
         `;
   }
