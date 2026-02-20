@@ -1318,7 +1318,7 @@ function validateCompletedCredits(input) {
 
   if (value === "") {
     completedError.style.display = "block";
-    completedError.textContent = "Please enter your completed credits (0-160)";
+    completedError.textContent = "Please enter your completed credits";
     return;
   }
 
