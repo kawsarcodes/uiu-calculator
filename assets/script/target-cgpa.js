@@ -1079,7 +1079,7 @@ html += `
                             <tr>
                                 <th class="text-xs">Trimester</th>
                                 <th class="text-xs">Credits</th>
-                                <th class="text-xs">Sem GPA</th>
+                                <th class="text-xs">Tri. GPA</th>
                                 <th class="text-xs">Cumulative Credits</th>
                                 <th class="text-xs">Cumulative Points</th>
                                 <th class="text-xs">Projected CGPA</th>

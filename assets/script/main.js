@@ -1258,9 +1258,10 @@ trimesterCreditInputs.forEach((input) => {
   });
 });
 
-// TOTAL GRADUATION CREDIT LIMIT 120-160
-const totalCreditInputs = document.querySelectorAll(".total-credit-input");
-totalCreditInputs.forEach((input) => {
+// TOTAL DEGREE CREDIT LIMIT 0-160
+const totalDegreeCreditInputs = document.querySelectorAll(".total-degree-credit-input");
+
+totalDegreeCreditInputs.forEach((input) => {
   input.addEventListener("input", function () {
     const value = input.value;
     const errorId = input.id + "Error";
@@ -1270,18 +1271,19 @@ totalCreditInputs.forEach((input) => {
 
     if (value === "") {
       totalError.style.display = "block";
-      totalError.textContent = "Please enter your total graduation credit (120-160)";
+      totalError.textContent = "Please enter your total degree credits (0-160)";
       return;
     }
 
     if (value === "-") {
-      input.value = 120;
+      input.value = 0;
       totalError.style.display = "block";
-      totalError.textContent = "Total graduation credit cannot be less than 120";
+      totalError.textContent = "Total degree credits cannot be less than 0";
       return;
     }
 
     const num = parseFloat(value);
+
     if (isNaN(num)) {
       input.value = "";
       totalError.style.display = "block";
@@ -1292,61 +1294,68 @@ totalCreditInputs.forEach((input) => {
     if (num > 160) {
       input.value = 160;
       totalError.style.display = "block";
-      totalError.textContent = "Total graduation credit cannot be more than 160";
-    } else if (num < 120) {
-      input.value = 120;
+      totalError.textContent = "Total degree credits cannot be more than 160";
+    } else if (num < 0) {
+      input.value = 0;
       totalError.style.display = "block";
-      totalError.textContent = "Total graduation credit cannot be less than 120";
+      totalError.textContent = "Total degree credits cannot be less than 0";
     } else {
       totalError.style.display = "none";
     }
   });
 });
 
-// COMPLETED CREDIT LIMIT 0-160
-const completedCreditInputs = document.querySelectorAll(".completed-credit-input");
-completedCreditInputs.forEach((input) => {
-  input.addEventListener("input", function () {
-    const value = input.value;
-    const errorId = input.id + "Error";
-    const completedError =
-      document.getElementById(errorId) ||
-      getOrCreateErrorEl(errorId, input.id);
 
-    if (value === "") {
-      completedError.style.display = "block";
-      completedError.textContent = "Please enter your completed credits (0-160)";
-      return;
-    }
+// COMPLETED CREDIT LIMIT 0-160 // CGPA: completedCredit //CGPA PLANNER: completedCredits
+function validateCompletedCredits(input) {
+  const value = input.value;
+  const errorId = input.id + "Error";
+  let completedError = document.getElementById(errorId);
 
-    if (value === "-") {
-      input.value = 0;
-      completedError.style.display = "block";
-      completedError.textContent = "Completed credits cannot be less than 0";
-      return;
-    }
+  if (!completedError) {
+      completedError = input.parentElement.querySelector('.textR');
+  }
 
-    const num = parseFloat(value);
-    if (isNaN(num)) {
-      input.value = "";
-      completedError.style.display = "block";
-      completedError.textContent = "Please enter a valid number";
-      return;
-    }
+  if (value === "") {
+    completedError.style.display = "block";
+    completedError.textContent = "Please enter your completed credits (0-160)";
+    return;
+  }
 
-    if (num > 160) {
-      input.value = 160;
-      completedError.style.display = "block";
-      completedError.textContent = "Completed credits cannot be more than 160";
-    } else if (num < 0) {
-      input.value = 0;
-      completedError.style.display = "block";
-      completedError.textContent = "Completed credits cannot be less than 0";
-    } else {
-      completedError.style.display = "none";
-    }
-  });
+  if (value.includes("-")) {
+    input.value = Math.abs(parseFloat(value)) || 0;
+    completedError.style.display = "block";
+    completedError.textContent = "Completed credits cannot be less than 0";
+    return;
+  }
+
+  const num = parseFloat(value);
+  if (isNaN(num)) {
+    input.value = "";
+    completedError.style.display = "block";
+    completedError.textContent = "Please enter a valid number";
+    return;
+  }
+
+  if (num > 160) {
+    input.value = 160;
+    completedError.style.display = "block";
+    completedError.textContent = "Completed credits cannot be more than 160";
+  } else if (num < 0) {
+    input.value = 0;
+    completedError.style.display = "block";
+    completedError.textContent = "Completed credits cannot be less than 0";
+  } else {
+    completedError.style.display = "none";
+  }
+}
+
+document.addEventListener("input", function (event) {
+  if (event.target.classList.contains("completed-credit-input")) {
+    validateCompletedCredits(event.target);
+  }
 });
+
 
 // MULTIPLE TRIMESTER COUNT 0-12
 const trimesterCountInputs = document.querySelectorAll(".trimester-count-input");
@@ -1382,11 +1391,11 @@ trimesterCountInputs.forEach((input) => {
     if (num > 12) {
       input.value = 12;
       countError.style.display = "block";
-      countError.textContent = "Trimester count cannot be more than 12";
+      countError.textContent = "Number of trimesters cannot be more than 12";
     } else if (num < 1) {
       input.value = 1;
       countError.style.display = "block";
-      countError.textContent = "Trimester count cannot be less than 1";
+      countError.textContent = "Number of trimesters cannot be less than 1";
     } else {
       countError.style.display = "none";
     }
