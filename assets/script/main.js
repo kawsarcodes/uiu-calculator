@@ -1225,7 +1225,7 @@ trimesterCreditInputs.forEach((input) => {
 
     if (value === "") {
       creditError.style.display = "block";
-      creditError.textContent = "Please enter your trimester credit (0-30)";
+      creditError.textContent = "Please enter your trimester credit";
       return;
     }
 
@@ -1271,7 +1271,7 @@ totalDegreeCreditInputs.forEach((input) => {
 
     if (value === "") {
       totalError.style.display = "block";
-      totalError.textContent = "Please enter your total degree credits (0-160)";
+      totalError.textContent = "Please enter your total degree credits";
       return;
     }
 
@@ -1369,7 +1369,7 @@ trimesterCountInputs.forEach((input) => {
 
     if (value === "") {
       countError.style.display = "block";
-      countError.textContent = "Please enter number of trimesters (1-12)";
+      countError.textContent = "Please enter number of trimesters";
       return;
     }
 
@@ -1413,7 +1413,7 @@ feeInputs.forEach((input) => {
 
     if (value === "") {
       feeError.style.display = "block";
-      feeError.textContent = "Please enter fee amount (0-10000)";
+      feeError.textContent = "Please enter fee amount";
       return;
     }
 
