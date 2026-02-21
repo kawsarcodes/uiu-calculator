@@ -1417,6 +1417,7 @@ class globalHeader extends HTMLElement {
           type="text"
           id="usernameInput"
           placeholder="Enter your name"
+          maxlength="20"
           style="text-align: center"
         />        
       </div>

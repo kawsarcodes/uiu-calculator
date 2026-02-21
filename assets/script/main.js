@@ -1476,3 +1476,18 @@ document.getElementById("retakeCreditRegular")?.addEventListener("input", functi
 
 
 });
+
+// SAVE USER INPUT
+document.addEventListener("DOMContentLoaded", function() {    
+    const inputs = document.querySelectorAll('input[type="number"], input[type="text"], select');
+    inputs.forEach(input => {
+        if (!input.id) return;
+        const savedValue = localStorage.getItem(input.id);
+        if (savedValue) {
+            input.value = savedValue;
+        }
+        input.addEventListener('input', function() {
+            localStorage.setItem(input.id, this.value);
+        });
+    });
+});

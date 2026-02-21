@@ -2028,15 +2028,77 @@ html += `
   }
   function resetCalculator() {
     document.querySelectorAll("input").forEach((input) => (input.value = ""));
-    document
-      .querySelectorAll("select")
-      .forEach((select) => (select.selectedIndex = 0));
-    document
-      .querySelectorAll('[id$="Error"]')
-      .forEach((el) => (el.style.display = "none"));
+    document.querySelectorAll("select").forEach((select) => (select.selectedIndex = 0));
+    document.querySelectorAll('[id$="Error"]').forEach((el) => (el.style.display = "none"));
+    const inputsToRemove = [
+      "currentCGPA", "completedCredits", "targetCGPA",
+      "nextSemCredits", "numSemesters", "creditsPerSem",
+      "totalDegreeCredits", "avgCreditsPerSem",
+      "whatifCredits", "whatifGPA", "numRetakes", "activeTab"
+    ];
+    inputsToRemove.forEach(id => localStorage.removeItem("planner_" + id));
+    Object.keys(localStorage).forEach(key => {
+        if(key.includes("planner_retake")) localStorage.removeItem(key);
+    });
     displayResult("");
     switchTab("next-trimester");
     document.getElementById("retakeCourseInputs").innerHTML = "";
     document.getElementById("addRetakeCourseBtn").style.display = "none";
   }
+  // SAVE USER INPUT
+  function initPlannerStorage() {
+      const prefix = "planner_";
+      const staticInputs = [
+          "currentCGPA", "completedCredits", "targetCGPA",
+          "nextSemCredits", 
+          "numSemesters", "creditsPerSem", 
+          "totalDegreeCredits", "avgCreditsPerSem", 
+          "whatifCredits", "whatifGPA",
+          "numRetakes"
+      ];
+      setTimeout(() => {
+          const savedTab = localStorage.getItem(prefix + "activeTab");
+          if (savedTab) switchTab(savedTab);
+          const savedNumRetakes = localStorage.getItem(prefix + "numRetakes");
+          if (savedNumRetakes && parseInt(savedNumRetakes) > 0) {
+              generateRetakeInputs(parseInt(savedNumRetakes)); 
+              for(let i=1; i<= parseInt(savedNumRetakes); i++) {
+                  restoreValue(`retakeCredits${i}`);
+                  restoreValue(`retakeCourseName${i}`);
+                  restoreValue(`retakeOldGrade${i}`);
+                  restoreValue(`retakeNewGrade${i}`);
+              }
+          }
+          staticInputs.forEach(id => restoreValue(id));
+      }, 100); 
+      function restoreValue(id) {
+          const el = document.getElementById(id);
+          const val = localStorage.getItem(prefix + id);
+          if (el && val) {
+              el.value = val;
+          }
+      }
+      staticInputs.forEach(id => {
+          const el = document.getElementById(id);
+          if (el) {
+              el.addEventListener("input", function() {
+                  localStorage.setItem(prefix + id, this.value);
+              });
+          }
+      });
+      document.querySelectorAll(".tabs-trigger").forEach((btn) => {
+          btn.addEventListener("click", function() {
+              localStorage.setItem(prefix + "activeTab", this.id.replace("-tab", ""));
+          });
+      });
+      const retakeContainer = document.getElementById("retakeCourseInputs");
+      if (retakeContainer) {
+          retakeContainer.addEventListener("input", function(e) {
+              if (e.target.id) {
+                  localStorage.setItem(prefix + e.target.id, e.target.value);
+              }
+          });
+      }
+  }
+  initPlannerStorage();
 })();

@@ -412,24 +412,37 @@
       },
     },
 
-    setname: {
-      description: "Change your terminal username",
-      usage: "setname <new_username>",
-      handler: (args) => {
-        if (!args || args.length === 0) {
-          appendOutput("Type: setname <new_username>", "uiu-term-error");
-          return;
-        }
-        let newUsername = args.join(" ");
-        localStorage.setItem("username", newUsername);
-        window.dispatchEvent(new Event("usernameUpdated"));
-        updateAllTerminalUsernames();
-        appendOutput(`Username changed to: ${newUsername}`, "uiu-term-success");
-        if (terminalState.currentLine) {
-          terminalState.currentLine.remove();
-        }
-      },
-    },
+  setname: {
+  description: "Change your terminal username",
+  usage: "setname <new_username>",
+  handler: (args) => {
+    if (!args || args.length === 0) {
+      appendOutput("Type: setname <new_username>", "uiu-term-error");
+      return;
+    }
+    let newUsername = args.join(" ");
+    const MAX_LENGTH = 20; 
+        if (newUsername.length > MAX_LENGTH) {
+      appendOutput(`Error: Name is too long! Max ${MAX_LENGTH} characters.`, "uiu-term-error");
+      return;
+    }
+    
+    newUsername = newUsername.trim();
+    if (newUsername.length === 0) {
+        appendOutput("Error: Name cannot be empty.", "uiu-term-error");
+        return;
+    }
+
+    localStorage.setItem("username", newUsername);
+    window.dispatchEvent(new Event("usernameUpdated"));
+    updateAllTerminalUsernames(); 
+    appendOutput(`Username changed to: ${newUsername}`, "uiu-term-success");
+    
+    if (terminalState.currentLine) {
+      terminalState.currentLine.remove();
+    }
+  },
+},
 
     date: {
       description: "Display current date and time",
