@@ -1,1 +1,1 @@
-:root { --theme-color: #f37021; } .navbar button { color: var(--theme-color); } @media (max-width: 1200px) { .navbar button { color: var(--foreground); } } .navbar { z-index: 99; } #greeting { display: block !important; }
+:root { --theme-color: #f37021; } .navbar button { color: var(--theme-color); } @media (max-width: 1200px) { .navbar { color: var(--foreground); background-color: var(--background) ; } .navbar button { color: var(--foreground); } } .navbar { z-index: 99; } #greeting { display: block !important; }
