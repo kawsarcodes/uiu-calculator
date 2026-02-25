@@ -8,7 +8,7 @@
 
   const ABOUT_INFO = {
     name: "UIU Calculator",
-    version: "2.3.2",
+    version: "2.5",
     developer: "Kawsar Ahmed",
     bio: "Computer Science and Engineering",
     contact: {
@@ -107,7 +107,7 @@
     ╚██████╔╝██║╚██████╔╝    ╚██████╗██║  ██║███████╗╚██████╗╚██████╔╝███████╗██║  ██║   ██║   ╚██████╔╝██║  ██║
      ╚═════╝ ╚═╝ ╚═════╝      ╚═════╝╚═╝  ╚═╝╚══════╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝  ╚═╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝
                                                                         
-                                  UIU Calculator v2.3.2`;
+                                  UIU Calculator v2.5`;
 
   const ASCII_ART_MOBILE = `
     ██╗   ██╗██╗██╗   ██╗
@@ -130,7 +130,7 @@
     ██║   ██║██║     ██╔══██║   ██║   ██║   ██║██╔══██╗
     ╚██████╔╝███████╗██║  ██║   ██║   ╚██████╔╝██║  ██║
      ╚═════╝ ╚══════╝╚═╝  ╚═╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝
-             UIU Calculator v2.3.2`;
+             UIU Calculator v2.5`;
 
   function getAsciiArt() {
     return window.innerWidth < 700 ? ASCII_ART_MOBILE : ASCII_ART_DESKTOP;
