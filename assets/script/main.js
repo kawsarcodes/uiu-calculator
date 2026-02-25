@@ -746,6 +746,7 @@ function calculateCGPA() {
                 <div class="space-y-2">
                   <div class="flex justifyC itemsC"><span>Without retakes</span><span>${cgpaWithoutRetakes.toFixed(2)}</span></div>
                   <div class="flex justifyC itemsC"><span>With retakes</span><span>${newCGPA.toFixed(2)}</span></div>
+                  <div class="separator"></div>
                   <div class="flex justifyC itemsC">
                     <span>Change from retakes</span>
                     <span class="${retakeCGPAGain > 0 ? "textG" : retakeCGPAGain < 0 ? "textA" : "text-muted-foreground"}">
@@ -838,49 +839,94 @@ function calculateTuitionFee() {
   const feeRetakeRegularTotal = retakeCreditRegular * perCreditFee;
   const lateRegistrationFee = lateRegistration ? 500 : 0;
   const adminFees = trimesterFee + lateRegistrationFee;
-
   const totalGrossFee = feeNewTotal + feeRetake1stTotal + feeRetakeRegularTotal + adminFees;
+  let discountNewRegular = 0;
+  let discountRowsData = []; 
+  let hybridMessageHtml = ""; 
 
-  let regularDiscountName = "Scholarship";
-  let regularDiscountPercent = scholarshipPercent;
-  if (waiverPercent > scholarshipPercent) {
-    regularDiscountName = "Waiver";
-    regularDiscountPercent = waiverPercent;
+  if (waiverPercent >= scholarshipPercent) {
+    discountNewRegular = (feeNewTotal * waiverPercent) / 100;
+    if (waiverPercent > 0) {
+      discountRowsData.push({
+        label: "Waiver",
+        desc: `${waiverPercent}% on New Courses`,
+        amount: discountNewRegular
+      });
+    }
+  } 
+
+  else {
+    if (newCredit <= 13) {
+      discountNewRegular = (feeNewTotal * scholarshipPercent) / 100;
+      if (scholarshipPercent > 0) {
+        discountRowsData.push({
+          label: "Scholarship",
+          desc: `${scholarshipPercent}% on New Courses`,
+          amount: discountNewRegular
+        });
+      }
+    } 
+
+    else {
+      const feeForScholarship = 13 * perCreditFee;
+      const discountPart1 = (feeForScholarship * scholarshipPercent) / 100;
+      const remainingCredit = newCredit - 13;
+      const feeForWaiver = remainingCredit * perCreditFee;
+      const discountPart2 = (feeForWaiver * waiverPercent) / 100;
+
+      discountNewRegular = discountPart1 + discountPart2;
+
+      discountRowsData.push({
+        label: "Scholarship (Limit 13 Cr)",
+        desc: `${scholarshipPercent}% on first 13 Credits`,
+        amount: discountPart1
+      });
+
+      if (waiverPercent > 0) {
+        discountRowsData.push({
+          label: "Waiver (Remaining Cr)",
+          desc: `${waiverPercent}% on remaining ${remainingCredit.toFixed(1)} Credits`,
+          amount: discountPart2
+        });
+      } else {
+
+      }
+      hybridMessageHtml = `
+        <div class="note-b note-b-sp1 mb-3 text-xs">
+          <i class="fas fa-info-circle"></i> <strong>Scholarship Policy Applied:</strong><br>
+          Scholarship (${scholarshipPercent}%) is applied to the first 13 credits.<br>
+          The remaining ${remainingCredit.toFixed(1)} credits are calculated based on your Waiver (${waiverPercent}%).
+        </div>
+      `;
+    }
   }
 
-  const discountNewRegular = (feeNewTotal * regularDiscountPercent) / 100;
+
   const discountSibling = (feeNewTotal * siblingSpouseWaiver) / 100;
   const discountEthnic = (feeNewTotal * ethnicTribalWaiver) / 100;
   const discountDisability = (feeNewTotal * disabilityWaiver) / 100;
-  
   const discountRetake1st = (feeRetake1stTotal * 50) / 100;
-  
-  const totalNewDiscount = Math.min(feeNewTotal, (discountNewRegular + discountSibling + discountEthnic + discountDisability));
+  const totalOtherDiscounts = discountSibling + discountEthnic + discountDisability;
+  const totalNewDiscount = Math.min(feeNewTotal, (discountNewRegular + totalOtherDiscounts));
   const finalAmount = (feeNewTotal - totalNewDiscount) + (feeRetake1stTotal - discountRetake1st) + feeRetakeRegularTotal + adminFees;
-
   let firstInstallment, secondInstallment, thirdInstallment;
   let firstCalc, secondCalc, thirdCalc; 
   let installmentMethod = "";
   let alertBoxHtml = "";
-  
   const isOnlyAdminFee = finalAmount <= adminFees;
 
   if (isOnlyAdminFee) {
       const feeText = lateRegistration ? "Trimester fee & Late fee" : "Trimester fee";
-      
       installmentMethod = `100% discount: Only ${feeText} payable`;
       firstInstallment = finalAmount;
       secondInstallment = 0;
       thirdInstallment = 0;
-      
       firstCalc = `Full ${feeText}`;
       secondCalc = "No payment required";
       thirdCalc = "No payment required";
-
       alertBoxHtml = `<div class="note-g"><i class="fas fa-check-circle"></i> <strong>Note:</strong> Since your tuition is fully waived, you only need to pay the ${feeText} in the 1st installment.</div>`;
   } else {
       let targetFirstInstallment;
-
       if (waiverInFirstInstallment) {
           targetFirstInstallment = Math.round(finalAmount * 0.40);
           installmentMethod = "Custom: 40% of Net Payable";
@@ -897,7 +943,6 @@ function calculateTuitionFee() {
           firstInstallment = finalAmount;
           secondInstallment = 0;
           thirdInstallment = 0;
-          
           if (!waiverInFirstInstallment) {
               firstCalc = "Full Net Payable";
               installmentMethod = "100% Payment in 1st Installment";
@@ -906,11 +951,9 @@ function calculateTuitionFee() {
           thirdCalc = "-";
       } else {
           firstInstallment = targetFirstInstallment;
-          
           const remaining = finalAmount - firstInstallment;
           secondInstallment = Math.round(remaining / 2);
           thirdInstallment = remaining - secondInstallment;
-          
           secondCalc = "50% of remaining balance";
           thirdCalc = "50% of remaining balance";
       }
@@ -921,9 +964,11 @@ function calculateTuitionFee() {
   }
 
   let discountRowsHtml = "";
-  if (regularDiscountPercent > 0) {
-    discountRowsHtml += `<tr><td class="textG">${regularDiscountName}</td><td class="text-right textG">${regularDiscountPercent}% on New Courses</td><td class="text-right textG">-${formatCurrency(discountNewRegular)}</td></tr>`;
-  }
+  
+  discountRowsData.forEach(row => {
+     discountRowsHtml += `<tr><td class="textG">${row.label}</td><td class="text-right textG">${row.desc}</td><td class="text-right textG">-${formatCurrency(row.amount)}</td></tr>`;
+  });
+
   if (retakeCreditFirst > 0) {
     discountRowsHtml += `<tr><td class="textG">Retake Waiver</td><td class="text-right textG">50% on 1st Retake Courses</td><td class="text-right textG">-${formatCurrency(discountRetake1st)}</td></tr>`;
   }
@@ -959,6 +1004,7 @@ function calculateTuitionFee() {
 <div class="card">
   <div class="card-header"><h3 class="card-title flex itemsC gap1"><i class="fas fa-list-check textB"></i> Fee Calculation</h3></div>
   <div class="card-content">
+    ${hybridMessageHtml}
     <div class="space-y-2">
       <table class="small-table">
         <thead>
@@ -969,7 +1015,7 @@ function calculateTuitionFee() {
           ${retakeCreditFirst > 0 ? `<tr><td>Retake Courses Tuition Fee (1st Time)</td><td class="text-right">${retakeCreditFirst} credits × ${perCreditFee}</td><td class="text-right">${formatCurrency(feeRetake1stTotal)}</td></tr>` : ''}
           ${retakeCreditRegular > 0 ? `<tr><td>Retake Courses Tuition Fee (2nd+ Time)</td><td class="text-right">${retakeCreditRegular} credits × ${perCreditFee}</td><td class="text-right">${formatCurrency(feeRetakeRegularTotal)}</td></tr>` : ''}
           <tr><td>Trimester Fee</td><td class="text-right">Fixed</td><td class="text-right">${formatCurrency(trimesterFee)}</td></tr>
-          ${lateRegistration ? `<tr><td>Late Registration Fee</td><td class="text-right">Fixed Fine</td><td class="text-right">${formatCurrency(lateRegistrationFee)}</td></tr>` : ''}
+          ${lateRegistration ? `<tr style="color: #ff0040!important"><td>Late Registration Fee</td><td class="text-right">Fine</td><td class="text-right" style="font-weight: bold;">${formatCurrency(lateRegistrationFee)}</td></tr>` : ''}
           
           ${hasDiscount ? `
           <tr style="color: var(--theme-color)!important; font-weight: bold;">
