@@ -4,7 +4,14 @@ function downloadTableAsCSV() {
   for (let row of table.rows) {
     let cols = [];
     for (let cell of row.cells) {
-      cols.push(cell.innerText);
+      let text = cell.innerText;
+      if (/^[=+\-@]/.test(text)) {
+        text = "'" + text; 
+      }
+      if (text.includes(",")) {
+        text = `"${text}"`;
+      }
+      cols.push(text);
     }
     csv.push(cols.join(","));
   }

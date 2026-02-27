@@ -69,8 +69,6 @@ class globalNav extends HTMLElement {
     const closeModal = this.querySelector("#closeModal");
     const copyButton = this.querySelector("#copyButton");
     const shareLink = this.querySelector("#shareLink");
-
-    // 3. Generate Links
     const currentPageUrl = window.location.href;
     const encodedUrl = encodeURIComponent(currentPageUrl);
     const encodedTitle = encodeURIComponent(document.title);

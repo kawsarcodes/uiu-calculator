@@ -811,18 +811,15 @@ function calculateTuitionFee() {
   const newCreditInput = document.getElementById("newCredit");
   const retakeCreditFirstInput = document.getElementById("retakeCreditFirst");
   const retakeCreditRegularInput = document.getElementById("retakeCreditRegular");
-
   const perCreditFee = parseFloat(document.getElementById("perCreditFee").value);
   const trimesterFee = parseFloat(document.getElementById("trimesterFee").value);
   const waiverPercent = parseFloat(document.getElementById("waiver").value) || 0;
   const scholarshipPercent = parseFloat(document.getElementById("scholarship").value) || 0;
   const lateRegistration = document.getElementById("lateRegistration").checked;
-  const waiverInFirstInstallment = document.getElementById("waiverInFirstInstallment").checked;
-  
+  const waiverInFirstInstallment = document.getElementById("waiverInFirstInstallment").checked;  
   const siblingSpouseWaiver = parseFloat(document.getElementById("siblingSpouseWaiver").value) || 0;
   const ethnicTribalWaiver = parseFloat(document.getElementById("ethnicTribalWaiver").value) || 0;
   const disabilityWaiver = parseFloat(document.getElementById("disabilityWaiver").value) || 0;
-
   const newCredit = parseFloat(newCreditInput.value) || 0;
   const retakeCreditFirst = parseFloat(retakeCreditFirstInput.value) || 0;
   const retakeCreditRegular = parseFloat(retakeCreditRegularInput.value) || 0;
@@ -1016,16 +1013,13 @@ function calculateTuitionFee() {
           ${retakeCreditRegular > 0 ? `<tr><td>Retake Courses Tuition Fee (2nd+ Time)</td><td class="text-right">${retakeCreditRegular} credits × ${perCreditFee}</td><td class="text-right">${formatCurrency(feeRetakeRegularTotal)}</td></tr>` : ''}
           <tr><td>Trimester Fee</td><td class="text-right">Fixed</td><td class="text-right">${formatCurrency(trimesterFee)}</td></tr>
           ${lateRegistration ? `<tr style="color: #ff0040!important"><td>Late Registration Fee</td><td class="text-right">Fine</td><td class="text-right" style="font-weight: bold;">${formatCurrency(lateRegistrationFee)}</td></tr>` : ''}
-          
           ${hasDiscount ? `
           <tr style="color: var(--theme-color)!important; font-weight: bold;">
             <td>Total Gross Fee</td>
             <td class="text-right text-xs font-normal">All tuition & fees</td>
             <td class="text-right">${formatCurrency(totalGrossFee)}</td>
           </tr>` : ''}
-
-          ${discountRowsHtml ? discountRowsHtml : ''}
-          
+          ${discountRowsHtml ? discountRowsHtml : ''}          
           <tr class="border-t-2" style="font-weight: bold;"><td class="font-bold" style="color: var(--theme-color);">Total Payable (Net)</td><td></td><td class="text-right font-bold text-lg" style="color: var(--theme-color);">${formatCurrency(finalAmount)}</td></tr>
         </tbody>
       </table>
@@ -1492,7 +1486,6 @@ feeInputs.forEach((input) => {
   });
 });
 
-
   const completedCreditInput = document.getElementById("completedCredit");
   if (completedCreditInput) {
     completedCreditInput.addEventListener("input", () => {
@@ -1510,7 +1503,6 @@ feeInputs.forEach((input) => {
     .getElementById("retakeCredit")
     ?.addEventListener("input", validateInstallmentCredits);
 
-    
 document.getElementById("retakeCreditFirst")?.addEventListener("input", function() {
     const el = this;
     if(el.value < 0) el.value = 0;

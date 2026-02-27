@@ -179,7 +179,7 @@
     const newName = getFormattedTermName();
     const allTermUsernames = document.querySelectorAll(".uiu-term-username");
     allTermUsernames.forEach((span) => {
-      span.textContent = newName;
+      span.textContent = newName; 
     });
   }
 
@@ -303,7 +303,7 @@
           }
         });
       } else {
-        line.textContent = content;
+        line.textContent = content; 
       }
     } else {
       line.appendChild(content);
@@ -319,10 +319,16 @@
     const username = getFormattedTermName();
     const prompt = document.createElement("span");
     prompt.className = "uiu-term-prompt";
-    prompt.innerHTML = `🐧<span class="uiu-term-username">${username}</span>@uiucalculator:~$ `;
+    prompt.appendChild(document.createTextNode("🐧"));
+    const userSpan = document.createElement("span");
+    userSpan.className = "uiu-term-username";
+    userSpan.textContent = username; 
+    prompt.appendChild(userSpan);
+    prompt.appendChild(document.createTextNode("@uiucalculator:~$ "));
+
     const cmd = document.createElement("span");
     cmd.className = "uiu-term-command";
-    cmd.textContent = command;
+    cmd.textContent = command; 
     line.appendChild(prompt);
     line.appendChild(cmd);
     elements.output.appendChild(line);
@@ -1683,7 +1689,13 @@
     const username = getFormattedTermName();
     const prompt = document.createElement("span");
     prompt.className = "uiu-term-prompt";
-    prompt.innerHTML = `🐧<span class="uiu-term-username">${username}</span>@uiucalculator:~$ `;
+    
+    prompt.appendChild(document.createTextNode("🐧"));
+    const userSpan = document.createElement("span");
+    userSpan.className = "uiu-term-username";
+    userSpan.textContent = username; 
+    prompt.appendChild(userSpan);
+    prompt.appendChild(document.createTextNode("@uiucalculator:~$ "));
 
     const input = document.createElement("span");
     input.className = "uiu-term-inline-input";

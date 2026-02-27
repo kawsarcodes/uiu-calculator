@@ -1382,7 +1382,7 @@ class globalHeader extends HTMLElement {
 
 <div class="off-canvas-menu" id="offCanvasAccount">
   <div class="menu-header">
-    <div class="menu-title">Account</div>
+    <div class="menu-title">User Info</div>
     <button
       class="close-btn"
       style="
@@ -1722,7 +1722,6 @@ class globalHeader extends HTMLElement {
   }
 
   initLegacyFeatures() {
-  
     const setupOffCanvas = (triggerId, panelId) => {
       const triggerBtn = this.querySelector("#" + triggerId);
       const panel = this.querySelector("#" + panelId);
@@ -1732,7 +1731,7 @@ class globalHeader extends HTMLElement {
       const closeBtn = panel.querySelector(".close-btn");
 
       triggerBtn.addEventListener("click", (e) => {
-        e.stopPropagation(); 
+        e.stopPropagation();
         this.querySelectorAll(".off-canvas-menu").forEach((p) =>
           p.classList.remove("active"),
         );
@@ -1745,7 +1744,6 @@ class globalHeader extends HTMLElement {
         });
       }
 
-   
       document.addEventListener("click", (e) => {
         if (
           panel.classList.contains("active") &&
@@ -1760,67 +1758,68 @@ class globalHeader extends HTMLElement {
     setupOffCanvas("hamburgerBtn", "offCanvasMenu");
     setupOffCanvas("accountBtn", "offCanvasAccount");
 
-  
     const usernameInput = this.querySelector("#usernameInput");
-    const greetingEl = document.getElementById("greeting"); 
-    const cardTitle = this.querySelector(".card-title"); 
+    const greetingEl = document.getElementById("greeting");
 
     const updateGreeting = () => {
       const hour = new Date().getHours();
+
       let greeting = "Good Night";
       if (hour >= 5 && hour < 12) greeting = "Good Morning";
-      else if (hour >= 12 && hour < 15) greeting = "Good Noon";
-      else if (hour >= 15 && hour < 18) greeting = "Good Afternoon";
-      else if (hour >= 18 && hour < 24) greeting = "Good Evening";
+      else if (hour >= 12 && hour < 17) greeting = "Good Afternoon";
+      else if (hour >= 17 && hour < 21) greeting = "Good Evening";
 
       const rawName = localStorage.getItem("username");
       const displayName = rawName ? rawName : "UIUian";
 
-      
       if (greetingEl) {
-        
-        if (window.innerWidth >= 768) {
-          greetingEl.textContent = `${greeting}, ${displayName} !! 🙌`;
-        } else {
-          greetingEl.innerHTML = `${greeting}, ${displayName} !! 🙌`;
-        }
+        greetingEl.textContent = `${greeting}, ${displayName} !! 🙌`;
       }
     };
 
- 
     if (usernameInput) {
-      
       const savedName = localStorage.getItem("username");
       if (savedName) usernameInput.value = savedName;
 
-     
       usernameInput.addEventListener("input", (e) => {
         const val = e.target.value;
         if (val.trim() !== "") {
           localStorage.setItem("username", val);
         } else {
-          localStorage.removeItem("username"); 
+          localStorage.removeItem("username");
         }
-        updateGreeting(); 
+        updateGreeting();
       });
     }
 
-    
     updateGreeting();
-    
     setInterval(updateGreeting, 60000);
     window.addEventListener("resize", updateGreeting);
 
-    
     let searchIndex = [];
-    const searchBox = this.querySelector("#searchBox"); 
+    const searchBox = this.querySelector("#searchBox");
     const searchResultsDiv = this.querySelector("#search-results");
 
-  
     if (searchBox && searchResultsDiv) {
+      const escapeHTML = (str) => {
+        if (!str) return "";
+        return str.replace(/[&<>'"]/g, (tag) => ({
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            "'": '&#39;',
+            '"': '&quot;'
+          }[tag]));
+      };
+
+      const escapeRegExp = (string) => {
+        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      };
+
       const highlight = (text, query) => {
         if (!query) return text;
-        const regex = new RegExp(`(${query})`, "gi");
+        const safeQuery = escapeRegExp(query);
+        const regex = new RegExp(`(${safeQuery})`, "gi");
         return text.replace(regex, "<mark>$1</mark>");
       };
 
@@ -1833,8 +1832,8 @@ class globalHeader extends HTMLElement {
             ? searchIndex
             : searchIndex.filter(
                 (item) =>
-                  item.title.toLowerCase().includes(q) ||
-                  item.topics.some((topic) => topic.toLowerCase().includes(q)),
+                  (item.title && item.title.toLowerCase().includes(q)) ||
+                  (item.topics && item.topics.some((topic) => topic.toLowerCase().includes(q))),
               );
 
         if (results.length === 0) {
@@ -1853,12 +1852,18 @@ class globalHeader extends HTMLElement {
           el.style.padding = "10px";
 
           let badgesHtml = `<div class="badges" style="margin-top:5px;">`;
-          result.topics.forEach((topic) => {
-            badgesHtml += `<span style="background: var(--muted); color: var(--foreground); padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; margin-right: 4px; display:inline-block; margin-bottom:2px;">${topic}</span>`;
-          });
+          if (result.topics) {
+            result.topics.forEach((topic) => {
+              const safeTopic = escapeHTML(topic); 
+              badgesHtml += `<span style="background: var(--muted); color: var(--foreground); padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; margin-right: 4px; display:inline-block; margin-bottom:2px;">${safeTopic}</span>`;
+            });
+          }
           badgesHtml += `</div>`;
 
-          el.innerHTML = `<h3 style="margin:0;"><a href="${result.url}" style="color:var(--theme-color); text-decoration:none;">${highlight(result.title, q)}</a></h3>${badgesHtml}`;
+          const safeTitle = escapeHTML(result.title); 
+          const highlightedTitle = highlight(safeTitle, q); 
+
+          el.innerHTML = `<h3 style="margin:0;"><a href="${result.url}" style="color:var(--theme-color); text-decoration:none;">${highlightedTitle}</a></h3>${badgesHtml}`;
           searchResultsDiv.appendChild(el);
         });
       };
