@@ -1,0 +1,677 @@
+{
+  "currentTerm": "Spring 2026",
+  "courses": [
+    {
+      "id": 1,
+      "code": "ENG 1011",
+      "title": "English I",
+      "shortName": "ENG 1",
+      "day": "Day 1",
+      "slot": "T1"
+    },
+    {
+      "id": 2,
+      "code": "BDS 1201",
+      "title": "History of the Emergence of Bangladesh",
+      "shortName": "BDS",
+      "day": "Day 6",
+      "slot": "T1"
+    },
+    {
+      "id": 3,
+      "code": "CSE 1110",
+      "title": "Introduction to Computer Systems",
+      "shortName": "ICS",
+      "day": "N/A",
+      "slot": "N/A"
+    },
+    {
+      "id": 4,
+      "code": "MATH 1151",
+      "title": "Fundamental Calculus",
+      "shortName": "FC",
+      "day": "Day 2",
+      "slot": "T2"
+    },
+    {
+      "id": 5,
+      "code": "ENG 1013",
+      "title": "English II",
+      "shortName": "ENG 2",
+      "day": "Day 1",
+      "slot": "T2"
+    },
+    {
+      "id": 6,
+      "code": "CSE 1111",
+      "title": "Structured Programming Language",
+      "shortName": "SPL",
+      "day": "Day 4",
+      "slot": "T2"
+    },
+    {
+      "id": 7,
+      "code": "CSE 1112",
+      "title": "Structured Programming Language Laboratory",
+      "shortName": "SPL Lab",
+      "day": "N/A",
+      "slot": "N/A"
+    },
+    {
+      "id": 8,
+      "code": "CSE 2213",
+      "title": "Discrete Mathematics",
+      "shortName": "DM",
+      "day": "Day 3",
+      "slot": "T2"
+    },
+    {
+      "id": 9,
+      "code": "MATH 2183",
+      "title": "Calculus and Linear Algebra",
+      "shortName": "Linear",
+      "day": "Day 1",
+      "slot": "T3"
+    },
+    {
+      "id": 10,
+      "code": "PHY 2105",
+      "title": "Physics",
+      "shortName": "Phy",
+      "day": "Day 7",
+      "slot": "T3"
+    },
+    {
+      "id": 11,
+      "code": "PHY 2106",
+      "title": "Physics Lab",
+      "shortName": "Physics Lab",
+      "day": "N/A",
+      "slot": "N/A"
+    },
+    {
+      "id": 12,
+      "code": "CSE 2215",
+      "title": "Data Structure and Algorithms I",
+      "shortName": "DSA 1",
+      "day": "Day 4",
+      "slot": "T2"
+    },
+    {
+      "id": 13,
+      "code": "CSE 2216",
+      "title": "Data Structure and Algorithms I Laboratory",
+      "shortName": "DSA I Lab",
+      "day": "N/A",
+      "slot": "N/A"
+    },
+    {
+      "id": 14,
+      "code": "MATH 2201",
+      "title": "Coordinate Geometry and Vector Analysis",
+      "shortName": "Vector",
+      "day": "Day 5",
+      "slot": "T1"
+    },
+    {
+      "id": 15,
+      "code": "CSE 1325",
+      "title": "Digital Logic Design",
+      "shortName": "DLD",
+      "day": "Day 3",
+      "slot": "T3"
+    },
+    {
+      "id": 16,
+      "code": "CSE 1326",
+      "title": "Digital Logic Design Lab",
+      "shortName": "DLD Lab",
+      "day": "N/A",
+      "slot": "N/A"
+    },
+    {
+      "id": 17,
+      "code": "CSE 1115",
+      "title": "Object Oriented Programming",
+      "shortName": "OOP",
+      "day": "Day 6",
+      "slot": "T2"
+    },
+    {
+      "id": 18,
+      "code": "CSE 1116",
+      "title": "Object Oriented Programming Lab",
+      "shortName": "OOP Lab",
+      "day": "N/A",
+      "slot": "N/A"
+    },
+    {
+      "id": 19,
+      "code": "MATH 2205",
+      "title": "Probability and Statistics",
+      "shortName": "Stats",
+      "day": "Day 2",
+      "slot": "T3"
+    },
+    {
+      "id": 20,
+      "code": "SOC 2101",
+      "title": "Society, Technology and Engineering Ethics",
+      "shortName": "SOC",
+      "day": "Day 1",
+      "slot": "T3"
+    },
+    {
+      "id": 21,
+      "code": "CSE 2217",
+      "title": "Data Structure and Algorithms II",
+      "shortName": "DSA 2",
+      "day": "Day 5",
+      "slot": "T2"
+    },
+    {
+      "id": 22,
+      "code": "CSE 2218",
+      "title": "Data Structure and Algorithms II Laboratory",
+      "shortName": "DSA II Lab",
+      "day": "N/A",
+      "slot": "N/A"
+    },
+    {
+      "id": 23,
+      "code": "EEE 2113",
+      "title": "Electrical Circuits",
+      "shortName": "EC",
+      "day": "Day 6",
+      "slot": "T3"
+    },
+    {
+      "id": 24,
+      "code": "CSE 3521",
+      "title": "Database Management Systems",
+      "shortName": "DBMS",
+      "day": "Day 2",
+      "slot": "T1"
+    },
+    {
+      "id": 25,
+      "code": "CSE 3522",
+      "title": "Database Management Systems Lab",
+      "shortName": "DBMS Lab",
+      "day": "N/A",
+      "slot": "N/A"
+    },
+    {
+      "id": 26,
+      "code": "EEE 2123",
+      "title": "Electronics",
+      "shortName": "Electronics",
+      "day": "Day 6",
+      "slot": "T3"
+    },
+    {
+      "id": 27,
+      "code": "EEE 2124",
+      "title": "Electronics Lab",
+      "shortName": "Electronics Lab",
+      "day": "N/A",
+      "slot": "N/A"
+    },
+    {
+      "id": 28,
+      "code": "CSE 4165",
+      "title": "Web Programming",
+      "shortName": "Web",
+      "day": "Day 7",
+      "slot": "T1"
+    },
+    {
+      "id": 29,
+      "code": "CSE 3313",
+      "title": "Computer Architecture",
+      "shortName": "CA",
+      "day": "Day 1",
+      "slot": "T3"
+    },
+    {
+      "id": 30,
+      "code": "CSE 2118",
+      "title": "Advanced Object Oriented Programming Lab",
+      "shortName": "Adv OOP Lab",
+      "day": "N/A",
+      "slot": "N/A"
+    },
+    {
+      "id": 31,
+      "code": "BIO 3105",
+      "title": "Biology for Engineers",
+      "shortName": "BIO",
+      "day": "Day 3",
+      "slot": "T3"
+    },
+    {
+      "id": 32,
+      "code": "CSE 3411",
+      "title": "System Analysis and Design",
+      "shortName": "SAD",
+      "day": "Day 5",
+      "slot": "T1"
+    },
+    {
+      "id": 33,
+      "code": "CSE 3412",
+      "title": "System Analysis and Design Lab",
+      "shortName": "SAD Lab",
+      "day": "N/A",
+      "slot": "N/A"
+    },
+    {
+      "id": 34,
+      "code": "CSE 4325",
+      "title": "Microprocessors and Microcontrollers",
+      "shortName": "Micro",
+      "day": "Day 2",
+      "slot": "T2"
+    },
+    {
+      "id": 35,
+      "code": "CSE 4326",
+      "title": "Microprocessors and Microcontrollers Lab.",
+      "shortName": "Microproc. Lab",
+      "day": "N/A",
+      "slot": "N/A"
+    },
+    {
+      "id": 36,
+      "code": "CSE 3421",
+      "title": "Software Engineering",
+      "shortName": "SE",
+      "day": "Day 5",
+      "slot": "T3"
+    },
+    {
+      "id": 37,
+      "code": "CSE 3422",
+      "title": "Software Engineering Lab",
+      "shortName": "SE Lab",
+      "day": "N/A",
+      "slot": "N/A"
+    },
+    {
+      "id": 38,
+      "code": "CSE 3811",
+      "title": "Artificial Intelligence",
+      "shortName": "AI",
+      "day": "Day 3",
+      "slot": "T1"
+    },
+    {
+      "id": 39,
+      "code": "CSE 3812",
+      "title": "Artificial Intelligence Lab",
+      "shortName": "AI Lab",
+      "day": "N/A",
+      "slot": "N/A"
+    },
+    {
+      "id": 40,
+      "code": "CSE 2233",
+      "title": "Theory of Computation",
+      "shortName": "TOC",
+      "day": "Day 7",
+      "slot": "T2"
+    },
+    {
+      "id": 41,
+      "code": "PMG 4101",
+      "title": "Project Management",
+      "shortName": "PMG",
+      "day": "Day 3",
+      "slot": "T2"
+    },
+    {
+      "id": 42,
+      "code": "CSE 3711",
+      "title": "Computer Networks",
+      "shortName": "CN",
+      "day": "Day 4",
+      "slot": "T3"
+    },
+    {
+      "id": 43,
+      "code": "CSE 3712",
+      "title": "Computer Networks Lab",
+      "shortName": "Networks Lab",
+      "day": "N/A",
+      "slot": "N/A"
+    },
+    {
+      "id": 44,
+      "code": "CSE 4509",
+      "title": "Operating Systems",
+      "shortName": "OS",
+      "day": "Day 1",
+      "slot": "T1"
+    },
+    {
+      "id": 45,
+      "code": "CSE 4510",
+      "title": "Operating Systems Laboratory",
+      "shortName": "OS Lab",
+      "day": "N/A",
+      "slot": "N/A"
+    },
+    {
+      "id": 46,
+      "code": "CSE 4531",
+      "title": "Computer Security",
+      "shortName": "CS",
+      "day": "Day 6",
+      "slot": "T3"
+    },
+    {
+      "id": 47,
+      "code": "ECO 4101",
+      "title": "Economics",
+      "shortName": "ECO",
+      "day": "Day 6",
+      "slot": "T1"
+    },
+    {
+      "id": 48,
+      "code": "ACT 2111",
+      "title": "Financial and Managerial Accounting",
+      "shortName": "ACT",
+      "day": "Day 2",
+      "slot": "T3"
+    },
+    {
+      "id": 49,
+      "code": "IPE 3401",
+      "title": "Industrial and Operational Management",
+      "shortName": "IPE",
+      "day": "Day 1",
+      "slot": "T1"
+    },
+    {
+      "id": 50,
+      "code": "TEC 2499",
+      "title": "Technology Entrepreneurship",
+      "shortName": "TEC",
+      "day": "Day 3",
+      "slot": "T2"
+    },
+    {
+      "id": 51,
+      "code": "CSE 4611",
+      "title": "Compiler Design",
+      "shortName": "Compiler",
+      "day": "Day 4",
+      "slot": "T1"
+    },
+    {
+      "id": 52,
+      "code": "CSE 4621",
+      "title": "Computer Graphics",
+      "shortName": "Graphics",
+      "day": "Day 2",
+      "slot": "T1"
+    },
+    {
+      "id": 53,
+      "code": "CSE 4783",
+      "title": "Cryptography",
+      "shortName": "Crypto",
+      "day": "Day 6",
+      "slot": "T2"
+    },
+    {
+      "id": 54,
+      "code": "CSE 4777",
+      "title": "Network Security",
+      "shortName": "NS",
+      "day": "Day 3",
+      "slot": "T3"
+    },
+    {
+      "id": 55,
+      "code": "CSE 4587",
+      "title": "Cloud Computing",
+      "shortName": "CC",
+      "day": "Day 3",
+      "slot": "T3"
+    },
+    {
+      "id": 56,
+      "code": "CSE 4889",
+      "title": "Machine Learning (CSE)",
+      "shortName": "ML",
+      "day": "Day 1",
+      "slot": "T3"
+    },
+    {
+      "id": 57,
+      "code": "CSE 4891",
+      "title": "Data Mining",
+      "shortName": "Data Mining",
+      "day": "Day 7",
+      "slot": "T1"
+    },
+    {
+      "id": 58,
+      "code": "CSE 4893",
+      "title": "Introduction to Bioinformatics",
+      "shortName": "Bioinformatics",
+      "day": "Day 4",
+      "slot": "T3"
+    },
+    {
+      "id": 59,
+      "code": "CSE 4451",
+      "title": "Human Computer Interaction",
+      "shortName": "HCI",
+      "day": "Day 3",
+      "slot": "T1"
+    },
+    {
+      "id": 60,
+      "code": "CSE 4435",
+      "title": "Software Architecture",
+      "shortName": "SA",
+      "day": "Day 4",
+      "slot": "T2"
+    },
+    {
+      "id": 61,
+      "code": "CSE 4181",
+      "title": "Mobile Application Development",
+      "shortName": "Mobile App",
+      "day": "Day 6",
+      "slot": "T3"
+    },
+    {
+      "id": 62,
+      "code": "CSE 4495",
+      "title": "Software Testing and Quality Assurance",
+      "shortName": "SQA",
+      "day": "Day 7",
+      "slot": "T3"
+    },
+    {
+      "id": 63,
+      "code": "CSE 4945",
+      "title": "UI: Concepts and Design",
+      "shortName": "UI",
+      "day": "Day 1",
+      "slot": "T2"
+    },
+    {
+      "id": 64,
+      "code": "DS 1501",
+      "title": "Programming for Data Science",
+      "shortName": "Prog",
+      "day": "Day 4",
+      "slot": "T2"
+    },
+    {
+      "id": 65,
+      "code": "DS 1502",
+      "title": "Programming for Data Science Laboratory",
+      "shortName": "Prog for DS Lab",
+      "day": "N/A",
+      "slot": "N/A"
+    },
+    {
+      "id": 66,
+      "code": "DS 1115",
+      "title": "Object Oriented Programming for Data Science",
+      "shortName": "OOP",
+      "day": "Day 6",
+      "slot": "T2"
+    },
+    {
+      "id": 67,
+      "code": "DS 1116",
+      "title": "Object Oriented Programming for Data Science Laboratory",
+      "shortName": "OOP DS Lab",
+      "day": "N/A",
+      "slot": "N/A"
+    },
+    {
+      "id": 68,
+      "code": "DS 1101",
+      "title": "Fundamentals of Data Science",
+      "shortName": "Fund",
+      "day": "Day 5",
+      "slot": "T2"
+    },
+    {
+      "id": 69,
+      "code": "BIO 3107",
+      "title": "Biology (DS)",
+      "shortName": "Biology",
+      "day": "Day 3",
+      "slot": "T3"
+    },
+    {
+      "id": 70,
+      "code": "MATH 2107",
+      "title": "Linear Algebra",
+      "shortName": "Linear Alg",
+      "day": "Day 1",
+      "slot": "T3"
+    },
+    {
+      "id": 71,
+      "code": "MATH 1153",
+      "title": "Advanced Calculus",
+      "shortName": "Ad Calc",
+      "day": "Day 5",
+      "slot": "T1"
+    },
+    {
+      "id": 72,
+      "code": "SOC 2102",
+      "title": "Society, Environment and Computing Ethics",
+      "shortName": "SOC",
+      "day": "Day 1",
+      "slot": "T3"
+    },
+    {
+      "id": 73,
+      "code": "DS 3885",
+      "title": "Data Wrangling",
+      "shortName": "Data Wrangling",
+      "day": "Day 1",
+      "slot": "T2"
+    },
+    {
+      "id": 74,
+      "code": "DS 3101",
+      "title": "Advanced Probability and Statistics",
+      "shortName": "APS",
+      "day": "Day 4",
+      "slot": "T3"
+    },
+    {
+      "id": 75,
+      "code": "DS 3521",
+      "title": "Data Visualization",
+      "shortName": "Data Viz",
+      "day": "Day 6",
+      "slot": "T1"
+    },
+    {
+      "id": 76,
+      "code": "DS 3522",
+      "title": "Data Visualization Lab",
+      "shortName": "Data Viz Lab",
+      "day": "N/A",
+      "slot": "N/A"
+    },
+    {
+      "id": 77,
+      "code": "DS 4889",
+      "title": "Machine Learning (DS)",
+      "shortName": "ML",
+      "day": "Day 1",
+      "slot": "T3"
+    },
+    {
+      "id": 78,
+      "code": "DS 4523",
+      "title": "Simulation and Modeling",
+      "shortName": "SM",
+      "day": "Day 4",
+      "slot": "T3"
+    },
+    {
+      "id": 79,
+      "code": "DS 4891",
+      "title": "Data Analytics",
+      "shortName": "Analytics",
+      "day": "Day 6",
+      "slot": "T2"
+    },
+    {
+      "id": 80,
+      "code": "DS 4892",
+      "title": "Data Analytics Laboratory",
+      "shortName": "Data Analytics Lab",
+      "day": "N/A",
+      "slot": "N/A"
+    },
+    {
+      "id": 81,
+      "code": "DS 3120",
+      "title": "Technical Report Writing and Presentation",
+      "shortName": "Tech Report",
+      "day": "N/A",
+      "slot": "N/A"
+    },
+    {
+      "id": 82,
+      "code": "DS 4491",
+      "title": "Machine Learning Systems Design",
+      "shortName": "MLSD",
+      "day": "Day 1",
+      "slot": "T1"
+    },
+    {
+      "id": 83,
+      "code": "DS 2251",
+      "title": "Bayesian Statistics",
+      "shortName": "Bayesian",
+      "day": "Day 4",
+      "slot": "T2"
+    },
+    {
+      "id": 84,
+      "code": "DS 3881",
+      "title": "Regression and Time Series Analysis",
+      "shortName": "Regression",
+      "day": "Day 7",
+      "slot": "T3"
+    }
+  ]
+}

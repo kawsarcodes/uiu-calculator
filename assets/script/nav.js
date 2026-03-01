@@ -55,7 +55,6 @@ class globalNav extends HTMLElement {
           </div>
           <div class="copy-link">
               <input type="text" id="shareLink" readonly>
-              <!-- UPDATED BUTTON WITH ICON -->
               <button id="copyButton">
                 <i class="fa-regular fa-copy"></i>
               </button>
