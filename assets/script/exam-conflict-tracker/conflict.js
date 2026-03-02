@@ -16,19 +16,22 @@ async function loadTrimesterData() {
         if (termDisplay) {
             termDisplay.innerHTML = `<i class="fa-solid fa-calendar-check"></i> ${data.currentTerm}`;
         }
-        db = data.courses;
+        db = data.courses; 
+        initGridStructure(); 
         renderSidebar();
     } catch (error) {
         console.error("Error loading trimester data:", error.message);
     }
 }
 function initGridStructure() {
+    gridEl.innerHTML = ''; 
     gridEl.innerHTML = `
         <div class="tracker-header-cell">Day</div>
         <div class="tracker-header-cell">Slot T1</div>
         <div class="tracker-header-cell">Slot T2</div>
         <div class="tracker-header-cell">Slot T3</div>
     `;
+    const days = ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7']; 
     for (let i = 1; i <= 7; i++) {
         const dayLabel = document.createElement('div');
         dayLabel.className = 'tracker-day-label';
@@ -48,9 +51,9 @@ function renderSidebar(filter = '') {
     listEl.innerHTML = '';
     const term = filter.toLowerCase();
     const filtered = db.filter(c => 
-        c.code.toLowerCase().includes(term) || 
-        c.title.toLowerCase().includes(term) ||
-        c.shortName.toLowerCase().includes(term)
+        (c.code && c.code.toLowerCase().includes(term)) || 
+        (c.title && c.title.toLowerCase().includes(term)) ||
+        (c.shortName && c.shortName.toLowerCase().includes(term))
     );
     filtered.forEach(course => {
         const card = document.createElement('div');
@@ -64,11 +67,23 @@ function renderSidebar(filter = '') {
         titleDiv.textContent = course.title;
         const metaDiv = document.createElement('div');
         metaDiv.className = 'tracker-meta';
-        metaDiv.textContent = `${course.day} / ${course.slot}`;
+        if (course.day === 'N/A' || course.slot === 'N/A') {
+            metaDiv.innerHTML = `<span><i class="fa-solid fa-calendar-xmark" style="margin-right:5px;"></i> No Central Exam</span>`;
+            metaDiv.classList.add('meta-na'); 
+        } else {
+            metaDiv.textContent = `${course.day} / ${course.slot}`;
+        }
         card.appendChild(codeDiv);
         card.appendChild(titleDiv);
         card.appendChild(metaDiv);
         card.addEventListener('click', () => toggleSelection(course.id));
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            card.style.setProperty("--mouse-x", `${x}px`);
+            card.style.setProperty("--mouse-y", `${y}px`);
+        });
         listEl.appendChild(card);
     });
 }
@@ -78,7 +93,7 @@ function toggleSelection(id) {
     } else {
         selectedIds.push(id);
     }
-    renderSidebar(searchEl.value);
+    renderSidebar(searchEl.value); 
     updateVisualization();
 }
 function updateVisualization() {
@@ -122,6 +137,5 @@ function updateVisualization() {
     if (hasDirectConflict) conflictBox.classList.add('show');
     if (hasWarning && !hasDirectConflict) warningBox.classList.add('show');
 }
-initGridStructure();
 loadTrimesterData(); 
 searchEl.addEventListener('input', (e) => renderSidebar(e.target.value));
