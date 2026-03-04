@@ -361,6 +361,7 @@
           "  cgpa                    --> CGPA calculator",
           "  planner                 --> CGPA planner",
           "  tuition                 --> Tuition fee calculator",
+          "  conflict                --> Exam Conflict Tracker",
           "--------------------------------------------------------------",
           "🎮 GAMES",
           "--------------------------------------------------------------",
@@ -506,6 +507,23 @@
       usage: "planner [--new]",
       handler: (args) => {
         const url = "/calculator/cgpa-planner/index.html";
+        if (args.includes("--new")) {
+          window.open(url, "_blank");
+          appendOutput(
+            "Opening CGPA planner in new tab...",
+            "uiu-term-success",
+          );
+        } else {
+          window.location.href = url;
+        }
+      },
+    },
+
+    conflict: {
+      description: "Open Exam Conflict Tracker",
+      usage: "planner [--new]",
+      handler: (args) => {
+        const url = "/tools/exam-conflict-tracker/index.html";
         if (args.includes("--new")) {
           window.open(url, "_blank");
           appendOutput(
