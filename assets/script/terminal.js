@@ -8,7 +8,7 @@
 
   const ABOUT_INFO = {
     name: "UIU Calculator",
-    version: "2.5",
+    version: "3.0",
     developer: "Kawsar Ahmed",
     bio: "Computer Science and Engineering",
     contact: {
