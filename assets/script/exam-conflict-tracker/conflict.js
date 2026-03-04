@@ -6,6 +6,7 @@ const searchEl = document.getElementById('trackerSearchInput');
 const conflictBox = document.getElementById('alertConflictBox');
 const warningBox = document.getElementById('alertWarningBox');
 const termDisplay = document.getElementById('currentTrimester');
+const resetBtn = document.getElementById('resetBtn');
 async function loadTrimesterData() {
     try {
         const response = await fetch('/assets/script/exam-conflict-tracker/courses-data.json');
@@ -19,6 +20,7 @@ async function loadTrimesterData() {
         db = data.courses; 
         initGridStructure(); 
         renderSidebar();
+        updateResetButtonState();
     } catch (error) {
         console.error("Error loading trimester data:", error.message);
     }
@@ -31,7 +33,6 @@ function initGridStructure() {
         <div class="tracker-header-cell">Slot T2</div>
         <div class="tracker-header-cell">Slot T3</div>
     `;
-    const days = ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7']; 
     for (let i = 1; i <= 7; i++) {
         const dayLabel = document.createElement('div');
         dayLabel.className = 'tracker-day-label';
@@ -55,6 +56,26 @@ function renderSidebar(filter = '') {
         (c.title && c.title.toLowerCase().includes(term)) ||
         (c.shortName && c.shortName.toLowerCase().includes(term))
     );
+    if (filtered.length === 0) {
+        const emptyState = document.createElement('div');
+        emptyState.className = 'tracker-empty-state';
+        emptyState.innerHTML = `
+            <div class="tracker-empty-icon">
+                <i class="fas fa-search"></i>
+            </div>
+            <h3 class="tracker-empty-title">No Courses Found</h3>
+            <p class="tracker-empty-message">
+                Couldn't find any courses matching "<strong>${escapeHtml(filter)}</strong>". 
+                Please try a different search term.
+            </p>
+            <div class="tracker-empty-suggestion">
+                <i class="fas fa-lightbulb"></i>
+                Try searching by course code or title
+            </div>
+        `;
+        listEl.appendChild(emptyState);
+        return;
+    }
     filtered.forEach(course => {
         const card = document.createElement('div');
         const isActive = selectedIds.includes(course.id);
@@ -87,6 +108,11 @@ function renderSidebar(filter = '') {
         listEl.appendChild(card);
     });
 }
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
 function toggleSelection(id) {
     if (selectedIds.includes(id)) {
         selectedIds = selectedIds.filter(x => x !== id);
@@ -95,6 +121,19 @@ function toggleSelection(id) {
     }
     renderSidebar(searchEl.value); 
     updateVisualization();
+    updateResetButtonState();
+}
+function resetAllSelections() {
+    selectedIds = [];
+    searchEl.value = '';
+    renderSidebar();
+    updateVisualization();
+    updateResetButtonState();
+}
+function updateResetButtonState() {
+    if (resetBtn) {
+        resetBtn.disabled = selectedIds.length === 0;
+    }
 }
 function updateVisualization() {
     document.querySelectorAll('.tracker-slot').forEach(el => {
@@ -139,3 +178,4 @@ function updateVisualization() {
 }
 loadTrimesterData(); 
 searchEl.addEventListener('input', (e) => renderSidebar(e.target.value));
+resetBtn.addEventListener('click', resetAllSelections);
