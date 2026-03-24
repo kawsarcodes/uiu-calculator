@@ -1345,13 +1345,13 @@ class globalHeader extends HTMLElement {
             ><i class="fab fa-github"></i
           ></a>
           <a
-            href="https://www.facebook.com/kawsarshaikat"
+            href="https://www.facebook.com/kawsarcodes"
             target="_blank"
             style="color: var(--muted-foreground); margin-right: 5px"
             ><i class="fab fa-facebook-f"></i
           ></a>
           <a
-            href="https://instagram.com/kawsarshaikat"
+            href="https://instagram.com/kawsarcodes"
             target="_blank"
             style="color: var(--muted-foreground); margin-right: 5px"
             ><i class="fab fa-instagram"></i

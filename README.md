@@ -22,27 +22,23 @@
 
 ---
 
-## 🚀 About The Project
+## About The Project
 
 Calculating grades and planning finances shouldn't be a headache. This project is an **all-in-one academic toolkit** designed specifically for **United International University (UIU)** students.
 
 It replaces manual calculation errors with a fast, responsive, and mobile-friendly interface.
 
-## ✨ Key Features
+##  Tools
 
-*   **🎓 CGPA Calculator:** Instantly calculates your GPA and CGPA based on the official UIU grading policy.
-*   **🎯 Target CGPA Planner:** The "Magic" tool. Tell it your current CGPA and your goal (e.g., "I want a 3.5"), and it tells you exactly what GPA you need in the next trimester.
-*   **💰 Tuition Fee Calculator:** Enter redits and waiver/scholarship percentage to get an accurate breakdown of your installment fees.
+*   **CGPA Calculator:** Instantly calculates your GPA and CGPA based on the official UIU grading policy.
+*   **Target CGPA Planner:** The "Magic" tool. Tell it your current CGPA and your goal (e.g., "I want a 3.5"), and it tells you exactly what GPA you need in the next trimester.s
+*   **Tuition Fee Calculator:** Enter redits and waiver/scholarship percentage to get an accurate breakdown of your installment fees.
+*   **Exam Conflict Tracker:** A specialized tool to help you identify scheduling overlaps and ensure your exam dates do not clash during course registration..
 
-## 👨‍💻 Developed By
+## Developed By
 
-**Kawsar Ahmed**
+**Md Kawsar Ahmed**
 
-*   Website: [kawsar.dev](https://kawsar.dev/)
+*   Website: [www.kawsar.dev](https://kawsar.dev/)
 *   GitHub: [@kawsarcodes](https://github.com/kawsarcodes)
 
----
-
-<div align="center">
-  <sub>Made with ❤️ for UIU Students</sub>
-</div
