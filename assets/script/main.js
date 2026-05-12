@@ -13,7 +13,10 @@ const gradePoints = {
 };
 function getCGPAClassification(cgpa) {
   if (cgpa >= 3.67) {
-    return { label: "A / A- range (Outstanding / Excellent)", className: "textG" };
+    return {
+      label: "A / A- range (Outstanding / Excellent)",
+      className: "textG",
+    };
   }
   if (cgpa >= 3.33) {
     return { label: "B+ range (Very Good)", className: "textG" };
@@ -637,7 +640,7 @@ function calculateCGPA() {
             </div>
           </div>
         `;
-    } else {
+  } else {
     const totalQualityPointsWithoutRetakes =
       currentQualityPoints + newCoursePoints;
     const cgpaWithoutRetakes =
@@ -778,15 +781,14 @@ function calculateCGPA() {
     document
       .getElementById("resetCGPABtn2")
       ?.addEventListener("click", resetCGPA);
-  } catch (e) {
-  }
+  } catch (e) {}
 }
 function hideResults() {
   const resultDiv = document.getElementById("cgpaResult");
   if (resultDiv) {
     resultDiv.hidden = true;
     resultDiv.style.display = "none";
-    resultDiv.innerHTML = ""; 
+    resultDiv.innerHTML = "";
   }
   const rightPlaceholderDiv = document.getElementById("rightPlaceholder");
   if (rightPlaceholderDiv) {
@@ -810,16 +812,29 @@ function resetCGPA() {
 function calculateTuitionFee() {
   const newCreditInput = document.getElementById("newCredit");
   const retakeCreditFirstInput = document.getElementById("retakeCreditFirst");
-  const retakeCreditRegularInput = document.getElementById("retakeCreditRegular");
-  const perCreditFee = parseFloat(document.getElementById("perCreditFee").value);
-  const trimesterFee = parseFloat(document.getElementById("trimesterFee").value);
-  const waiverPercent = parseFloat(document.getElementById("waiver").value) || 0;
-  const scholarshipPercent = parseFloat(document.getElementById("scholarship").value) || 0;
+  const retakeCreditRegularInput = document.getElementById(
+    "retakeCreditRegular",
+  );
+  const perCreditFee = parseFloat(
+    document.getElementById("perCreditFee").value,
+  );
+  const trimesterFee = parseFloat(
+    document.getElementById("trimesterFee").value,
+  );
+  const waiverPercent =
+    parseFloat(document.getElementById("waiver").value) || 0;
+  const scholarshipPercent =
+    parseFloat(document.getElementById("scholarship").value) || 0;
   const lateRegistration = document.getElementById("lateRegistration").checked;
-  const waiverInFirstInstallment = document.getElementById("waiverInFirstInstallment").checked;  
-  const siblingSpouseWaiver = parseFloat(document.getElementById("siblingSpouseWaiver").value) || 0;
-  const ethnicTribalWaiver = parseFloat(document.getElementById("ethnicTribalWaiver").value) || 0;
-  const disabilityWaiver = parseFloat(document.getElementById("disabilityWaiver").value) || 0;
+  const waiverInFirstInstallment = document.getElementById(
+    "waiverInFirstInstallment",
+  ).checked;
+  const siblingSpouseWaiver =
+    parseFloat(document.getElementById("siblingSpouseWaiver").value) || 0;
+  const ethnicTribalWaiver =
+    parseFloat(document.getElementById("ethnicTribalWaiver").value) || 0;
+  const disabilityWaiver =
+    parseFloat(document.getElementById("disabilityWaiver").value) || 0;
   const newCredit = parseFloat(newCreditInput.value) || 0;
   const retakeCreditFirst = parseFloat(retakeCreditFirstInput.value) || 0;
   const retakeCreditRegular = parseFloat(retakeCreditRegularInput.value) || 0;
@@ -836,10 +851,11 @@ function calculateTuitionFee() {
   const feeRetakeRegularTotal = retakeCreditRegular * perCreditFee;
   const lateRegistrationFee = lateRegistration ? 500 : 0;
   const adminFees = trimesterFee + lateRegistrationFee;
-  const totalGrossFee = feeNewTotal + feeRetake1stTotal + feeRetakeRegularTotal + adminFees;
+  const totalGrossFee =
+    feeNewTotal + feeRetake1stTotal + feeRetakeRegularTotal + adminFees;
   let discountNewRegular = 0;
-  let discountRowsData = []; 
-  let hybridMessageHtml = ""; 
+  let discountRowsData = [];
+  let hybridMessageHtml = "";
 
   if (waiverPercent >= scholarshipPercent) {
     discountNewRegular = (feeNewTotal * waiverPercent) / 100;
@@ -847,24 +863,20 @@ function calculateTuitionFee() {
       discountRowsData.push({
         label: "Waiver",
         desc: `${waiverPercent}% on New Courses`,
-        amount: discountNewRegular
+        amount: discountNewRegular,
       });
     }
-  } 
-
-  else {
+  } else {
     if (newCredit <= 13) {
       discountNewRegular = (feeNewTotal * scholarshipPercent) / 100;
       if (scholarshipPercent > 0) {
         discountRowsData.push({
           label: "Scholarship",
           desc: `${scholarshipPercent}% on New Courses`,
-          amount: discountNewRegular
+          amount: discountNewRegular,
         });
       }
-    } 
-
-    else {
+    } else {
       const feeForScholarship = 13 * perCreditFee;
       const discountPart1 = (feeForScholarship * scholarshipPercent) / 100;
       const remainingCredit = newCredit - 13;
@@ -876,17 +888,16 @@ function calculateTuitionFee() {
       discountRowsData.push({
         label: "Scholarship (Limit 13 Cr)",
         desc: `${scholarshipPercent}% on first 13 Credits`,
-        amount: discountPart1
+        amount: discountPart1,
       });
 
       if (waiverPercent > 0) {
         discountRowsData.push({
           label: "Waiver (Remaining Cr)",
           desc: `${waiverPercent}% on remaining ${remainingCredit.toFixed(1)} Credits`,
-          amount: discountPart2
+          amount: discountPart2,
         });
       } else {
-
       }
       hybridMessageHtml = `
         <div class="note-b note-b-sp1 mb-3 text-xs">
@@ -898,72 +909,87 @@ function calculateTuitionFee() {
     }
   }
 
-
   const discountSibling = (feeNewTotal * siblingSpouseWaiver) / 100;
   const discountEthnic = (feeNewTotal * ethnicTribalWaiver) / 100;
   const discountDisability = (feeNewTotal * disabilityWaiver) / 100;
   const discountRetake1st = (feeRetake1stTotal * 50) / 100;
-  const totalOtherDiscounts = discountSibling + discountEthnic + discountDisability;
-  const totalNewDiscount = Math.min(feeNewTotal, (discountNewRegular + totalOtherDiscounts));
-  const finalAmount = (feeNewTotal - totalNewDiscount) + (feeRetake1stTotal - discountRetake1st) + feeRetakeRegularTotal + adminFees;
+  const totalOtherDiscounts =
+    discountSibling + discountEthnic + discountDisability;
+  const totalNewDiscount = Math.min(
+    feeNewTotal,
+    discountNewRegular + totalOtherDiscounts,
+  );
+  const finalAmount =
+    feeNewTotal -
+    totalNewDiscount +
+    (feeRetake1stTotal - discountRetake1st) +
+    feeRetakeRegularTotal +
+    adminFees;
   let firstInstallment, secondInstallment, thirdInstallment;
-  let firstCalc, secondCalc, thirdCalc; 
+  let firstCalc, secondCalc, thirdCalc;
   let installmentMethod = "";
   let alertBoxHtml = "";
   const isOnlyAdminFee = finalAmount <= adminFees;
 
   if (isOnlyAdminFee) {
-      const feeText = lateRegistration ? "Trimester fee & Late fee" : "Trimester fee";
-      installmentMethod = `100% discount: Only ${feeText} payable`;
+    const feeText = lateRegistration
+      ? "Trimester fee & Late fee"
+      : "Trimester fee";
+    installmentMethod = `100% discount: Only ${feeText} payable`;
+    firstInstallment = finalAmount;
+    secondInstallment = 0;
+    thirdInstallment = 0;
+    firstCalc = `Full ${feeText}`;
+    secondCalc = "No payment required";
+    thirdCalc = "No payment required";
+    alertBoxHtml = `<div class="note-g"><i class="fas fa-check-circle"></i> <strong>Note:</strong> Since your tuition is fully waived, you only need to pay the ${feeText} in the 1st installment.</div>`;
+  } else {
+    let targetFirstInstallment;
+    if (waiverInFirstInstallment) {
+      targetFirstInstallment = Math.round(finalAmount * 0.4);
+      installmentMethod = "Custom: 40% of Net Payable";
+      firstCalc = "40% of Net Payable";
+      alertBoxHtml = `<div class="note-g"><i class="fas fa-check-circle"></i> <strong>Note:</strong> You have chosen to apply the waiver in the 1st installment.</div>`;
+    } else {
+      targetFirstInstallment = Math.round(totalGrossFee * 0.4);
+      installmentMethod = "Standard Rule: 40% of Gross Fee";
+      firstCalc = "40% of Gross Fee";
+      alertBoxHtml = `<div class="note-g"><i class="fas fa-info-circle"></i> <strong>Note:</strong> 40% of the Gross Fee in the 1st installment.</div>`;
+    }
+
+    if (targetFirstInstallment >= finalAmount) {
       firstInstallment = finalAmount;
       secondInstallment = 0;
       thirdInstallment = 0;
-      firstCalc = `Full ${feeText}`;
-      secondCalc = "No payment required";
-      thirdCalc = "No payment required";
-      alertBoxHtml = `<div class="note-g"><i class="fas fa-check-circle"></i> <strong>Note:</strong> Since your tuition is fully waived, you only need to pay the ${feeText} in the 1st installment.</div>`;
-  } else {
-      let targetFirstInstallment;
-      if (waiverInFirstInstallment) {
-          targetFirstInstallment = Math.round(finalAmount * 0.40);
-          installmentMethod = "Custom: 40% of Net Payable";
-          firstCalc = "40% of Net Payable";
-          alertBoxHtml = `<div class="note-g"><i class="fas fa-check-circle"></i> <strong>Note:</strong> You have chosen to apply the waiver in the 1st installment.</div>`;
-      } else {
-          targetFirstInstallment = Math.round(totalGrossFee * 0.40);
-          installmentMethod = "Standard Rule: 40% of Gross Fee";
-          firstCalc = "40% of Gross Fee";
-          alertBoxHtml = `<div class="note-g"><i class="fas fa-info-circle"></i> <strong>Note:</strong> 40% of the Gross Fee (Total Fee before scholarship) in the 1st installment.</div>`;
+      if (!waiverInFirstInstallment) {
+        firstCalc = "Full Net Payable";
+        installmentMethod = "100% Payment in 1st Installment";
       }
-
-      if (targetFirstInstallment >= finalAmount) {
-          firstInstallment = finalAmount;
-          secondInstallment = 0;
-          thirdInstallment = 0;
-          if (!waiverInFirstInstallment) {
-              firstCalc = "Full Net Payable";
-              installmentMethod = "100% Payment in 1st Installment";
-          }
-          secondCalc = "-";
-          thirdCalc = "-";
-      } else {
-          firstInstallment = targetFirstInstallment;
-          const remaining = finalAmount - firstInstallment;
-          secondInstallment = Math.round(remaining / 2);
-          thirdInstallment = remaining - secondInstallment;
-          secondCalc = "50% of remaining balance";
-          thirdCalc = "50% of remaining balance";
-      }
+      secondCalc = "-";
+      thirdCalc = "-";
+    } else {
+      firstInstallment = targetFirstInstallment;
+      const remaining = finalAmount - firstInstallment;
+      secondInstallment = Math.round(remaining / 2);
+      thirdInstallment = remaining - secondInstallment;
+      secondCalc = "50% of remaining balance";
+      thirdCalc = "50% of remaining balance";
+    }
   }
 
   function formatCurrency(amount) {
-    return new Intl.NumberFormat("en-BD", { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(amount) + "৳";
+    return (
+      new Intl.NumberFormat("en-BD", {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0,
+      }).format(amount) + "৳"
+    );
   }
 
   let discountRowsHtml = "";
-  
-  discountRowsData.forEach(row => {
-     discountRowsHtml += `<tr><td class="textG">${row.label}</td><td class="text-right textG">${row.desc}</td><td class="text-right textG">-${formatCurrency(row.amount)}</td></tr>`;
+
+  discountRowsData.forEach((row) => {
+    discountRowsHtml += `<tr><td class="textG">${row.label}</td><td class="text-right textG">${row.desc}</td><td class="text-right textG">-${formatCurrency(row.amount)}</td></tr>`;
   });
 
   if (retakeCreditFirst > 0) {
@@ -990,8 +1016,8 @@ function calculateTuitionFee() {
   <div class="card-content">
     <div class="space-y-2">
       <div class="flex justifyC itemsC"><span>New Course Credits:</span><span>${newCredit}</span></div>
-      ${retakeCreditFirst > 0 ? `<div class="flex justifyC itemsC"><span>Retake Credits (1st Time):</span><span>${retakeCreditFirst}</span></div>` : ''}
-      ${retakeCreditRegular > 0 ? `<div class="flex justifyC itemsC"><span>Retake Credits (2nd+ Time):</span><span>${retakeCreditRegular}</span></div>` : ''}
+      ${retakeCreditFirst > 0 ? `<div class="flex justifyC itemsC"><span>Retake Credits (1st Time):</span><span>${retakeCreditFirst}</span></div>` : ""}
+      ${retakeCreditRegular > 0 ? `<div class="flex justifyC itemsC"><span>Retake Credits (2nd+ Time):</span><span>${retakeCreditRegular}</span></div>` : ""}
       <div class="separator"></div>
       <div class="flex justifyC itemsC font-bold"><span>Total Credits Taken:</span><span class="badge badge-outline">${newCredit + retakeCreditFirst + retakeCreditRegular}</span></div>
     </div>
@@ -1009,17 +1035,21 @@ function calculateTuitionFee() {
         </thead>
         <tbody>
           <tr><td>New Course Tuition Fee</td><td class="text-right">${newCredit} credits × ${perCreditFee}</td><td class="text-right">${formatCurrency(feeNewTotal)}</td></tr>
-          ${retakeCreditFirst > 0 ? `<tr><td>Retake Courses Tuition Fee (1st Time)</td><td class="text-right">${retakeCreditFirst} credits × ${perCreditFee}</td><td class="text-right">${formatCurrency(feeRetake1stTotal)}</td></tr>` : ''}
-          ${retakeCreditRegular > 0 ? `<tr><td>Retake Courses Tuition Fee (2nd+ Time)</td><td class="text-right">${retakeCreditRegular} credits × ${perCreditFee}</td><td class="text-right">${formatCurrency(feeRetakeRegularTotal)}</td></tr>` : ''}
+          ${retakeCreditFirst > 0 ? `<tr><td>Retake Courses Tuition Fee (1st Time)</td><td class="text-right">${retakeCreditFirst} credits × ${perCreditFee}</td><td class="text-right">${formatCurrency(feeRetake1stTotal)}</td></tr>` : ""}
+          ${retakeCreditRegular > 0 ? `<tr><td>Retake Courses Tuition Fee (2nd+ Time)</td><td class="text-right">${retakeCreditRegular} credits × ${perCreditFee}</td><td class="text-right">${formatCurrency(feeRetakeRegularTotal)}</td></tr>` : ""}
           <tr><td>Trimester Fee</td><td class="text-right">Fixed</td><td class="text-right">${formatCurrency(trimesterFee)}</td></tr>
-          ${lateRegistration ? `<tr style="color: #ff0040!important"><td>Late Registration Fee</td><td class="text-right">Fine</td><td class="text-right" style="font-weight: bold;">${formatCurrency(lateRegistrationFee)}</td></tr>` : ''}
-          ${hasDiscount ? `
+          ${lateRegistration ? `<tr style="color: #ff0040!important"><td>Late Registration Fee</td><td class="text-right">Fine</td><td class="text-right" style="font-weight: bold;">${formatCurrency(lateRegistrationFee)}</td></tr>` : ""}
+          ${
+            hasDiscount
+              ? `
           <tr style="color: var(--theme-color)!important; font-weight: bold;">
             <td>Total Gross Fee</td>
             <td class="text-right text-xs font-normal">All tuition & fees</td>
             <td class="text-right">${formatCurrency(totalGrossFee)}</td>
-          </tr>` : ''}
-          ${discountRowsHtml ? discountRowsHtml : ''}          
+          </tr>`
+              : ""
+          }
+          ${discountRowsHtml ? discountRowsHtml : ""}          
           <tr class="border-t-2" style="font-weight: bold;"><td class="font-bold" style="color: var(--theme-color);">Total Payable (Net)</td><td></td><td class="text-right font-bold text-lg" style="color: var(--theme-color);">${formatCurrency(finalAmount)}</td></tr>
         </tbody>
       </table>
@@ -1048,8 +1078,8 @@ function calculateTuitionFee() {
             <thead><tr class="bg-muted"><th>Installment</th><th class="text-left">Calculation</th><th class="text-right">Amount</th></tr></thead>
             <tbody>
               <tr><td>1st Installment</td><td>${firstCalc}</td><td class="text-right font-semibold">${formatCurrency(firstInstallment)}</td></tr>
-              <tr class="${secondInstallment === 0 ? 'text-muted-foreground' : ''}"><td>2nd Installment</td><td>${secondCalc}</td><td class="text-right">${formatCurrency(secondInstallment)}</td></tr>
-              <tr class="${thirdInstallment === 0 ? 'text-muted-foreground' : ''}"><td>3rd Installment</td><td>${thirdCalc}</td><td class="text-right">${formatCurrency(thirdInstallment)}</td></tr>
+              <tr class="${secondInstallment === 0 ? "text-muted-foreground" : ""}"><td>2nd Installment</td><td>${secondCalc}</td><td class="text-right">${formatCurrency(secondInstallment)}</td></tr>
+              <tr class="${thirdInstallment === 0 ? "text-muted-foreground" : ""}"><td>3rd Installment</td><td>${thirdCalc}</td><td class="text-right">${formatCurrency(thirdInstallment)}</td></tr>
             </tbody>
           </table>
         </div>
@@ -1069,8 +1099,8 @@ function resetTuitionFee() {
     ["newCredit", ""],
     ["retakeCreditFirst", ""],
     ["retakeCreditRegular", ""],
-    ["perCreditFee", "6500"], 
-    ["trimesterFee", "6500"] 
+    ["perCreditFee", "6500"],
+    ["trimesterFee", "6500"],
   ];
 
   inputIds.forEach(([id, val]) => {
@@ -1080,7 +1110,7 @@ function resetTuitionFee() {
 
   const late = document.getElementById("lateRegistration");
   if (late) late.checked = false;
-  
+
   const waiveFirst = document.getElementById("waiverInFirstInstallment");
   if (waiveFirst) waiveFirst.checked = false;
 
@@ -1089,16 +1119,16 @@ function resetTuitionFee() {
     "scholarship",
     "siblingSpouseWaiver",
     "ethnicTribalWaiver",
-    "disabilityWaiver"
+    "disabilityWaiver",
   ];
 
-  dropdownIds.forEach(id => {
+  dropdownIds.forEach((id) => {
     const select = document.getElementById(id);
     if (select) {
-      select.value = "0"; 
+      select.value = "0";
       const triggerLabel = document.querySelector(`#${id}-trigger .cs-label`);
       const selectedOption = select.options[select.selectedIndex];
-      
+
       if (triggerLabel && selectedOption) {
         triggerLabel.textContent = selectedOption.textContent;
       }
@@ -1110,21 +1140,21 @@ function resetTuitionFee() {
 
   const ph = document.getElementById("rightPlaceholder");
   if (ph) {
-      ph.removeAttribute("hidden");
-      ph.style.display = "block";
+    ph.removeAttribute("hidden");
+    ph.style.display = "block";
   }
 
   const errorIds = [
-    "perCreditFeeError", 
-    "trimesterFeeError", 
-    "newCreditError", 
-    "retakeCreditFirstError", 
-    "retakeCreditRegularError"
+    "perCreditFeeError",
+    "trimesterFeeError",
+    "newCreditError",
+    "retakeCreditFirstError",
+    "retakeCreditRegularError",
   ];
-  
-  errorIds.forEach(id => {
-      const el = document.getElementById(id);
-      if(el) el.style.display = "none";
+
+  errorIds.forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = "none";
   });
 }
 function openTab(evt, tabName) {
@@ -1208,283 +1238,287 @@ document.addEventListener("DOMContentLoaded", function () {
       openTab(evt, "retake-courses");
     });
 
-// CGPA LIMIT 0-4
-const allCgpaInputs = document.querySelectorAll(".cgpa-input");
-allCgpaInputs.forEach((input) => {
-  input.addEventListener("input", function () {
-    const value = input.value;
-    const errorId = input.id + "Error";
-    const cgpaError =
-      document.getElementById(errorId) ||
-      getOrCreateErrorEl(errorId, input.id);
+  // CGPA LIMIT 0-4
+  const allCgpaInputs = document.querySelectorAll(".cgpa-input");
+  allCgpaInputs.forEach((input) => {
+    input.addEventListener("input", function () {
+      const value = input.value;
+      const errorId = input.id + "Error";
+      const cgpaError =
+        document.getElementById(errorId) ||
+        getOrCreateErrorEl(errorId, input.id);
 
-    if (value === "") {
-      cgpaError.style.display = "block";
-      cgpaError.textContent = "Please enter your CGPA";
-      return;
-    }
+      if (value === "") {
+        cgpaError.style.display = "block";
+        cgpaError.textContent = "Please enter your CGPA";
+        return;
+      }
 
-    if (value === "-") {
-      input.value = 0;
-      cgpaError.style.display = "block";
-      cgpaError.textContent = "CGPA cannot be less than 0.00";
-      return;
-    }
+      if (value === "-") {
+        input.value = 0;
+        cgpaError.style.display = "block";
+        cgpaError.textContent = "CGPA cannot be less than 0.00";
+        return;
+      }
 
-    const num = parseFloat(value);
-    if (isNaN(num)) {
-      input.value = "";
-      cgpaError.style.display = "block";
-      cgpaError.textContent = "Please enter a valid number";
-      return;
-    }
+      const num = parseFloat(value);
+      if (isNaN(num)) {
+        input.value = "";
+        cgpaError.style.display = "block";
+        cgpaError.textContent = "Please enter a valid number";
+        return;
+      }
 
-    if (num > 4) {
-      input.value = 4;
-      cgpaError.style.display = "block";
-      cgpaError.textContent = "CGPA cannot be more than 4.00";
-    } else if (num < 0) {
-      input.value = 0;
-      cgpaError.style.display = "block";
-      cgpaError.textContent = "CGPA cannot be less than 0.00";
-    } else {
-      cgpaError.style.display = "none";
-    }
+      if (num > 4) {
+        input.value = 4;
+        cgpaError.style.display = "block";
+        cgpaError.textContent = "CGPA cannot be more than 4.00";
+      } else if (num < 0) {
+        input.value = 0;
+        cgpaError.style.display = "block";
+        cgpaError.textContent = "CGPA cannot be less than 0.00";
+      } else {
+        cgpaError.style.display = "none";
+      }
+    });
   });
-});
 
-// PER TRIMESTER CREDIT LIMIT 0-30
-const trimesterCreditInputs = document.querySelectorAll(".trimester-credit-input");
-trimesterCreditInputs.forEach((input) => {
-  input.addEventListener("input", function () {
-    const value = input.value;
-    const errorId = input.id + "Error";
-    const creditError =
-      document.getElementById(errorId) ||
-      getOrCreateErrorEl(errorId, input.id);
+  // PER TRIMESTER CREDIT LIMIT 0-30
+  const trimesterCreditInputs = document.querySelectorAll(
+    ".trimester-credit-input",
+  );
+  trimesterCreditInputs.forEach((input) => {
+    input.addEventListener("input", function () {
+      const value = input.value;
+      const errorId = input.id + "Error";
+      const creditError =
+        document.getElementById(errorId) ||
+        getOrCreateErrorEl(errorId, input.id);
 
-    if (value === "") {
-      creditError.style.display = "block";
-      creditError.textContent = "Please enter your trimester credit";
-      return;
-    }
+      if (value === "") {
+        creditError.style.display = "block";
+        creditError.textContent = "Please enter your trimester credit";
+        return;
+      }
 
-    if (value === "-") {
-      input.value = 0;
-      creditError.style.display = "block";
-      creditError.textContent = "Credit cannot be less than 0";
-      return;
-    }
+      if (value === "-") {
+        input.value = 0;
+        creditError.style.display = "block";
+        creditError.textContent = "Credit cannot be less than 0";
+        return;
+      }
 
-    const num = parseFloat(value);
-    if (isNaN(num)) {
-      input.value = "";
-      creditError.style.display = "block";
-      creditError.textContent = "Please enter a valid number";
-      return;
-    }
+      const num = parseFloat(value);
+      if (isNaN(num)) {
+        input.value = "";
+        creditError.style.display = "block";
+        creditError.textContent = "Please enter a valid number";
+        return;
+      }
 
-    if (num > 30) {
-      input.value = 30;
-      creditError.style.display = "block";
-      creditError.textContent = "Credit cannot be more than 30";
-    } else if (num < 0) {
-      input.value = 0;
-      creditError.style.display = "block";
-      creditError.textContent = "Credit cannot be less than 0";
-    } else {
-      creditError.style.display = "none";
-    }
+      if (num > 30) {
+        input.value = 30;
+        creditError.style.display = "block";
+        creditError.textContent = "Credit cannot be more than 30";
+      } else if (num < 0) {
+        input.value = 0;
+        creditError.style.display = "block";
+        creditError.textContent = "Credit cannot be less than 0";
+      } else {
+        creditError.style.display = "none";
+      }
+    });
   });
-});
 
-// TOTAL DEGREE CREDIT LIMIT 0-160
-const totalDegreeCreditInputs = document.querySelectorAll(".total-degree-credit-input");
+  // TOTAL DEGREE CREDIT LIMIT 0-160
+  const totalDegreeCreditInputs = document.querySelectorAll(
+    ".total-degree-credit-input",
+  );
 
-totalDegreeCreditInputs.forEach((input) => {
-  input.addEventListener("input", function () {
+  totalDegreeCreditInputs.forEach((input) => {
+    input.addEventListener("input", function () {
+      const value = input.value;
+      const errorId = input.id + "Error";
+      const totalError =
+        document.getElementById(errorId) ||
+        getOrCreateErrorEl(errorId, input.id);
+
+      if (value === "") {
+        totalError.style.display = "block";
+        totalError.textContent = "Please enter your total degree credits";
+        return;
+      }
+
+      if (value === "-") {
+        input.value = 0;
+        totalError.style.display = "block";
+        totalError.textContent = "Total degree credits cannot be less than 0";
+        return;
+      }
+
+      const num = parseFloat(value);
+
+      if (isNaN(num)) {
+        input.value = "";
+        totalError.style.display = "block";
+        totalError.textContent = "Please enter a valid number";
+        return;
+      }
+
+      if (num > 160) {
+        input.value = 160;
+        totalError.style.display = "block";
+        totalError.textContent = "Total degree credits cannot be more than 160";
+      } else if (num < 0) {
+        input.value = 0;
+        totalError.style.display = "block";
+        totalError.textContent = "Total degree credits cannot be less than 0";
+      } else {
+        totalError.style.display = "none";
+      }
+    });
+  });
+
+  // COMPLETED CREDIT LIMIT 0-160 // CGPA: completedCredit //CGPA PLANNER: completedCredits
+  function validateCompletedCredits(input) {
     const value = input.value;
     const errorId = input.id + "Error";
-    const totalError =
-      document.getElementById(errorId) ||
-      getOrCreateErrorEl(errorId, input.id);
+    let completedError = document.getElementById(errorId);
+
+    if (!completedError) {
+      completedError = input.parentElement.querySelector(".textR");
+    }
 
     if (value === "") {
-      totalError.style.display = "block";
-      totalError.textContent = "Please enter your total degree credits";
+      completedError.style.display = "block";
+      completedError.textContent = "Please enter your completed credits";
       return;
     }
 
-    if (value === "-") {
-      input.value = 0;
-      totalError.style.display = "block";
-      totalError.textContent = "Total degree credits cannot be less than 0";
+    if (value.includes("-")) {
+      input.value = Math.abs(parseFloat(value)) || 0;
+      completedError.style.display = "block";
+      completedError.textContent = "Completed credits cannot be less than 0";
       return;
     }
 
     const num = parseFloat(value);
-
     if (isNaN(num)) {
       input.value = "";
-      totalError.style.display = "block";
-      totalError.textContent = "Please enter a valid number";
+      completedError.style.display = "block";
+      completedError.textContent = "Please enter a valid number";
       return;
     }
 
     if (num > 160) {
       input.value = 160;
-      totalError.style.display = "block";
-      totalError.textContent = "Total degree credits cannot be more than 160";
+      completedError.style.display = "block";
+      completedError.textContent = "Completed credits cannot be more than 160";
     } else if (num < 0) {
       input.value = 0;
-      totalError.style.display = "block";
-      totalError.textContent = "Total degree credits cannot be less than 0";
+      completedError.style.display = "block";
+      completedError.textContent = "Completed credits cannot be less than 0";
     } else {
-      totalError.style.display = "none";
+      completedError.style.display = "none";
+    }
+  }
+
+  document.addEventListener("input", function (event) {
+    if (event.target.classList.contains("completed-credit-input")) {
+      validateCompletedCredits(event.target);
     }
   });
-});
 
+  // MULTIPLE TRIMESTER COUNT 0-12
+  const trimesterCountInputs = document.querySelectorAll(
+    ".trimester-count-input",
+  );
+  trimesterCountInputs.forEach((input) => {
+    input.addEventListener("input", function () {
+      const value = input.value;
+      const errorId = input.id + "Error";
+      const countError =
+        document.getElementById(errorId) ||
+        getOrCreateErrorEl(errorId, input.id);
 
-// COMPLETED CREDIT LIMIT 0-160 // CGPA: completedCredit //CGPA PLANNER: completedCredits
-function validateCompletedCredits(input) {
-  const value = input.value;
-  const errorId = input.id + "Error";
-  let completedError = document.getElementById(errorId);
+      if (value === "") {
+        countError.style.display = "block";
+        countError.textContent = "Please enter number of trimesters";
+        return;
+      }
 
-  if (!completedError) {
-      completedError = input.parentElement.querySelector('.textR');
-  }
+      if (value === "-") {
+        input.value = 1;
+        countError.style.display = "block";
+        countError.textContent = "Trimester count cannot be less than 1";
+        return;
+      }
 
-  if (value === "") {
-    completedError.style.display = "block";
-    completedError.textContent = "Please enter your completed credits";
-    return;
-  }
+      let num = parseInt(value, 10);
+      if (isNaN(num)) {
+        input.value = "";
+        countError.style.display = "block";
+        countError.textContent = "Please enter a valid number";
+        return;
+      }
 
-  if (value.includes("-")) {
-    input.value = Math.abs(parseFloat(value)) || 0;
-    completedError.style.display = "block";
-    completedError.textContent = "Completed credits cannot be less than 0";
-    return;
-  }
-
-  const num = parseFloat(value);
-  if (isNaN(num)) {
-    input.value = "";
-    completedError.style.display = "block";
-    completedError.textContent = "Please enter a valid number";
-    return;
-  }
-
-  if (num > 160) {
-    input.value = 160;
-    completedError.style.display = "block";
-    completedError.textContent = "Completed credits cannot be more than 160";
-  } else if (num < 0) {
-    input.value = 0;
-    completedError.style.display = "block";
-    completedError.textContent = "Completed credits cannot be less than 0";
-  } else {
-    completedError.style.display = "none";
-  }
-}
-
-document.addEventListener("input", function (event) {
-  if (event.target.classList.contains("completed-credit-input")) {
-    validateCompletedCredits(event.target);
-  }
-});
-
-
-// MULTIPLE TRIMESTER COUNT 0-12
-const trimesterCountInputs = document.querySelectorAll(".trimester-count-input");
-trimesterCountInputs.forEach((input) => {
-  input.addEventListener("input", function () {
-    const value = input.value;
-    const errorId = input.id + "Error";
-    const countError =
-      document.getElementById(errorId) ||
-      getOrCreateErrorEl(errorId, input.id);
-
-    if (value === "") {
-      countError.style.display = "block";
-      countError.textContent = "Please enter number of trimesters";
-      return;
-    }
-
-    if (value === "-") {
-      input.value = 1;
-      countError.style.display = "block";
-      countError.textContent = "Trimester count cannot be less than 1";
-      return;
-    }
-
-    let num = parseInt(value, 10);
-    if (isNaN(num)) {
-      input.value = "";
-      countError.style.display = "block";
-      countError.textContent = "Please enter a valid number";
-      return;
-    }
-
-    if (num > 12) {
-      input.value = 12;
-      countError.style.display = "block";
-      countError.textContent = "Number of trimesters cannot be more than 12";
-    } else if (num < 1) {
-      input.value = 1;
-      countError.style.display = "block";
-      countError.textContent = "Number of trimesters cannot be less than 1";
-    } else {
-      countError.style.display = "none";
-    }
+      if (num > 12) {
+        input.value = 12;
+        countError.style.display = "block";
+        countError.textContent = "Number of trimesters cannot be more than 12";
+      } else if (num < 1) {
+        input.value = 1;
+        countError.style.display = "block";
+        countError.textContent = "Number of trimesters cannot be less than 1";
+      } else {
+        countError.style.display = "none";
+      }
+    });
   });
-});
-// PER CREDIT FEE & TRIMESTER FEE LIMIT 0-10000
-const feeInputs = document.querySelectorAll(".fee-input");
-feeInputs.forEach((input) => {
-  input.addEventListener("input", function () {
-    const value = input.value;
-    const errorId = input.id + "Error";
-    const feeError =
-      document.getElementById(errorId) ||
-      getOrCreateErrorEl(errorId, input.id);
+  // PER CREDIT FEE & TRIMESTER FEE LIMIT 0-10000
+  const feeInputs = document.querySelectorAll(".fee-input");
+  feeInputs.forEach((input) => {
+    input.addEventListener("input", function () {
+      const value = input.value;
+      const errorId = input.id + "Error";
+      const feeError =
+        document.getElementById(errorId) ||
+        getOrCreateErrorEl(errorId, input.id);
 
-    if (value === "") {
-      feeError.style.display = "block";
-      feeError.textContent = "Please enter fee amount";
-      return;
-    }
+      if (value === "") {
+        feeError.style.display = "block";
+        feeError.textContent = "Please enter fee amount";
+        return;
+      }
 
-    if (value === "-") {
-      input.value = 0;
-      feeError.style.display = "block";
-      feeError.textContent = "Fee cannot be less than 0";
-      return;
-    }
+      if (value === "-") {
+        input.value = 0;
+        feeError.style.display = "block";
+        feeError.textContent = "Fee cannot be less than 0";
+        return;
+      }
 
-    const num = parseFloat(value);
-    if (isNaN(num)) {
-      input.value = "";
-      feeError.style.display = "block";
-      feeError.textContent = "Please enter a valid number";
-      return;
-    }
+      const num = parseFloat(value);
+      if (isNaN(num)) {
+        input.value = "";
+        feeError.style.display = "block";
+        feeError.textContent = "Please enter a valid number";
+        return;
+      }
 
-    if (num > 10000) {
-      input.value = 10000;
-      feeError.style.display = "block";
-      feeError.textContent = "Fee cannot be more than 10000";
-    } else if (num < 0) {
-      input.value = 0;
-      feeError.style.display = "block";
-      feeError.textContent = "Fee cannot be less than 0";
-    } else {
-      feeError.style.display = "none";
-    }
+      if (num > 10000) {
+        input.value = 10000;
+        feeError.style.display = "block";
+        feeError.textContent = "Fee cannot be more than 10000";
+      } else if (num < 0) {
+        input.value = 0;
+        feeError.style.display = "block";
+        feeError.textContent = "Fee cannot be less than 0";
+      } else {
+        feeError.style.display = "none";
+      }
+    });
   });
-});
 
   const completedCreditInput = document.getElementById("completedCredit");
   if (completedCreditInput) {
@@ -1503,29 +1537,33 @@ feeInputs.forEach((input) => {
     .getElementById("retakeCredit")
     ?.addEventListener("input", validateInstallmentCredits);
 
-document.getElementById("retakeCreditFirst")?.addEventListener("input", function() {
-    const el = this;
-    if(el.value < 0) el.value = 0;
-});
-document.getElementById("retakeCreditRegular")?.addEventListener("input", function() {
-    const el = this;
-    if(el.value < 0) el.value = 0;
-});
-
-
+  document
+    .getElementById("retakeCreditFirst")
+    ?.addEventListener("input", function () {
+      const el = this;
+      if (el.value < 0) el.value = 0;
+    });
+  document
+    .getElementById("retakeCreditRegular")
+    ?.addEventListener("input", function () {
+      const el = this;
+      if (el.value < 0) el.value = 0;
+    });
 });
 
 // SAVE USER INPUT
-document.addEventListener("DOMContentLoaded", function() {    
-    const inputs = document.querySelectorAll('input[type="number"], input[type="text"], select');
-    inputs.forEach(input => {
-        if (!input.id) return;
-        const savedValue = localStorage.getItem(input.id);
-        if (savedValue) {
-            input.value = savedValue;
-        }
-        input.addEventListener('input', function() {
-            localStorage.setItem(input.id, this.value);
-        });
+document.addEventListener("DOMContentLoaded", function () {
+  const inputs = document.querySelectorAll(
+    'input[type="number"], input[type="text"], select',
+  );
+  inputs.forEach((input) => {
+    if (!input.id) return;
+    const savedValue = localStorage.getItem(input.id);
+    if (savedValue) {
+      input.value = savedValue;
+    }
+    input.addEventListener("input", function () {
+      localStorage.setItem(input.id, this.value);
     });
+  });
 });

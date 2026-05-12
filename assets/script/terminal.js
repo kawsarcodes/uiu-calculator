@@ -12,10 +12,12 @@
     developer: "Kawsar Ahmed",
     bio: "Computer Science and Engineering",
     contact: {
+      portfolio: "https://kawsar.dev",
       github: "https://github.com/kawsarcodes",
       youtube: "https://youtube.com/@kawsarcodes",
-      facebook: "https://facebook.com/kawsarshaikat",
-      instagram: "https://instagram.com/kawsarshaikat",
+      linkedin: "https://linkedin.com/in/mdkawsarahmed",
+      facebook: "https://facebook.com/kawsarcodes",
+      instagram: "https://instagram.com/kawsarcodes",
     },
   };
 
@@ -413,8 +415,10 @@
     (${ABOUT_INFO.bio})
 
 --> Contact Information:
+  - Portfolio: ${ABOUT_INFO.contact.portfolio}
   - GitHub: ${ABOUT_INFO.contact.github}
   - YouTube: ${ABOUT_INFO.contact.youtube}
+  - LinkedIn: ${ABOUT_INFO.contact.linkedin}
   - Facebook: ${ABOUT_INFO.contact.facebook}
   - Instagram: ${ABOUT_INFO.contact.instagram}
         `;

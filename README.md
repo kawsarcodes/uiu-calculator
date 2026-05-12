@@ -12,7 +12,7 @@
 
   <p>
     <a href="https://uiucalculator.kawsar.dev/">
-      <img src="https://img.shields.io/website?url=https%3A%2F%2Fuiucalculator.kawsar.dev&style=for-the-badge&label=Live%20Demo&logo=google-chrome&logoColor=white&color=ff6b6b" alt="Website Status">
+      <img src="https://img.shields.io/website?url=https%3A%2F%2Fuiucalculator.kawsar.dev&style=for-the-badge&label=Live&logo=google-chrome&logoColor=white&color=ff6b6b" alt="Website Status">
     </a>
     <a href="https://github.com/kawsarcodes/uiu-calculator">
       <img src="https://img.shields.io/github/last-commit/kawsarcodes/uiu-calculator?style=for-the-badge&color=blue" alt="Last Commit">

@@ -1,10 +1,9 @@
 class globalHeader extends HTMLElement {
   connectedCallback() {
     const themes = {
-      
       default: {
         name: "Default",
-        preview: "gradient", 
+        preview: "gradient",
         dark: {
           background: "#000000",
           background2: "#141414",
@@ -1045,7 +1044,6 @@ class globalHeader extends HTMLElement {
     const colorGridHTML = Object.entries(themes)
       .map(([key, theme]) => {
         if (theme.preview === "gradient") {
-          
           return `<button class="color-btn color-btn-gradient" data-theme="${key}" aria-label="${theme.name}"></button>`;
         }
         return `<button class="color-btn" data-theme="${key}" style="--bg-color: ${theme.preview}" aria-label="${theme.name}"></button>`;
@@ -1445,8 +1443,8 @@ class globalHeader extends HTMLElement {
 </div>
     `;
 
- this.initThemeSystem();
-    this.initPWAInstall(); 
+    this.initThemeSystem();
+    this.initPWAInstall();
     setTimeout(() => {
       this.initLegacyFeatures();
     }, 100);
@@ -1463,7 +1461,9 @@ class globalHeader extends HTMLElement {
 
     const isMobileOrTablet = () => {
       const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-      return /android|ipad|iphone|ipod|blackberry|iemobile|opera mini/i.test(userAgent);
+      return /android|ipad|iphone|ipod|blackberry|iemobile|opera mini/i.test(
+        userAgent,
+      );
     };
 
     const isStandalone = () => {
@@ -1515,8 +1515,10 @@ class globalHeader extends HTMLElement {
       }
     };
 
-    if (menuInstallBtn) menuInstallBtn.addEventListener("click", handleInstallClick);
-    if (sheetInstallBtn) sheetInstallBtn.addEventListener("click", handleInstallClick);
+    if (menuInstallBtn)
+      menuInstallBtn.addEventListener("click", handleInstallClick);
+    if (sheetInstallBtn)
+      sheetInstallBtn.addEventListener("click", handleInstallClick);
     if (sheetCloseBtn) sheetCloseBtn.addEventListener("click", closeSheet);
 
     window.addEventListener("appinstalled", () => {
@@ -1525,8 +1527,6 @@ class globalHeader extends HTMLElement {
       deferredPrompt = null;
     });
   }
-
-
 
   initThemeSystem() {
     const toggleBtn = this.querySelector("#theme-toggle");
@@ -1664,7 +1664,6 @@ class globalHeader extends HTMLElement {
     const palette = theme[actualMode];
     const root = document.documentElement;
 
-  
     root.style.setProperty("--background", palette.background);
     root.style.setProperty("--background2", palette.background2);
     root.style.setProperty("--foreground", palette.foreground);
@@ -1709,7 +1708,6 @@ class globalHeader extends HTMLElement {
       root.classList.remove("light");
     }
 
-  
     const modeBtns = this.querySelectorAll(".mode-btn");
     modeBtns.forEach((btn) => {
       if (btn.dataset.mode === mode) btn.classList.add("active");
@@ -1810,17 +1808,21 @@ class globalHeader extends HTMLElement {
     if (searchBox && searchResultsDiv) {
       const escapeHTML = (str) => {
         if (!str) return "";
-        return str.replace(/[&<>'"]/g, (tag) => ({
-            '&': '&amp;',
-            '<': '&lt;',
-            '>': '&gt;',
-            "'": '&#39;',
-            '"': '&quot;'
-          }[tag]));
+        return str.replace(
+          /[&<>'"]/g,
+          (tag) =>
+            ({
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              "'": "&#39;",
+              '"': "&quot;",
+            })[tag],
+        );
       };
 
       const escapeRegExp = (string) => {
-        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
       };
 
       const highlight = (text, query) => {
@@ -1840,7 +1842,10 @@ class globalHeader extends HTMLElement {
             : searchIndex.filter(
                 (item) =>
                   (item.title && item.title.toLowerCase().includes(q)) ||
-                  (item.topics && item.topics.some((topic) => topic.toLowerCase().includes(q))),
+                  (item.topics &&
+                    item.topics.some((topic) =>
+                      topic.toLowerCase().includes(q),
+                    )),
               );
 
         if (results.length === 0) {
@@ -1861,14 +1866,14 @@ class globalHeader extends HTMLElement {
           let badgesHtml = `<div class="badges" style="margin-top:5px;">`;
           if (result.topics) {
             result.topics.forEach((topic) => {
-              const safeTopic = escapeHTML(topic); 
+              const safeTopic = escapeHTML(topic);
               badgesHtml += `<span style="background: var(--muted); color: var(--foreground); padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; margin-right: 4px; display:inline-block; margin-bottom:2px;">${safeTopic}</span>`;
             });
           }
           badgesHtml += `</div>`;
 
-          const safeTitle = escapeHTML(result.title); 
-          const highlightedTitle = highlight(safeTitle, q); 
+          const safeTitle = escapeHTML(result.title);
+          const highlightedTitle = highlight(safeTitle, q);
 
           el.innerHTML = `<h3 style="margin:0;"><a href="${result.url}" style="color:var(--theme-color); text-decoration:none;">${highlightedTitle}</a></h3>${badgesHtml}`;
           searchResultsDiv.appendChild(el);

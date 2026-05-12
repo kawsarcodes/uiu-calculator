@@ -79,7 +79,6 @@ class globalNav extends HTMLElement {
       if (el) el.setAttribute("href", url);
     };
 
-  
     setHref(
       "#facebookShare",
       `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`,
@@ -126,7 +125,6 @@ class globalNav extends HTMLElement {
       `mailto:?subject=${encodedTitle}&body=Check%20this%20out:%20${encodedUrl}`,
     );
 
-
     shareButton.addEventListener("click", () => {
       shareModal.style.display = "block";
       overlay.style.display = "block";
@@ -142,7 +140,7 @@ class globalNav extends HTMLElement {
 
     copyButton.addEventListener("click", () => {
       shareLink.select();
-      shareLink.setSelectionRange(0, 99999); 
+      shareLink.setSelectionRange(0, 99999);
 
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(shareLink.value);
@@ -153,13 +151,12 @@ class globalNav extends HTMLElement {
       const originalContent = copyButton.innerHTML;
 
       copyButton.innerHTML = `<i class="fa-solid fa-check"></i>`;
-      copyButton.style.backgroundColor = "#4caf50"; 
+      copyButton.style.backgroundColor = "#4caf50";
       copyButton.style.color = "#fff";
 
-    
       setTimeout(() => {
         copyButton.innerHTML = `<i class="fa-regular fa-copy"></i>`;
-        copyButton.style.backgroundColor = ""; 
+        copyButton.style.backgroundColor = "";
         copyButton.style.color = "";
       }, 2000);
     });
