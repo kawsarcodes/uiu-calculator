@@ -114,7 +114,7 @@ async function loadTrimesterData() {
                         <i class="fab fa-github"></i> Contribute on GitHub
                     </a>
 
-                    <a href="https://youtube.com/@kawsarcodes" target="_blank" class="repo-link-btn item">
+                    <a href="https://youtu.be/4iYUDeuZRJU" target="_blank" class="repo-link-btn item">
                         <i class="fab fa-youtube"></i> How to contribute
                     </a>
                 </div>
