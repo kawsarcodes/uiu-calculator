@@ -142,9 +142,18 @@ async function loadTrimesterData() {
 function initGridStructure() {
   gridEl.innerHTML = `
         <div class="tracker-header-cell">Day</div>
-        <div class="tracker-header-cell">Slot T1</div>
-        <div class="tracker-header-cell">Slot T2</div>
-        <div class="tracker-header-cell">Slot T3</div>
+        <div class="tracker-header-cell">
+            Slot T1
+            <span class="slot-time">09:00 - 11:00</span>
+        </div>
+        <div class="tracker-header-cell">
+            Slot T2
+            <span class="slot-time">11:30 - 13:30</span>
+        </div>
+        <div class="tracker-header-cell">
+            Slot T3
+            <span class="slot-time">14:00 - 16:00</span>
+        </div>
     `;
   for (let i = 1; i <= 7; i++) {
     const dayLabel = document.createElement("div");
