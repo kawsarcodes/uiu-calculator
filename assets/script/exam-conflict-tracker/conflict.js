@@ -186,8 +186,7 @@ function renderSidebar(filter = "") {
     listEl.innerHTML = `
             <div class="tracker-empty-state">
                 <div class="tracker-empty-icon"><i class="fas fa-search"></i></div>
-                <h3 class="tracker-empty-title">No Courses Found</h3>
-                <p class="tracker-empty-message">No results for "<strong>${escapeHtml(filter)}</strong>".</p>
+                <p class="tracker-empty-title">No results for "<strong style="color: var(--theme-color);">${escapeHtml(filter)}</strong>"</p>
             </div>`;
     return;
   }
@@ -311,3 +310,71 @@ resetBtn.addEventListener("click", () => {
   updateVisualization();
   updateResetButtonState();
 });
+
+const STORAGE_KEY = 'exam_conflict_selections';
+
+function loadSavedSelections() {
+  if (!deptSelector || !deptSelector.value) return;
+
+  const currentDept = deptSelector.value;
+  const savedData = localStorage.getItem(STORAGE_KEY);
+
+  if (savedData) {
+    try {
+      const parsed = JSON.parse(savedData);
+      if (parsed[currentDept]) {
+        selectedIds = parsed[currentDept];
+      } else {
+        selectedIds = [];
+      }
+    } catch (e) {
+      console.error("Failed to parse saved selections", e);
+      selectedIds = [];
+    }
+  } else {
+    selectedIds = [];
+  }
+
+  renderSidebar(searchEl?.value || "");
+  updateVisualization();
+  updateResetButtonState();
+}
+
+function saveSelections() {
+  if (!deptSelector || !deptSelector.value) return;
+
+  const currentDept = deptSelector.value;
+  let savedData = {};
+
+  try {
+    const existing = localStorage.getItem(STORAGE_KEY);
+    if (existing) savedData = JSON.parse(existing);
+  } catch (e) {
+    savedData = {};
+  }
+
+  savedData[currentDept] = selectedIds;
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(savedData));
+}
+
+const originalToggleSelection = toggleSelection;
+toggleSelection = function (id) {
+  originalToggleSelection(id);
+  saveSelections();
+};
+
+const originalResetHandler = resetBtn?.onclick;
+resetBtn.onclick = function () {
+  if (originalResetHandler) originalResetHandler();
+  selectedIds = [];
+  saveSelections();
+  updateResetButtonState();
+};
+
+const originalLoadTrimesterData = loadTrimesterData;
+loadTrimesterData = async function () {
+  await originalLoadTrimesterData();
+  loadSavedSelections();
+};
+
+window.addEventListener('beforeunload', saveSelections);
