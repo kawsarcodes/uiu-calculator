@@ -674,9 +674,8 @@ function calculateCGPA() {
                 </div>
               </div>
             </div>
-            ${
-              courses.length > 0
-                ? `
+            ${courses.length > 0
+        ? `
             <div class="card">
               <div class="card-header bg-green-500/10 padding2">
                 <h3 class="card-title flex itemsC gap1 text-base">
@@ -699,8 +698,8 @@ function calculateCGPA() {
                 </div>
               </div>
             </div>`
-                : ""
-            }
+        : ""
+      }
             <div class="card">
               <div class="card-header padding2">
                 <h3 class="card-title flex itemsC gap1 text-base">
@@ -712,33 +711,30 @@ function calculateCGPA() {
                   <div class="flex justifyC itemsC"><span>Current CGPA</span><span>${currentCGPA.toFixed(2)}</span></div>
                   <div class="flex justifyC itemsC"><span>Completed Credits</span><span>${completedCredit.toFixed(1)}</span></div>
                   <div class="separator"></div>
-                  ${
-                    courses.length > 0
-                      ? `
+                  ${courses.length > 0
+        ? `
                   <div class="flex justifyC itemsC"><span>New Courses</span><span class="badge badge-outline">${courses.length}</span></div>
                   <div class="flex justifyC itemsC"><span>New Course Credits</span><span>${newCourseCredits.toFixed(1)}</span></div>
                   <div class="flex justifyC itemsC"><span>Trimester GPA</span><span class="text-green-600 font-semibold">${currentTrimesterGPA.toFixed(2)}</span></div>
                   <div class="separator"></div>
                   `
-                      : ""
-                  }
-                  ${
-                    retakeCourses.length > 0
-                      ? `
+        : ""
+      }
+                  ${retakeCourses.length > 0
+        ? `
                   <div class="flex justifyC itemsC"><span>Retake Courses</span><span class="badge badge-outline">${retakeCourses.length}</span></div>
                   <div class="flex justifyC itemsC"><span>Retake Course Credits</span><span>${retakeCourseCredits.toFixed(1)}</span></div>
                   <div class="flex justifyC itemsC"><span>Quality Point Improvement</span><span>${retakeImprovementPoints.toFixed(2)}</span></div>
                   <div class="separator"></div>
                   `
-                      : ""
-                  }
+        : ""
+      }
                   <div class="flex justifyC itemsC"><span>Total Credits After Completion</span><span>${totalCredits.toFixed(1)}</span></div>
                 </div>
               </div>
             </div>
-            ${
-              retakeCourses.length > 0
-                ? `
+            ${retakeCourses.length > 0
+        ? `
             <div class="card">
               <div class="card-header bg-blue-500/10 padding2">
                 <h3 class="card-title flex itemsC gap1 text-base">
@@ -759,8 +755,8 @@ function calculateCGPA() {
                 </div>
               </div>
             </div>`
-                : ""
-            }
+        : ""
+      }
           </div>
         `;
   }
@@ -781,7 +777,7 @@ function calculateCGPA() {
     document
       .getElementById("resetCGPABtn2")
       ?.addEventListener("click", resetCGPA);
-  } catch (e) {}
+  } catch (e) { }
 }
 function hideResults() {
   const resultDiv = document.getElementById("cgpaResult");
@@ -1039,16 +1035,15 @@ function calculateTuitionFee() {
           ${retakeCreditRegular > 0 ? `<tr><td>Retake Courses Tuition Fee (2nd+ Time)</td><td class="text-right">${retakeCreditRegular} credits × ${perCreditFee}</td><td class="text-right">${formatCurrency(feeRetakeRegularTotal)}</td></tr>` : ""}
           <tr><td>Trimester Fee</td><td class="text-right">Fixed</td><td class="text-right">${formatCurrency(trimesterFee)}</td></tr>
           ${lateRegistration ? `<tr style="color: #ff0040!important"><td>Late Registration Fee</td><td class="text-right">Fine</td><td class="text-right" style="font-weight: bold;">${formatCurrency(lateRegistrationFee)}</td></tr>` : ""}
-          ${
-            hasDiscount
-              ? `
+          ${hasDiscount
+      ? `
           <tr style="color: var(--theme-color)!important; font-weight: bold;">
             <td>Total Gross Fee</td>
             <td class="text-right text-xs font-normal">All tuition & fees</td>
             <td class="text-right">${formatCurrency(totalGrossFee)}</td>
           </tr>`
-              : ""
-          }
+      : ""
+    }
           ${discountRowsHtml ? discountRowsHtml : ""}          
           <tr class="border-t-2" style="font-weight: bold;"><td class="font-bold" style="color: var(--theme-color);">Total Payable (Net)</td><td></td><td class="text-right font-bold text-lg" style="color: var(--theme-color);">${formatCurrency(finalAmount)}</td></tr>
         </tbody>
