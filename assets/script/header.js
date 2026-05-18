@@ -1778,7 +1778,7 @@ class globalHeader extends HTMLElement {
       const displayName = rawName ? rawName : "UIUian";
 
       if (greetingEl) {
-        greetingEl.textContent = `${greeting}, ${displayName} !! 🙌`;
+        greetingEl.textContent = `${greeting}, ${displayName} !! `;
       }
     };
 
